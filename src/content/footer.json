@@ -1,0 +1,31 @@
+{
+  "title": "MOODBASE",
+  "description": "Entdecke die Unterstützung, die du verdienst.",
+  "sections": [
+    {
+      "title": "Produkt",
+      "links": [
+        { "label": "Link 1", "url": "#" },
+        { "label": "Link 2", "url": "#" },
+        { "label": "Link 3", "url": "#" }
+      ]
+    },
+    {
+      "title": "Unternehmen",
+      "links": [
+        { "label": "Link 1", "url": "#" },
+        { "label": "Link 2", "url": "#" },
+        { "label": "Link 3", "url": "#" }
+      ]
+    },
+    {
+      "title": "Ressourcen",
+      "links": [
+        { "label": "Link 1", "url": "#" },
+        { "label": "Link 2", "url": "#" },
+        { "label": "Link 3", "url": "#" }
+      ]
+    }
+  ],
+  "copyright": "© 2025 Moodbase. Alle Rechte vorbehalten."
+}
