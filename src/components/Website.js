@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ChevronRight, Play, Phone, Monitor, Tablet } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Website = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +26,7 @@ const Website = () => {
               <a href="/" className={`text-3xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-pink-500' : 'text-white'
               }`}>
-                LOGO
+                MOODBASE
               </a>
             </div>
 
@@ -35,20 +35,15 @@ const Website = () => {
               <a href="#features" className={`transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600 hover:text-pink-500' : 'text-white/90 hover:text-white'
               }`}>
-                Features
+                Funktionen
               </a>
               <a href="#about" className={`transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600 hover:text-pink-500' : 'text-white/90 hover:text-white'
               }`}>
-                About
-              </a>
-              <a href="#pricing" className={`transition-colors duration-300 ${
-                isScrolled ? 'text-gray-600 hover:text-pink-500' : 'text-white/90 hover:text-white'
-              }`}>
-                Pricing
+                Über uns
               </a>
               <button className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors duration-300">
-                Get Started
+                Jetzt starten
               </button>
             </div>
 
@@ -70,16 +65,13 @@ const Website = () => {
             <div className="md:hidden bg-white/95 backdrop-blur-sm">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#features" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
-                  Features
+                  Funktionen
                 </a>
                 <a href="#about" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
-                  About
-                </a>
-                <a href="#pricing" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
-                  Pricing
+                  Über uns
                 </a>
                 <button className="w-full mt-4 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">
-                  Get Started
+                  Jetzt starten
                 </button>
               </div>
             </div>
@@ -102,17 +94,17 @@ const Website = () => {
 
         <div className="relative text-center text-white z-10 max-w-5xl mx-auto px-4 py-32">
           <h1 className="text-5xl md:text-7xl font-bold mb-8">
-            Your Awesome Headline Here
+            Finde die richtige Unterstützung mit Moodbase
           </h1>
           <p className="text-xl text-white/90 mb-12 max-w-3xl mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Entdecke maßgeschneiderte psychosoziale Unterstützung in Deutschland, die Jugendliche befähigt und unterstützt, ihre Herausforderungen zu meistern.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button className="bg-pink-500 text-white px-8 py-4 rounded-full hover:bg-pink-600">
-              Get Started
+              Jetzt starten
             </button>
             <button className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/30">
-              Watch Demo
+              Demo ansehen
             </button>
           </div>
         </div>
@@ -122,40 +114,17 @@ const Website = () => {
       <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Feature Card 1 - Image Right */}
             <div className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-2xl p-8 flex flex-col">
-              <h3 className="text-2xl font-bold mb-4">Feature One</h3>
-              <p className="text-gray-600 mb-6">Brief description of the feature and its benefits to the user.</p>
-              <div className="mt-auto">
-                <div className="bg-gray-200 rounded-xl aspect-video w-full"></div>
-              </div>
+              <h3 className="text-2xl font-bold mb-4">KI-gesteuerte Anpassung</h3>
+              <p className="text-gray-600 mb-6">Unsere Plattform verwendet fortschrittliche KI, um dich basierend auf deinen spezifischen Bedürfnissen mit den besten psychosozialen Unterstützungsangeboten zu verbinden.</p>
             </div>
-
-            {/* Feature Card 2 - Image Left */}
             <div className="bg-gradient-to-br from-blue-50 to-pink-50 rounded-2xl p-8 flex flex-col">
-              <div className="mb-6">
-                <div className="bg-gray-200 rounded-xl aspect-video w-full"></div>
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Feature Two</h3>
-              <p className="text-gray-600">Brief description of the feature and its benefits to the user.</p>
+              <h3 className="text-2xl font-bold mb-4">Transparente Qualitätsbewertungen</h3>
+              <p className="text-gray-600">Jede Auflistung enthält transparente, nutzergenerierte Bewertungen der Servicequalität, die dir helfen, informierte Entscheidungen zu treffen.</p>
             </div>
-
-            {/* Feature Card 3 - Statistics */}
             <div className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Key Metrics</h3>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {[
-                  { value: "95%", label: "Satisfaction" },
-                  { value: "24/7", label: "Support" },
-                  { value: "500+", label: "Clients" },
-                  { value: "100+", label: "Features" }
-                ].map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-2xl font-bold text-pink-500">{stat.value}</div>
-                    <div className="text-sm text-gray-600">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+              <h3 className="text-2xl font-bold mb-6">Inklusiver Zugang</h3>
+              <p className="text-gray-600">Moodbase ist so gestaltet, dass es unabhängig vom sozioökonomischen Status oder Hintergrund zugänglich ist und Unterstützung bietet.</p>
             </div>
           </div>
         </div>
@@ -166,21 +135,10 @@ const Website = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Beautiful Experience</h2>
+              <h2 className="text-4xl font-bold mb-6">Jugendliche Ermächtigen</h2>
               <p className="text-gray-600 mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Moodbase wurde direkt mit der Beteiligung junger Menschen entwickelt, um sicherzustellen, dass es ihre Bedürfnisse wirklich adressiert und den Zugang zu psychosozialen Ressourcen demokratisiert.
               </p>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <div className="w-8 h-8 bg-pink-500 rounded-lg"></div>
-                    <div>
-                      <h4 className="font-semibold">Feature {i}</h4>
-                      <p className="text-sm text-gray-600">Quick feature description</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-200 to-blue-200 rounded-full blur-3xl opacity-30"></div>
@@ -192,64 +150,17 @@ const Website = () => {
         </div>
       </section>
 
-      {/* Feature Highlights */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="group">
-                <div className="mb-6 overflow-hidden rounded-xl">
-                  <div className="aspect-[4/3] bg-gray-200 group-hover:scale-105 transition-transform duration-300"></div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Feature Title {i}</h3>
-                <p className="text-gray-600">
-                  Brief description of the feature and its key benefits to the user.
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gradient-to-r from-pink-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Pricing Plans</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {['Basic', 'Pro', 'Enterprise'].map((plan, index) => (
-              <div key={plan} className="bg-white rounded-2xl p-8 shadow-xl">
-                <h3 className="text-2xl font-bold mb-4">{plan}</h3>
-                <div className="text-4xl font-bold text-pink-500 mb-6">
-                  ${[9, 29, 99][index]}<span className="text-base font-normal text-gray-600">/mo</span>
-                </div>
-                <ul className="space-y-4 mb-8">
-                  {[...Array(4)].map((_, i) => (
-                    <li key={i} className="flex items-center text-gray-600">
-                      <span className="w-2 h-2 bg-pink-500 rounded-full mr-2"></span>
-                      Feature {i + 1}
-                    </li>
-                  ))}
-                </ul>
-                <button className="w-full bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600">
-                  Choose {plan}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-pink-500 to-blue-500">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Get Started?
+            Bereit, die passende Unterstützung zu finden?
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            Join thousands of satisfied customers using our platform.
+            Schließe dich heute Moodbase an und beginne deinen Weg zu besserer psychischer Gesundheit und Unterstützung.
           </p>
           <button className="bg-white text-pink-500 px-8 py-4 rounded-full hover:bg-white/90">
-            Start Free Trial
+            Jetzt erkunden
           </button>
         </div>
       </section>
@@ -259,12 +170,12 @@ const Website = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h4 className="text-xl font-bold mb-4">LOGO</h4>
+              <h4 className="text-xl font-bold mb-4">MOODBASE</h4>
               <p className="text-gray-400">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Entdecke die Unterstützung, die du verdienst.
               </p>
             </div>
-            {['Product', 'Company', 'Resources'].map((section) => (
+            {['Produkt', 'Unternehmen', 'Ressourcen'].map((section) => (
               <div key={section}>
                 <h4 className="text-xl font-bold mb-4">{section}</h4>
                 <ul className="space-y-2">
@@ -276,7 +187,7 @@ const Website = () => {
             ))}
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            © 2025 Your Company. All rights reserved.
+            © 2025 Moodbase. Alle Rechte vorbehalten.
           </div>
         </div>
       </footer>
