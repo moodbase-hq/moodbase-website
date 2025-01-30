@@ -6,7 +6,6 @@ import aboutData from '../content/about.json';
 import ctaData from '../content/cta.json';
 import footerData from '../content/footer.json';
 
-
 const Website = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +28,7 @@ const Website = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20">
             <div className="flex items-center">
-              <a href="/#/" className={`text-3xl font-bold transition-colors duration-300 ${
+              <a href="#/" className={`text-3xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-pink-500' : 'text-white'
               }`}>
                 MOODBASE
@@ -48,7 +47,7 @@ const Website = () => {
               }`}>
                 Über uns
               </a>
-              <a href="/#/database" className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors duration-300">
+              <a href="#/database" className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors duration-300">
                 Zur Datenbank
               </a>
             </div>
@@ -76,7 +75,7 @@ const Website = () => {
                 <a href="#about" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
                   Über uns
                 </a>
-                <a href="/#/database" className="block w-full mt-4 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 text-center">
+                <a href="#/database" className="block w-full mt-4 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 text-center">
                   Zur Datenbank
                 </a>
               </div>
@@ -102,17 +101,16 @@ const Website = () => {
           <h1 className="text-5xl md:text-7xl font-bold mb-8">{heroData.title}</h1>
           <p className="text-xl text-white/90 mb-12 max-w-3xl mx-auto">{heroData.description}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/#/database" className="bg-pink-500 text-white px-8 py-4 rounded-full hover:bg-pink-600">
+            <a href="#/database" className="bg-pink-500 text-white px-8 py-4 rounded-full hover:bg-pink-600">
               Jetzt Suchen
             </a>
-            <a href="/#/database" className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/30">
+            <a href="#/database" className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/30">
               Zur Datenbank
             </a>
           </div>
         </div>
       </section>
 
-      {/* Rest of the sections remain the same */}
       {/* Content Grid Below Hero */}
       <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -155,7 +153,7 @@ const Website = () => {
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-4xl font-bold text-white mb-6">{ctaData.title}</h2>
           <p className="text-xl text-white/90 mb-8">{ctaData.description}</p>
-          <a href="/#/database" className="inline-block bg-white text-pink-500 px-8 py-4 rounded-full hover:bg-white/90">
+          <a href="#/database" className="inline-block bg-white text-pink-500 px-8 py-4 rounded-full hover:bg-white/90">
             Jetzt Suchen
           </a>
         </div>

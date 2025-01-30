@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Search } from 'lucide-react';
-import servicesData from '../data/psychosocial-services.json';
 import OfferingDetail from './OfferingDetail';
-
+import databaseData from '../data/database.json';
 
 const DatabasePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,8 +16,8 @@ const DatabasePage = () => {
   useEffect(() => {
     try {
       setIsLoading(true);
-      setData(servicesData.offers);
-      setFilteredData(servicesData.offers);
+      setData(databaseData.offers);
+      setFilteredData(databaseData.offers);
       setError(null);
     } catch (error) {
       setError('Could not load the data. Please try again later.');
@@ -70,19 +69,19 @@ const DatabasePage = () => {
               </a>
             </div>
 
-            {/* Desktop Navigation */}
+                          {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="/#features" className={`transition-colors duration-300 ${
+              <a href="#/features" className={`transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600 hover:text-pink-500' : 'text-white/90 hover:text-white'
               }`}>
                 Funktionen
               </a>
-              <a href="/#about" className={`transition-colors duration-300 ${
+              <a href="#/about" className={`transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600 hover:text-pink-500' : 'text-white/90 hover:text-white'
               }`}>
                 Über uns
               </a>
-              <a href="/database" className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors duration-300">
+              <a href="#/database" className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors duration-300">
                 Zur Datenbank
               </a>
             </div>
@@ -104,13 +103,13 @@ const DatabasePage = () => {
           {isMenuOpen && (
             <div className="md:hidden bg-white/95 backdrop-blur-sm">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="/#features" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
+                <a href="#/features" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
                   Funktionen
                 </a>
-                <a href="/#about" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
+                <a href="#/about" className="block px-3 py-2 text-gray-600 hover:text-pink-500">
                   Über uns
                 </a>
-                <a href="/database" className="block w-full mt-4 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 text-center">
+                <a href="#/database" className="block w-full mt-4 bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 text-center">
                   Zur Datenbank
                 </a>
               </div>
