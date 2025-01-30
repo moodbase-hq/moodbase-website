@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Search } from 'lucide-react';
 import OfferingDetail from './OfferingDetail';
 import databaseData from '../data/database.json';
+import AIAssistant from './AIAssistant';
+
 
 const DatabasePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +14,8 @@ const DatabasePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [showAssistant, setShowAssistant] = useState(false);
+
 
   useEffect(() => {
     try {
@@ -124,9 +128,9 @@ const DatabasePage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Psychosoziale Angebote</h1>
           <p className="text-gray-600 mb-8">Finden Sie psychosoziale Unterstützung in Ihrer Nähe</p>
 
-          {/* Search Bar */}
-          <div className="mb-8">
-            <div className="relative">
+          {/* Search Bar and AI Assistant */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
               <input
                 type="text"
                 placeholder="Angebote durchsuchen..."
@@ -136,9 +140,25 @@ const DatabasePage = () => {
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             </div>
+            <button
+              onClick={() => setShowAssistant(!showAssistant)}
+              className="bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-600 flex items-center justify-center space-x-2 min-w-[200px]"
+            >
+              <span>{showAssistant ? 'Suche anzeigen' : 'KI-Assistent öffnen'}</span>
+            </button>
           </div>
 
-          {/* Data Table */}
+          {showAssistant ? (
+            <AIAssistant
+              servicesData={data}
+              onRecommendation={(service) => {
+                setShowAssistant(false);
+                if (service) {
+                  handleRowClick(service.id);
+                }
+              }}
+            />
+          ) : (
           <div className="bg-white rounded-lg shadow overflow-hidden">
             {isLoading ? (
               <div className="p-8 text-center">
@@ -209,6 +229,7 @@ const DatabasePage = () => {
               </div>
             )}
           </div>
+          )}
         </div>
       </main>
 
