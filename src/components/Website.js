@@ -6,6 +6,7 @@ import aboutData from '../content/about.json';
 import ctaData from '../content/cta.json';
 import footerData from '../content/footer.json';
 
+
 const Website = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
