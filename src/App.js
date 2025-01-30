@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import Website from './components/Website';
 import DatabasePage from './components/DatabasePage';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
@@ -12,6 +12,6 @@ const App = () => {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
