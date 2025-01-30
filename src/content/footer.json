@@ -1,29 +1,29 @@
 {
   "title": "MOODBASE",
-  "description": "Entdecke die Unterstützung, die du verdienst.",
+  "description": "Die intelligente Plattform für psychosoziale Unterstützungsangebote.",
   "sections": [
     {
-      "title": "Produkt",
+      "title": "Über uns",
       "links": [
-        { "label": "Link 1", "url": "#" },
-        { "label": "Link 2", "url": "#" },
-        { "label": "Link 3", "url": "#" }
+        { "label": "Unsere Mission", "url": "#" },
+        { "label": "Das Team", "url": "#" },
+        { "label": "Karriere", "url": "#" }
+      ]
+    },
+    { 
+      "title": "Community",
+      "links": [
+        { "label": "Für Anbieter", "url": "#" },
+        { "label": "Partnerschaften", "url": "#" },
+        { "label": "Blog", "url": "#" }
       ]
     },
     {
-      "title": "Unternehmen",
+      "title": "Hilfe",
       "links": [
-        { "label": "Link 1", "url": "#" },
-        { "label": "Link 2", "url": "#" },
-        { "label": "Link 3", "url": "#" }
-      ]
-    },
-    {
-      "title": "Ressourcen",
-      "links": [
-        { "label": "Link 1", "url": "#" },
-        { "label": "Link 2", "url": "#" },
-        { "label": "Link 3", "url": "#" }
+        { "label": "FAQ", "url": "#" },
+        { "label": "Kontakt", "url": "#" },
+        { "label": "Impressum", "url": "#" }
       ]
     }
   ],
