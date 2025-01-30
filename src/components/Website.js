@@ -29,7 +29,7 @@ const Website = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20">
             <div className="flex items-center">
-              <a href="/" className={`text-3xl font-bold transition-colors duration-300 ${
+              <a href="/#/" className={`text-3xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-pink-500' : 'text-white'
               }`}>
                 MOODBASE
