@@ -78,8 +78,10 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         <div className="chat-message assistant">
           <div className="bg-pink-50 rounded-lg p-4 max-w-[80%]">
-            <p>Hallo! Ich bin hier, um Ihnen zu helfen, die richtige Unterstützung zu finden.
-               Möchten Sie mir erzählen, was Sie beschäftigt?</p>
+            <p>Hallo! Ich bin hier, um dir zu helfen, die richtige Unterstützung zu finden.
+               Und ich bin bloß eine Demo bis wir uns das LLM wirklich leisten können :)
+               Grundsätzlich jedoch, würde ich dann versuchen mit dir das Anliege zu klären und mit dir in der Datenbank was pasendes suchen!
+               Derzeit kann ich dir noch nicht antworten, aber ich werde versuchen es in Kürze zu verbessern.</p>
           </div>
         </div>
 
