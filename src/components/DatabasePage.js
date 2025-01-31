@@ -126,7 +126,8 @@ const DatabasePage = () => {
       <main className="pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Psychosoziale Angebote</h1>
-          <p className="text-gray-600 mb-8">Finden Sie psychosoziale Unterstützung in Ihrer Nähe</p>
+          <p className="text-gray-600 mb-8">DEMO! DAS SIND KEINE ECHTEN ANGEBOTE!
+            Finden Sie psychosoziale Unterstützung in Ihrer Nähe</p>
 
           {/* Search Bar and AI Assistant */}
           <div className="flex flex-col md:flex-row gap-4 mb-8">
