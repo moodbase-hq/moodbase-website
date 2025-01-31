@@ -51,7 +51,7 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
       console.error('Error:', error);
       setMessages(prev => [...prev,
         { role: 'user', content: userMessage },
-        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }
+        { role: 'assistant', content: 'Sorry, Ich kann dir leider noch nicht antworten. Ich bin noch nicht aktiviert.' }
       ]);
     } finally {
       setIsLoading(false);
@@ -71,7 +71,7 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
       {/* Chat Header */}
       <div className="px-6 py-4 bg-pink-500 text-white rounded-t-lg">
         <h3 className="text-xl font-semibold">Beratungs-Assistent</h3>
-        <p className="text-sm opacity-90">Ich helfe Ihnen, die passende Unterstützung zu finden.</p>
+        <p className="text-sm opacity-90">Ich helfe dir, die passende Unterstützung zu finden.</p>
       </div>
 
       {/* Messages Area */}
