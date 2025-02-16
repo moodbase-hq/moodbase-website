@@ -1,0 +1,26 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Psychische Gesundheit im Alltag",
+      "description": "Praktische Tipps und Strategien für ein ausgeglichenes Leben.",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "date": "2024-02-15",
+      "author": "Maria Schmidt",
+      "tags": ["Gesundheit", "Lifestyle"],
+      "featured": true,
+      "imageUrl": "/api/placeholder/800/400"
+    },
+    {
+      "id": 2,
+      "title": "Meditation für Anfänger",
+      "description": "Ein einfacher Einstieg in die Welt der Meditation.",
+      "content": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.\n\nTotam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "date": "2024-02-10",
+      "author": "Thomas Weber",
+      "tags": ["Meditation", "Wellness"],
+      "featured": true,
+      "imageUrl": "/api/placeholder/800/400"
+    }
+  ]
+}
