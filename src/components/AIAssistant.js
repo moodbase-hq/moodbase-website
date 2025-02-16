@@ -1,3 +1,4 @@
+// AIAssistant.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader } from 'lucide-react';
 import { CONFIG } from '../config/config';
@@ -67,17 +68,17 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
   };
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-lg shadow-lg">
+    <div className="flex flex-col h-[600px] bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200">
       {/* Chat Header */}
-      <div className="px-6 py-4 bg-pink-500 text-white rounded-t-lg">
+      <div className="px-6 py-4 bg-[#B23A48] text-white rounded-t-lg">
         <h3 className="text-xl font-semibold">Beratungs-Assistent</h3>
         <p className="text-sm opacity-90">Ich helfe dir, die passende Unterstützung zu finden.</p>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
         <div className="chat-message assistant">
-          <div className="bg-pink-50 rounded-lg p-4 max-w-[80%]">
+          <div className="bg-white rounded-lg p-4 max-w-[80%] shadow-sm border border-gray-100">
             <p>Hallo! Ich bin hier, um dir zu helfen, die richtige Unterstützung zu finden.
                Und ich bin bloß eine Demo bis wir uns das LLM wirklich leisten können :)
                Grundsätzlich jedoch, würde ich dann versuchen mit dir das Anliege zu klären und mit dir in der Datenbank was pasendes suchen!
@@ -89,16 +90,16 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
           <div key={index} className={`chat-message ${message.role}`}>
             <div className={`${
               message.role === 'user' 
-                ? 'bg-blue-100 ml-auto' 
-                : 'bg-pink-50'
-              } rounded-lg p-4 max-w-[80%]`}>
+                ? 'bg-[#B23A48]/10 ml-auto text-gray-800' 
+                : 'bg-white text-gray-800 border border-gray-100'
+              } rounded-lg p-4 max-w-[80%] shadow-sm`}>
               <p>{message.content}</p>
             </div>
           </div>
         ))}
 
         {isLoading && (
-          <div className="flex items-center space-x-2 text-gray-500">
+          <div className="flex items-center space-x-2 text-gray-500 bg-white p-3 rounded-lg shadow-sm inline-flex">
             <Loader className="animate-spin" size={20} />
             <span>Nachricht wird verarbeitet...</span>
           </div>
@@ -107,19 +108,19 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="border-t p-4">
+      <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4 bg-white rounded-b-lg">
         <div className="flex space-x-4">
           <input
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Ihre Nachricht..."
-            className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="flex-1 border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#B23A48] bg-white"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 disabled:opacity-50"
+            className="bg-[#B23A48] text-white px-4 py-2 rounded-lg hover:bg-[#9B3240] disabled:opacity-50 transition-colors duration-300"
           >
             <Send size={20} />
           </button>
