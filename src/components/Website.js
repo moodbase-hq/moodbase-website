@@ -137,16 +137,16 @@ const Website = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section id="support" className="py-20 bg-gradient-to-r from-[#B23A48] to-[#9B3240]">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-4xl font-bold text-white mb-6">{ctaData.title}</h2>
-          <p className="text-xl text-white/90 mb-8">{ctaData.description}</p>
-          <Link to="/database" className="inline-block bg-white text-[#B23A48] px-8 py-4 rounded-full hover:bg-white/90 transition-colors duration-300">
-            Jetzt Suchen
-          </Link>
-        </div>
-      </section>
+{/* CTA Section */}
+<section id="support" className="py-20 bg-gradient-to-r from-[#B23A48] via-[#9B3240] to-blue-500">
+  <div className="max-w-4xl mx-auto text-center px-4">
+    <h2 className="text-4xl font-bold text-white mb-6">{ctaData.title}</h2>
+    <p className="text-xl text-white/90 mb-8">{ctaData.description}</p>
+    <Link to="/database" className="inline-block bg-white text-[#B23A48] px-8 py-4 rounded-full hover:bg-white/90 transition-colors duration-300">
+      Jetzt Suchen
+    </Link>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
