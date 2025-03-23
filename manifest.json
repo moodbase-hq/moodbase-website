@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Moodbase App",
+  "name": "Hilfe finden, die du brauchst",
   "icons": [
     {
       "src": "favicon.ico",
