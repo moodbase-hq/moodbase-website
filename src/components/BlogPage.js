@@ -4,24 +4,108 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/shared/Layout';
 import Button from '../components/shared/Button';
 import { useTheme } from '../context/ThemeContext';
-import BackgroundBlob from '../components/shared/BackgroundBlob';
-import CirclePattern from '../components/shared/CirclePatterns';
 import FooterWithCurve from '../components/shared/FooterWithCurve';
 import { motion } from 'framer-motion';
 import theme from '../styles/theme';
 
-// Wave Divider component for curved transitions
-const WaveDivider = ({ position = 'bottom', color = '#FFFFFF', previousColor = '#EDF2FB', className = '' }) => {
+// Import SVG assets directly
+import Blob1 from '../components/shared/assets/1.svg';
+import CircleGroup from '../components/shared/assets/2.svg';
+import OutlinedBlob from '../components/shared/assets/3.svg';
+import CloudBlob from '../components/shared/assets/4.svg';
+
+// Animated SVG Component with hover effect
+const AnimatedSvg = ({
+  src,
+  width,
+  height,
+  className,
+  alt = "Decorative element",
+  style = {},
+  delay = 0,
+  animationType = "float" // Options: "float", "pulse", "rotate"
+}) => {
+  // Define different animation variants
+  const floatAnimation = {
+    y: [0, -20, 0],
+    transition: {
+      duration: 8 + Math.random() * 4, // Random duration between 8-12s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const pulseAnimation = {
+    scale: [1, 1.05, 1],
+    opacity: [style.opacity || 0.7, (style.opacity || 0.7) + 0.1, style.opacity || 0.7],
+    transition: {
+      duration: 6 + Math.random() * 3, // Random duration between 6-9s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const rotateAnimation = {
+    rotate: [0, 3, 0, -3, 0],
+    transition: {
+      duration: 12 + Math.random() * 5, // Random duration between 12-17s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  // Choose animation based on type
+  let animation = {};
+  switch (animationType) {
+    case "float":
+      animation = floatAnimation;
+      break;
+    case "pulse":
+      animation = pulseAnimation;
+      break;
+    case "rotate":
+      animation = rotateAnimation;
+      break;
+    default:
+      animation = floatAnimation;
+  }
+
+  return (
+    <motion.div
+      className={`absolute pointer-events-none ${className}`}
+      style={{ width, height, zIndex: 0, ...style }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: style.opacity || 0.7 }}
+      transition={{ duration: 1.5, delay: delay }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain"
+        animate={animation}
+      />
+    </motion.div>
+  );
+};
+
+// Wave Divider component
+const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
   if (position === 'bottom') {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'bottom' }}
+          style={{ marginBottom: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -32,13 +116,13 @@ const WaveDivider = ({ position = 'bottom', color = '#FFFFFF', previousColor = '
     );
   } else {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'top' }}
+          style={{ marginTop: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -121,10 +205,10 @@ const BlogPage = () => {
   const themeContext = useTheme();
   const [activeCategory, setActiveCategory] = useState('Alle');
 
-  // Color definitions (matching landing page)
-  const pinkBackground = theme.colors.background1;    // D9B1B1 - Pink background
-  const sandBackground = theme.colors.background2;    // E8CEB0 - Sand background
-  const blueBackground = theme.colors.tertiary;       // 99BEFA - Light blue
+  // Color definitions
+  const blueBackground = '#2F5EA8'; // Blue for footer section
+  const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
+  const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
   // Filter posts by category
   const filteredPosts = activeCategory === 'Alle'
@@ -132,42 +216,98 @@ const BlogPage = () => {
     : blogPosts.filter(post => post.category === activeCategory);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen bg-transparent">
+      {/* SVG Decorations - Using absolute positioning with overflow visible */}
+      <div className="absolute inset-0 overflow-visible pointer-events-none">
+        {/* BIGGER SVGs with different positioning for Blog page */}
+
+        {/* Right top blob - diagonal opposite from homepage */}
+        <AnimatedSvg
+          src={Blob1}
+          alt="Background Blob 1"
+          width="2200px"
+          height="2200px"
+          className="right-[-800px] top-[-500px]"
+          style={{ opacity: 0.7 }}
+          delay={0.1}
+          animationType="float"
+        />
+
+        {/* Left middle circle group */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Circle Group 1"
+          width="1800px"
+          height="1800px"
+          className="left-[-600px] top-[300px]"
+          style={{
+            opacity: 0.8,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
+          delay={0.2}
+          animationType="pulse"
+        />
+
+        {/* Right middle outlined blob */}
+        <AnimatedSvg
+          src={OutlinedBlob}
+          alt="Outlined Blob 1"
+          width="2500px"
+          height="2500px"
+          className="right-[-600px] top-[600px]"
+          style={{ opacity: 0.6 }}
+          delay={0.4}
+          animationType="rotate"
+        />
+
+        {/* Bottom center cloud blob */}
+        <AnimatedSvg
+          src={CloudBlob}
+          alt="Cloud Blob 1"
+          width="2300px"
+          height="2300px"
+          className="left-[30%] bottom-[-800px]"
+          style={{
+            opacity: 0.7,
+            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
+          }}
+          delay={0.3}
+          animationType="float"
+        />
+
+        {/* Bottom left blob */}
+        <AnimatedSvg
+          src={Blob1}
+          alt="Background Blob 2"
+          width="1800px"
+          height="1800px"
+          className="left-[-600px] bottom-[-400px]"
+          style={{ opacity: 0.5 }}
+          delay={0.5}
+          animationType="pulse"
+        />
+
+        {/* Near the blog posts, a circle group */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Circle Group 2"
+          width="900px"
+          height="900px"
+          className="right-[-200px] top-[900px]"
+          style={{
+            opacity: 0.6,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
+          delay={0.6}
+          animationType="rotate"
+        />
+      </div>
+
       {/* Use Layout's Header but not its footer */}
       <Layout>
-        {/* Hero Section - Pink Background */}
-        <section className="relative pt-20" style={{ backgroundColor: pinkBackground }}>
-          {/* Background blobs */}
-          <BackgroundBlob
-            color="#C8A0A0"
-            width="650px"
-            height="650px"
-            className="top-[-200px] right-[-300px]"
-            opacity={0.4}
-            blur="70px"
-          />
-
-          <BackgroundBlob
-            color="#C8A0A0"
-            width="400px"
-            height="400px"
-            className="bottom-[100px] left-[-200px]"
-            opacity={0.3}
-            blur="50px"
-            delay={0.3}
-          />
-
-          {/* Circle pattern in top right */}
-          <div className="absolute top-20 right-20 z-10 pointer-events-none">
-            <CirclePattern
-              size="medium"
-              color="#99BEFA"
-              delay={0.2}
-              opacity={0.7}
-            />
-          </div>
-
-          <div className="container mx-auto px-4 py-16">
+        {/* Hero Section - Now transparent */}
+        <section className="relative pt-20 bg-transparent">
+          <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <motion.h1
                 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
@@ -205,44 +345,11 @@ const BlogPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Wave divider to sand section */}
-          <WaveDivider position="bottom" color={sandBackground} previousColor={pinkBackground} />
         </section>
 
-        {/* Blog Posts Grid - Sand Background */}
-        <section className="relative" style={{ backgroundColor: sandBackground }}>
-          {/* Background Blobs */}
-          <BackgroundBlob
-            color={pinkBackground}
-            width="800px"
-            height="800px"
-            className="top-[-200px] right-[-200px]"
-            opacity={0.3}
-            blur="60px"
-          />
-
-          <BackgroundBlob
-            color={pinkBackground}
-            width="700px"
-            height="700px"
-            className="top-[400px] left-[-200px]"
-            opacity={0.25}
-            blur="50px"
-            delay={0.3}
-          />
-
-          {/* Circle pattern */}
-          <div className="absolute bottom-20 left-10 z-10 pointer-events-none">
-            <CirclePattern
-              size="large"
-              color="#A13E4B"
-              delay={0.3}
-              opacity={0.5}
-            />
-          </div>
-
-          <div className="container mx-auto px-4 py-16">
+        {/* Blog Posts Grid - Now transparent */}
+        <section className="relative bg-transparent">
+          <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
                 <motion.article
@@ -288,16 +395,13 @@ const BlogPage = () => {
               ))}
             </div>
           </div>
-
-          {/* Wave divider to blue section */}
-          <WaveDivider position="bottom" color={blueBackground} previousColor={sandBackground} />
         </section>
 
-        {/* Newsletter Section - Blue Background */}
-        <section className="relative" style={{ backgroundColor: blueBackground }}>
-          <div className="container mx-auto px-4 py-16">
+        {/* Newsletter Section - Now transparent with contrasting card */}
+        <section className="relative bg-transparent py-16">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="max-w-xl mx-auto text-center"
+              className="max-w-xl mx-auto text-center bg-[#2F5EA8]/90 backdrop-blur-md rounded-2xl p-8 shadow-xl relative z-10"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -333,19 +437,18 @@ const BlogPage = () => {
               </p>
             </motion.div>
           </div>
-
-          {/* Wave divider to sand buffer section */}
-          <WaveDivider position="bottom" color={sandBackground} previousColor={blueBackground} />
         </section>
 
-        {/* Sand buffer section */}
-        <section style={{ backgroundColor: sandBackground }} className="relative">
-          <div className="py-16"></div>
-        </section>
+        {/* Transition to footer */}
+        <div className="relative z-10 mt-8">
+          <WaveDivider position="bottom" color={blueBackground} />
+        </div>
       </Layout>
 
-      {/* Footer */}
-      <FooterWithCurve />
+      {/* Footer - Keep the blue background */}
+      <section style={{ backgroundColor: blueBackground }} className="relative z-10">
+        <FooterWithCurve />
+      </section>
     </div>
   );
 };

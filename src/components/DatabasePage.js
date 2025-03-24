@@ -5,26 +5,111 @@ import { Link } from 'react-router-dom';
 import Header from '../components/shared/Header';
 import Button from '../components/shared/Button';
 import { useTheme } from '../context/ThemeContext';
-import CirclePattern from '../components/shared/CirclePatterns';
-import BackgroundBlob from '../components/shared/BackgroundBlob';
 import FooterWithCurve from '../components/shared/FooterWithCurve';
 import OfferingDetail from './OfferingDetail';
 import databaseData from '../data/database.json';
-import AIAssistant from './AIAssistant';
+import AIAssistant from '../components/AIAssistant';
 import theme from '../styles/theme';
+import { motion } from 'framer-motion';
 
-// Wave Divider component for curved transitions
-const WaveDivider = ({ position = 'bottom', color = '#FFFFFF', previousColor = '#EDF2FB', className = '' }) => {
+// Import SVG assets directly
+import Blob1 from '../components/shared/assets/1.svg';
+import CircleGroup from '../components/shared/assets/2.svg';
+import OutlinedBlob from '../components/shared/assets/3.svg';
+import CloudBlob from '../components/shared/assets/4.svg';
+
+// Animated SVG Component with hover effect
+const AnimatedSvg = ({
+  src,
+  width,
+  height,
+  className,
+  alt = "Decorative element",
+  style = {},
+  delay = 0,
+  animationType = "float" // Options: "float", "pulse", "rotate"
+}) => {
+  // Define different animation variants
+  const floatAnimation = {
+    y: [0, -20, 0],
+    transition: {
+      duration: 8 + Math.random() * 4, // Random duration between 8-12s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const pulseAnimation = {
+    scale: [1, 1.05, 1],
+    opacity: [style.opacity || 0.7, (style.opacity || 0.7) + 0.1, style.opacity || 0.7],
+    transition: {
+      duration: 6 + Math.random() * 3, // Random duration between 6-9s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const rotateAnimation = {
+    rotate: [0, 3, 0, -3, 0],
+    transition: {
+      duration: 12 + Math.random() * 5, // Random duration between 12-17s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  // Choose animation based on type
+  let animation = {};
+  switch (animationType) {
+    case "float":
+      animation = floatAnimation;
+      break;
+    case "pulse":
+      animation = pulseAnimation;
+      break;
+    case "rotate":
+      animation = rotateAnimation;
+      break;
+    default:
+      animation = floatAnimation;
+  }
+
+  return (
+    <motion.div
+      className={`absolute pointer-events-none ${className}`}
+      style={{ width, height, zIndex: 0, ...style }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: style.opacity || 0.7 }}
+      transition={{ duration: 1.5, delay: delay }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain"
+        animate={animation}
+      />
+    </motion.div>
+  );
+};
+
+// Wave Divider component
+const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
   if (position === 'bottom') {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'bottom' }}
+          style={{ marginBottom: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -35,13 +120,13 @@ const WaveDivider = ({ position = 'bottom', color = '#FFFFFF', previousColor = '
     );
   } else {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'top' }}
+          style={{ marginTop: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -63,10 +148,10 @@ const DatabasePage = () => {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [showAssistant, setShowAssistant] = useState(false);
 
-  // Color definitions (matching landing page)
-  const pinkBackground = theme.colors.background1;    // D9B1B1 - Pink background
-  const sandBackground = theme.colors.background2;    // E8CEB0 - Sand background
-  const blueBackground = theme.colors.tertiary;       // 99BEFA - Light blue
+  // Color definitions
+  const blueBackground = '#2F5EA8'; // Blue for footer section
+  const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
+  const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
   useEffect(() => {
     try {
@@ -96,49 +181,113 @@ const DatabasePage = () => {
     setSelectedOffer(offer);
   };
 
+  // Handle recommendations from AI Assistant
+  const handleRecommendation = (service) => {
+    setShowAssistant(false);
+    if (service) {
+      handleRowClick(service.id);
+    }
+  };
+
   if (selectedOffer) {
     return <OfferingDetail offering={selectedOffer} onBack={() => setSelectedOffer(null)} />;
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen bg-transparent">
+      {/* SVG Decorations - Using absolute positioning with overflow visible */}
+      <div className="absolute inset-0 overflow-visible pointer-events-none">
+        {/* MUCH BIGGER SVGs with unique database page arrangement */}
+
+        {/* Center left very large blob */}
+        <AnimatedSvg
+          src={Blob1}
+          alt="Center Blob"
+          width="2600px"
+          height="2600px"
+          className="left-[-1200px] top-[300px]"
+          style={{ opacity: 0.6 }}
+          delay={0.2}
+          animationType="float"
+        />
+
+        {/* Top right dark blue circle group */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Top Circle Group"
+          width="2000px"
+          height="2000px"
+          className="right-[-800px] top-[-400px]"
+          style={{
+            opacity: 0.8,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
+          delay={0.3}
+          animationType="rotate"
+        />
+
+        {/* Middle right outlined blob */}
+        <AnimatedSvg
+          src={OutlinedBlob}
+          alt="Middle Outlined Blob"
+          width="2200px"
+          height="2200px"
+          className="right-[-800px] top-[600px]"
+          style={{ opacity: 0.5 }}
+          delay={0.1}
+          animationType="float"
+        />
+
+        {/* Table area cloud blob - burgundy */}
+        <AnimatedSvg
+          src={CloudBlob}
+          alt="Bottom Cloud Blob"
+          width="1800px"
+          height="1800px"
+          className="left-[30%] top-[900px]"
+          style={{
+            opacity: 0.6,
+            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
+          }}
+          delay={0.4}
+          animationType="pulse"
+        />
+
+        {/* Bottom right circle group - dark blue */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Bottom Circle Group"
+          width="1600px"
+          height="1600px"
+          className="right-[-400px] bottom-[-400px]"
+          style={{
+            opacity: 0.7,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
+          delay={0.5}
+          animationType="pulse"
+        />
+
+        {/* Bottom left cloud blob */}
+        <AnimatedSvg
+          src={CloudBlob}
+          alt="Left Cloud Blob"
+          width="1400px"
+          height="1400px"
+          className="left-[-400px] bottom-[-300px]"
+          style={{ opacity: 0.5 }}
+          delay={0.2}
+          animationType="rotate"
+        />
+      </div>
+
       {/* Header */}
       <Header />
 
-      {/* Hero Section - Pink Background */}
-      <section className="relative pt-20" style={{ backgroundColor: pinkBackground }}>
-        {/* Background blobs */}
-        <BackgroundBlob
-          color="#C8A0A0"
-          width="650px"
-          height="650px"
-          className="top-[-200px] right-[-300px]"
-          opacity={0.4}
-          blur="70px"
-        />
-
-        <BackgroundBlob
-          color="#C8A0A0"
-          width="400px"
-          height="400px"
-          className="bottom-[100px] left-[-200px]"
-          opacity={0.3}
-          blur="50px"
-          delay={0.3}
-        />
-
-        {/* Red circle pattern in top left */}
-        <div className="absolute top-20 left-20 z-10 pointer-events-none">
-          <CirclePattern
-            size="medium"
-            color="#A13E4B"
-            delay={0.2}
-            opacity={0.7}
-          />
-        </div>
-
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex justify-between items-center flex-wrap mb-8">
+      {/* Hero Section - Now transparent */}
+      <section className="relative pt-20 bg-transparent">
+        <div className="container mx-auto px-4 py-12 relative z-10">
+          <div className="flex justify-between items-center flex-wrap mb-8 relative">
             <div className="flex-grow mr-4">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">Psychosoziale Angebote</h1>
               <p className="text-gray-800">
@@ -146,18 +295,18 @@ const DatabasePage = () => {
               </p>
             </div>
 
-            {/* Map View Button - Direct Link */}
+            {/* Map View Button - Add z-index and relative positioning */}
             <Link
               to="/maps"
-              className="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-full inline-flex items-center mt-4 md:mt-0"
+              className="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-full inline-flex items-center mt-4 md:mt-0 relative z-20"
             >
               <Map className="mr-2" size={18} />
               Kartenansicht
             </Link>
           </div>
 
-          {/* Search Bar and AI Assistant */}
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
+          {/* Search Bar and AI Assistant - Add z-index */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8 relative z-20">
             <div className="relative flex-1">
               <input
                 type="text"
@@ -169,65 +318,28 @@ const DatabasePage = () => {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600" size={20} />
             </div>
 
-            {/* Toggle AI Assistant button */}
+            {/* Toggle AI Assistant button - Add z-index */}
             <button
               onClick={() => setShowAssistant(!showAssistant)}
-              className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-full transition-colors flex items-center justify-center space-x-2 min-w-[200px]"
+              className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-full transition-colors flex items-center justify-center space-x-2 min-w-[200px] relative z-20"
             >
               <span>{showAssistant ? 'Zur Suche' : 'KI-Assistent öffnen'}</span>
             </button>
           </div>
         </div>
-
-        {/* Wave divider to sand section */}
-        <WaveDivider position="bottom" color={sandBackground} previousColor={pinkBackground} />
       </section>
 
-      {/* Main Content - Sand Background */}
-      <section className="relative" style={{ backgroundColor: sandBackground }}>
-        {/* Background Blobs */}
-        <BackgroundBlob
-          color={pinkBackground}
-          width="800px"
-          height="800px"
-          className="top-[-200px] right-[-200px]"
-          opacity={0.3}
-          blur="60px"
-        />
-
-        <BackgroundBlob
-          color={pinkBackground}
-          width="700px"
-          height="700px"
-          className="top-[400px] left-[-200px]"
-          opacity={0.25}
-          blur="50px"
-          delay={0.3}
-        />
-
-        {/* Circle patterns */}
-        <div className="absolute left-0 bottom-20 z-10 pointer-events-none">
-          <CirclePattern
-            size="large"
-            color="#A13E4B"
-            delay={0.3}
-            opacity={0.5}
-          />
-        </div>
-
-        <div className="container mx-auto px-4 py-16">
+      {/* Main Content - Now transparent */}
+      <section className="relative bg-transparent">
+        <div className="container mx-auto px-4 py-16 relative z-10">
           {/* Main Content Area */}
-          <div>
+          <div className="relative z-20">
             {showAssistant ? (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+                {/* AIAssistant component with proper props */}
                 <AIAssistant
                   servicesData={data}
-                  onRecommendation={(service) => {
-                    setShowAssistant(false);
-                    if (service) {
-                      handleRowClick(service.id);
-                    }
-                  }}
+                  onRecommendation={handleRecommendation}
                 />
               </div>
             ) : (
@@ -313,15 +425,12 @@ const DatabasePage = () => {
             )}
           </div>
         </div>
-
-        {/* Wave divider to blue section */}
-        <WaveDivider position="bottom" color={blueBackground} previousColor={sandBackground} />
       </section>
 
-      {/* Info Section - Blue Background */}
-      <section className="relative" style={{ backgroundColor: blueBackground }}>
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-3xl mx-auto text-center">
+      {/* Info Section - Blue card on transparent background */}
+      <section className="relative bg-transparent py-12">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center bg-[#2F5EA8]/90 backdrop-blur-md rounded-2xl p-8 shadow-lg">
             <p className="text-white/90 mb-1 text-lg">
               Benötigen Sie Hilfe bei der Suche? Unser KI-Assistent hilft Ihnen dabei, das passende Angebot zu finden.
             </p>
@@ -330,18 +439,17 @@ const DatabasePage = () => {
             </p>
           </div>
         </div>
-
-        {/* Wave divider to sand buffer section */}
-        <WaveDivider position="bottom" color={sandBackground} previousColor={blueBackground} />
       </section>
 
-      {/* Sand buffer section */}
-      <section style={{ backgroundColor: sandBackground }} className="relative">
-        <div className="py-16"></div>
-      </section>
+      {/* Transition to footer */}
+      <div className="relative z-10 mt-12">
+        <WaveDivider position="bottom" color={blueBackground} />
+      </div>
 
       {/* Footer */}
-      <FooterWithCurve />
+      <section style={{ backgroundColor: blueBackground }} className="relative z-10">
+        <FooterWithCurve />
+      </section>
     </div>
   );
 };

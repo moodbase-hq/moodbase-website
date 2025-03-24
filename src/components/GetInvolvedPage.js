@@ -4,23 +4,107 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/shared/Layout';
 import Button from '../components/shared/Button';
 import { useTheme } from '../context/ThemeContext';
-import BackgroundBlob from '../components/shared/BackgroundBlob';
-import CirclePattern from '../components/shared/CirclePatterns';
 import { motion } from 'framer-motion';
 import getInvolvedData from '../content/getinvolved.json';
 
-// Simple Wave Divider component for curved transitions
-const WaveDivider = ({ position = 'bottom', color = '#E8D5C4', previousColor = '#D9B1B1', className = '' }) => {
+// Import SVG assets directly
+import Blob1 from '../components/shared/assets/1.svg';
+import CircleGroup from '../components/shared/assets/2.svg';
+import OutlinedBlob from '../components/shared/assets/3.svg';
+import CloudBlob from '../components/shared/assets/4.svg';
+
+// Animated SVG Component with hover effect
+const AnimatedSvg = ({
+  src,
+  width,
+  height,
+  className,
+  alt = "Decorative element",
+  style = {},
+  delay = 0,
+  animationType = "float" // Options: "float", "pulse", "rotate"
+}) => {
+  // Define different animation variants
+  const floatAnimation = {
+    y: [0, -20, 0],
+    transition: {
+      duration: 8 + Math.random() * 4, // Random duration between 8-12s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const pulseAnimation = {
+    scale: [1, 1.05, 1],
+    opacity: [style.opacity || 0.7, (style.opacity || 0.7) + 0.1, style.opacity || 0.7],
+    transition: {
+      duration: 6 + Math.random() * 3, // Random duration between 6-9s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  const rotateAnimation = {
+    rotate: [0, 3, 0, -3, 0],
+    transition: {
+      duration: 12 + Math.random() * 5, // Random duration between 12-17s
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+      delay: delay
+    }
+  };
+
+  // Choose animation based on type
+  let animation = {};
+  switch (animationType) {
+    case "float":
+      animation = floatAnimation;
+      break;
+    case "pulse":
+      animation = pulseAnimation;
+      break;
+    case "rotate":
+      animation = rotateAnimation;
+      break;
+    default:
+      animation = floatAnimation;
+  }
+
+  return (
+    <motion.div
+      className={`absolute pointer-events-none ${className}`}
+      style={{ width, height, zIndex: 0, ...style }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: style.opacity || 0.7 }}
+      transition={{ duration: 1.5, delay: delay }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain"
+        animate={animation}
+      />
+    </motion.div>
+  );
+};
+
+// Wave Divider component
+const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
   if (position === 'bottom') {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'bottom' }}
+          style={{ marginBottom: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -31,13 +115,13 @@ const WaveDivider = ({ position = 'bottom', color = '#E8D5C4', previousColor = '
     );
   } else {
     return (
-      <div className={`relative w-full overflow-hidden ${className}`} style={{ display: 'block', lineHeight: 0 }}>
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           className="w-full h-auto block"
-          style={{ display: 'block', verticalAlign: 'top' }}
+          style={{ marginTop: '-5px', display: 'block' }} // Fix for seams
         >
           <path
             fill={color}
@@ -83,18 +167,8 @@ const DonateSection = ({ data }) => {
   const theme = useTheme();
 
   return (
-    <section id={data.id} className="relative" style={{ backgroundColor: '#E8D5C4' }}>
-      {/* Background Blob */}
-      <BackgroundBlob
-        color="#D9B1B1"
-        width="700px"
-        height="700px"
-        className="top-[-100px] right-[-300px]"
-        opacity={0.2}
-        blur="60px"
-      />
-
-      <div className="max-w-4xl mx-auto px-4 py-16">
+    <section id={data.id} className="relative bg-transparent py-16">
+      <div className="max-w-4xl mx-auto px-4 relative z-10">
         <motion.h2
           className="text-3xl font-bold text-center mb-8 text-gray-900"
           initial={{ opacity: 0, y: 20 }}
@@ -131,19 +205,6 @@ const DonateSection = ({ data }) => {
           </div>
         </motion.div>
       </div>
-
-      {/* Circle pattern */}
-      <div className="absolute bottom-20 left-10 z-10 pointer-events-none">
-        <CirclePattern
-          size="medium"
-          color="#99BEFA"
-          delay={0.5}
-          opacity={0.7}
-        />
-      </div>
-
-      {/* Wave divider to next section */}
-      <WaveDivider position="bottom" color="#D9B1B1" previousColor="#E8D5C4" />
     </section>
   );
 };
@@ -171,18 +232,8 @@ const JoinSection = ({ data }) => {
   };
 
   return (
-    <section id={data.id} className="relative" style={{ backgroundColor: '#D9B1B1' }}>
-      {/* Background Blob */}
-      <BackgroundBlob
-        color="#C8A0A0"
-        width="600px"
-        height="600px"
-        className="bottom-[-100px] right-[-200px]"
-        opacity={0.3}
-        blur="50px"
-      />
-
-      <div className="max-w-4xl mx-auto px-4 py-16">
+    <section id={data.id} className="relative bg-transparent py-16">
+      <div className="max-w-4xl mx-auto px-4 relative z-10">
         <motion.h2
           className="text-3xl font-bold text-center mb-8 text-gray-900"
           initial={{ opacity: 0, y: 20 }}
@@ -271,187 +322,222 @@ const JoinSection = ({ data }) => {
           )}
         </motion.div>
       </div>
-
-      {/* Wave divider to next section */}
-      <WaveDivider position="bottom" color="#E8D5C4" previousColor="#D9B1B1" />
     </section>
   );
 };
 
 const GetInvolvedPage = () => {
   const theme = useTheme();
-  const pinkBackground = '#D9B1B1';
-  const sandBackground = '#E8D5C4';
+  const blueBackground = '#2F5EA8'; // Blue for footer section
+  const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
+  const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
   return (
-    <Layout>
-      {/* Hero Section - Pink Background */}
-      <section className="relative pt-20" style={{ backgroundColor: pinkBackground }}>
-        {/* Background blobs */}
-        <BackgroundBlob
-          color="#C8A0A0"
-          width="650px"
-          height="650px"
-          className="top-[-200px] right-[-300px]"
-          opacity={0.4}
-          blur="70px"
+    <div className="relative min-h-screen bg-transparent">
+      {/* SVG Decorations - Using absolute positioning with overflow visible */}
+      <div className="absolute inset-0 overflow-visible pointer-events-none">
+        {/* BIGGER SVGs with different positioning for support page */}
+
+        {/* Top left large blob */}
+        <AnimatedSvg
+          src={Blob1}
+          alt="Background Blob 1"
+          width="2400px"
+          height="2400px"
+          className="left-[-1000px] top-[-600px]"
+          style={{ opacity: 0.6 }}
+          delay={0.2}
+          animationType="rotate"
         />
 
-        <BackgroundBlob
-          color="#C8A0A0"
-          width="400px"
-          height="400px"
-          className="bottom-[100px] left-[-200px]"
-          opacity={0.3}
-          blur="50px"
+        {/* Top right cloud blob - burgundy */}
+        <AnimatedSvg
+          src={CloudBlob}
+          alt="Cloud Blob 1"
+          width="2000px"
+          height="2000px"
+          className="right-[-700px] top-[-300px]"
+          style={{
+            opacity: 0.7,
+            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
+          }}
+          delay={0.1}
+          animationType="float"
+        />
+
+        {/* Middle left circle group - blue */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Circle Group 1"
+          width="1500px"
+          height="1500px"
+          className="left-[-400px] top-[600px]"
+          style={{
+            opacity: 0.8,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
           delay={0.3}
+          animationType="pulse"
         />
 
-        {/* Circle pattern in top right */}
-        <div className="absolute top-20 right-20 z-10 pointer-events-none">
-          <CirclePattern
-            size="medium"
-            color="#99BEFA"
-            delay={0.2}
-            opacity={0.7}
-          />
-        </div>
+        {/* Middle right outlined blob */}
+        <AnimatedSvg
+          src={OutlinedBlob}
+          alt="Outlined Blob 1"
+          width="1800px"
+          height="1800px"
+          className="right-[-600px] top-[700px]"
+          style={{ opacity: 0.6 }}
+          delay={0.4}
+          animationType="float"
+        />
 
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.h1
-              className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
+        {/* Bottom center circle group - blue */}
+        <AnimatedSvg
+          src={CircleGroup}
+          alt="Circle Group 2"
+          width="1300px"
+          height="1300px"
+          className="left-[30%] bottom-[-200px]"
+          style={{
+            opacity: 0.7,
+            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
+          }}
+          delay={0.5}
+          animationType="rotate"
+        />
+
+        {/* Bottom right blob */}
+        <AnimatedSvg
+          src={Blob1}
+          alt="Background Blob 2"
+          width="2000px"
+          height="2000px"
+          className="right-[-800px] bottom-[-700px]"
+          style={{ opacity: 0.5 }}
+          delay={0.6}
+          animationType="pulse"
+        />
+      </div>
+
+      <Layout>
+        {/* Hero Section - Now transparent */}
+        <section className="relative pt-20 bg-transparent">
+          <div className="container mx-auto px-4 py-16 relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <motion.h1
+                className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {getInvolvedData.hero.title}
+              </motion.h1>
+              <motion.p
+                className="text-lg text-gray-700 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {getInvolvedData.hero.description}
+              </motion.p>
+            </div>
+          </div>
+        </section>
+
+        {/* Introduction - Now transparent */}
+        <section className="relative bg-transparent">
+          <div className="container mx-auto px-4 py-16 relative z-10">
+            <motion.h2
+              className="text-3xl font-bold text-center mb-8 text-gray-900"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              {getInvolvedData.hero.title}
-            </motion.h1>
-            <motion.p
-              className="text-lg text-gray-700 mb-8"
+              {getInvolvedData.intro.title}
+            </motion.h2>
+
+            <motion.div
+              className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-gray-200 mb-6 max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              {getInvolvedData.hero.description}
-            </motion.p>
+              {getInvolvedData.intro.description.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="text-gray-600 mb-4 last:mb-0">{paragraph}</p>
+              ))}
+            </motion.div>
           </div>
-        </div>
+        </section>
 
-        {/* Wave divider to sand section */}
-        <WaveDivider position="bottom" color={sandBackground} previousColor={pinkBackground} />
-      </section>
-
-      {/* Introduction - Sand Background */}
-      <section className="relative" style={{ backgroundColor: sandBackground }}>
-        {/* Background Blobs */}
-        <BackgroundBlob
-          color={pinkBackground}
-          width="700px"
-          height="700px"
-          className="top-[100px] right-[-300px]"
-          opacity={0.2}
-          blur="70px"
-        />
-
-        <div className="container mx-auto px-4 py-16">
-          <motion.h2
-            className="text-3xl font-bold text-center mb-8 text-gray-900"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {getInvolvedData.intro.title}
-          </motion.h2>
-
-          <motion.div
-            className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-gray-200 mb-6 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {getInvolvedData.intro.description.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="text-gray-600 mb-4 last:mb-0">{paragraph}</p>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Wave divider to Ways to Support section */}
-        <WaveDivider position="bottom" color="#EDF2FB" previousColor={sandBackground} />
-      </section>
-
-      {/* Ways to Support - Light Blue Background */}
-      <section className="relative" style={{ backgroundColor: '#EDF2FB' }}>
-        {/* Circle pattern on left */}
-        <div className="absolute top-40 left-10 z-10 pointer-events-none">
-          <CirclePattern
-            size="large"
-            color="#A13E4B"
-            delay={0.3}
-            opacity={0.5}
-          />
-        </div>
-
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <motion.h2
-            className="text-3xl font-bold text-center mb-12 text-gray-900"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {getInvolvedData.ways.title}
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {getInvolvedData.ways.items.map((item, index) => (
-              <SupportOption
-                key={item.id}
-                item={item}
-                delay={0.2 + (index * 0.1)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Wave divider to Donate section */}
-        <WaveDivider position="bottom" color={sandBackground} previousColor="#EDF2FB" />
-      </section>
-
-      {/* Donate Section - Sand Background */}
-      <DonateSection data={getInvolvedData.donate} />
-
-      {/* Join Section - Pink Background */}
-      <JoinSection data={getInvolvedData.join} />
-
-      {/* CTA Section - Sand Background */}
-      <section className="relative" style={{ backgroundColor: sandBackground }}>
-        <div className="max-w-4xl mx-auto text-center px-4 py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">Gemeinsam mehr erreichen</h2>
-            <p className="text-xl mb-8 text-gray-700">
-              Jede Unterstützung bringt uns einen Schritt näher zu unserem Ziel, die psychosoziale Versorgung für alle zugänglich zu machen.
-            </p>
-            <Button
-              to="/database"
-              variant="primary"
-              className="px-8 py-3"
+        {/* Ways to Support - Now transparent */}
+        <section className="relative bg-transparent">
+          <div className="max-w-6xl mx-auto px-4 py-16 relative z-10">
+            <motion.h2
+              className="text-3xl font-bold text-center mb-12 text-gray-900"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              Zur Datenbank
-            </Button>
-          </motion.div>
-        </div>
+              {getInvolvedData.ways.title}
+            </motion.h2>
 
-        {/* No footer-related wave divider here - FooterWithCurve handles its own top curve */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {getInvolvedData.ways.items.map((item, index) => (
+                <SupportOption
+                  key={item.id}
+                  item={item}
+                  delay={0.2 + (index * 0.1)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Donate Section */}
+        <DonateSection data={getInvolvedData.donate} />
+
+        {/* Join Section */}
+        <JoinSection data={getInvolvedData.join} />
+
+        {/* CTA Section - Now transparent */}
+        <section className="relative bg-transparent">
+          <div className="max-w-4xl mx-auto text-center px-4 py-16 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Gemeinsam mehr erreichen</h2>
+              <p className="text-xl mb-8 text-gray-700">
+                Jede Unterstützung bringt uns einen Schritt näher zu unserem Ziel, die psychosoziale Versorgung für alle zugänglich zu machen.
+              </p>
+              <Button
+                to="/database"
+                variant="primary"
+                className="px-8 py-3"
+              >
+                Zur Datenbank
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Transition to footer */}
+        <div className="relative z-10 mt-8">
+          <WaveDivider position="bottom" color={blueBackground} />
+        </div>
+      </Layout>
+
+      {/* Footer - Keep the blue background */}
+      <section style={{ backgroundColor: blueBackground }} className="relative z-10">
+        {/* Footer is included in Layout */}
       </section>
-    </Layout>
+    </div>
   );
 };
 
