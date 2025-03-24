@@ -1,21 +1,20 @@
-// components/shared/Layout.jsx
+// src/components/shared/Layout.jsx
+import React from 'react';
 import Header from './Header';
-import Footer from './Footer';
+// DO NOT import any footer component here
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen">
-      {/* Base background color matching the hero section */}
-      <div className="fixed inset-0 bg-gradient-to-b from-gray-100 to-blue-50 z-0" />
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <Header />
 
-      {/* Content wrapper */}
-      <div className="relative z-10">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-      </div>
+      {/* Main content */}
+      <main className="flex-grow">
+        {children}
+      </main>
+
+      {/* NO FOOTER HERE - The footer should be included in each page */}
     </div>
   );
 };

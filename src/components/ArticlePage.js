@@ -20,7 +20,7 @@ const ArticlePage = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Artikel nicht gefunden</h1>
           <Link 
             to="/blog" 
-            className="inline-flex items-center text-[#B23A48] hover:text-[#9B3240] transition-colors duration-300"
+            className="inline-flex items-center text-[#B23A48] hover:text-[#998878] transition-colors duration-300"
           >
             <ArrowLeft size={20} className="mr-2" />
             Zurück zur Übersicht
@@ -37,7 +37,7 @@ const ArticlePage = () => {
         <div className="max-w-4xl mx-auto px-4">
           <Link 
             to="/blog" 
-            className="inline-flex items-center text-[#B23A48] hover:text-[#9B3240] mb-8 transition-colors duration-300"
+            className="inline-flex items-center text-[#B23A48] hover:text-[#998878] mb-8 transition-colors duration-300"
           >
             <ArrowLeft size={20} className="mr-2" />
             Zurück zur Übersicht
@@ -89,7 +89,7 @@ const ArticlePage = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Weitere Artikel entdecken</h2>
           <Link 
             to="/blog" 
-            className="inline-flex items-center text-[#B23A48] hover:text-[#9B3240] transition-colors duration-300"
+            className="inline-flex items-center text-[#B23A48] hover:text-[#998878] transition-colors duration-300"
           >
             Zurück zur Übersicht
           </Link>

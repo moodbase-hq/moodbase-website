@@ -4,6 +4,8 @@ src/config/config.js
 /node_modules
 /.pnp
 .pnp.js
+.idea
+.env
 
 # testing
 /coverage

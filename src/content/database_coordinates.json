@@ -1,0 +1,222 @@
+{
+  "offers": [
+    {
+      "id": 1,
+      "name": "Psychologische Beratung",
+      "provider": "Beratungszentrum Mitte",
+      "type": "Einzelberatung",
+      "location": "Berlin-Mitte",
+      "address": "Alexanderstraße 5, 10178 Berlin",
+      "coordinates": {
+        "latitude": 52.5226,
+        "longitude": 13.4132
+      },
+      "availability": "Nächste Woche",
+      "languages": ["Deutsch", "Englisch", "Türkisch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "name": "Familientherapie",
+      "provider": "Familienpraxis Dr. Schmidt",
+      "type": "Familienberatung",
+      "location": "Hamburg-Altona",
+      "address": "Ottenser Hauptstraße 45, 22765 Hamburg",
+      "coordinates": {
+        "latitude": 53.5511,
+        "longitude": 9.9386
+      },
+      "availability": "2-3 Wochen",
+      "languages": ["Deutsch", "Englisch"],
+      "status": "Warteliste",
+      "costs": "Nach Vereinbarung",
+      "lastUpdated": "2024-01-20"
+    },
+    {
+      "id": 3,
+      "name": "Online Trauma Beratung",
+      "provider": "Digital Health Group",
+      "type": "Online-Beratung",
+      "location": "Online",
+      "address": "Digital / Remote",
+      "coordinates": null,
+      "availability": "Sofort",
+      "languages": ["Deutsch", "Englisch", "Französisch"],
+      "status": "Verfügbar",
+      "costs": "80€/Stunde",
+      "lastUpdated": "2024-01-25"
+    },
+    {
+      "id": 4,
+      "name": "Gruppentherapie für Jugendliche",
+      "provider": "Jugendzentrum Nord",
+      "type": "Gruppentherapie",
+      "location": "München-Schwabing",
+      "address": "Leopoldstraße 180, 80804 München",
+      "coordinates": {
+        "latitude": 48.1756,
+        "longitude": 11.5962
+      },
+      "availability": "Nächster Monat",
+      "languages": ["Deutsch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-28"
+    },
+    {
+      "id": 5,
+      "name": "Suchtberatung",
+      "provider": "Gesundheitszentrum West",
+      "type": "Suchtberatung",
+      "location": "Frankfurt-West",
+      "address": "Mainzer Landstraße 415, 60326 Frankfurt",
+      "coordinates": {
+        "latitude": 50.1068,
+        "longitude": 8.6252
+      },
+      "availability": "Diese Woche",
+      "languages": ["Deutsch", "Englisch", "Russisch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-30"
+    },
+    {
+      "id": 6,
+      "name": "Paarberatung",
+      "provider": "Praxis für Lebensberatung",
+      "type": "Paartherapie",
+      "location": "Köln-Zentrum",
+      "address": "Hohenzollernring 30, 50672 Köln",
+      "coordinates": {
+        "latitude": 50.9398,
+        "longitude": 6.9392
+      },
+      "availability": "1-2 Wochen",
+      "languages": ["Deutsch", "Englisch"],
+      "status": "Verfügbar",
+      "costs": "90€/Stunde",
+      "lastUpdated": "2024-01-15"
+    },
+    {
+      "id": 7,
+      "name": "Krisenintervention",
+      "provider": "Krisenzentrum Stuttgart",
+      "type": "Krisenberatung",
+      "location": "Stuttgart-Mitte",
+      "address": "Königstraße 80, 70173 Stuttgart",
+      "coordinates": {
+        "latitude": 48.7743,
+        "longitude": 9.1798
+      },
+      "availability": "24/7",
+      "languages": ["Deutsch", "Englisch", "Arabisch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-18"
+    },
+    {
+      "id": 8,
+      "name": "Depression Selbsthilfegruppe",
+      "provider": "Selbsthilfezentrum",
+      "type": "Gruppentherapie",
+      "location": "Dresden",
+      "address": "Bürgerstraße 42, 01127 Dresden",
+      "coordinates": {
+        "latitude": 51.0676,
+        "longitude": 13.7442
+      },
+      "availability": "Wöchentlich",
+      "languages": ["Deutsch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-22"
+    },
+    {
+      "id": 9,
+      "name": "Burn-out Prävention",
+      "provider": "Gesundheitspraxis Dr. Meyer",
+      "type": "Coaching",
+      "location": "Düsseldorf",
+      "address": "Königsallee 60, 40212 Düsseldorf",
+      "coordinates": {
+        "latitude": 51.2238,
+        "longitude": 6.7763
+      },
+      "availability": "Nach Vereinbarung",
+      "languages": ["Deutsch", "Englisch"],
+      "status": "Verfügbar",
+      "costs": "75€/Stunde",
+      "lastUpdated": "2024-01-24"
+    },
+    {
+      "id": 10,
+      "name": "LGBTQ+ Beratung",
+      "provider": "Regenbogenzentrum",
+      "type": "Einzelberatung",
+      "location": "Berlin-Schöneberg",
+      "address": "Nollendorfplatz 8, 10777 Berlin",
+      "coordinates": {
+        "latitude": 52.4990,
+        "longitude": 13.3545
+      },
+      "availability": "Diese Woche",
+      "languages": ["Deutsch", "Englisch", "Spanisch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-27"
+    },
+    {
+      "id": 11,
+      "name": "Traumatherapie",
+      "provider": "Praxis für Psychotherapie",
+      "type": "Einzeltherapie",
+      "location": "Berlin-Kreuzberg",
+      "address": "Oranienstraße 45, 10969 Berlin",
+      "coordinates": {
+        "latitude": 52.5021,
+        "longitude": 13.4174
+      },
+      "availability": "1-2 Monate Wartezeit",
+      "languages": ["Deutsch", "Englisch", "Französisch"],
+      "status": "Warteliste",
+      "costs": "Krankenkasse",
+      "lastUpdated": "2024-01-16"
+    },
+    {
+      "id": 12,
+      "name": "Suchtberatung für Jugendliche",
+      "provider": "Jugendhilfe Berlin",
+      "type": "Gruppentherapie",
+      "location": "Berlin-Wedding",
+      "address": "Badstraße 10, 13357 Berlin",
+      "coordinates": {
+        "latitude": 52.5403,
+        "longitude": 13.3933
+      },
+      "availability": "Wöchentlich",
+      "languages": ["Deutsch", "Arabisch"],
+      "status": "Verfügbar",
+      "costs": "Kostenlos",
+      "lastUpdated": "2024-01-22"
+    },
+    {
+      "id": 13,
+      "name": "Psychosomatische Beratung",
+      "provider": "Zentrum für ganzheitliche Medizin",
+      "type": "Einzelberatung",
+      "location": "Berlin-Charlottenburg",
+      "address": "Kantstraße 120, 10625 Berlin",
+      "coordinates": {
+        "latitude": 52.5065,
+        "longitude": 13.3018
+      },
+      "availability": "Nach Vereinbarung",
+      "languages": ["Deutsch", "Englisch"],
+      "status": "Verfügbar",
+      "costs": "70€/Stunde",
+      "lastUpdated": "2024-01-25"
+    }
+  ]
+}
