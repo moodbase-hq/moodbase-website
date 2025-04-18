@@ -1,6 +1,5 @@
 // src/components/shared/CTA.jsx
---- a/src/components/shared/CTA.js
-+++ b/src/components/shared/InfoCard.js
+b/src/components/shared/InfoCard.js
 const InfoCard = ({
   title,
   description,
