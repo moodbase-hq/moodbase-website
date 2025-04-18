@@ -1,29 +1,29 @@
 // src/components/shared/CTA.jsx
-import { useTheme } from '../../context/ThemeContext';
-import Button from './Button';
-
-const CTA = ({ ctaData }) => {
-  const theme = useTheme();
+b/src/components/shared/InfoCard.js
+const InfoCard = ({
+  title,
+  description,
+  backgroundColor,
+  children,
+}) => {
+  const sectionStyle = {
+    backgroundColor: backgroundColor || "#f0f0f0",
+  };
 
   return (
-    <section 
-      id="support" 
-      className="py-20 bg-cta-gradient"
-    >
-      <div className="max-w-4xl mx-auto text-center px-4">
-        <h2 className="text-4xl font-bold text-white mb-6">{ctaData.title}</h2>
-        <p className="text-xl text-white/90 mb-8">{ctaData.description}</p>
-        <Button 
-          to="/support" 
-          variant="outline"
-          size="large"
-          className="bg-white text-primary hover:bg-white/90 border-white hover:border-white hover:text-white"
-        >
-          Unterstützen
-        </Button>
+    <section className="relative">
+      <div
+        className="max-w-3xl mx-auto text-center rounded-2xl p-8 shadow-lg"
+        style={sectionStyle}
+      >
+        {title && (
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">{title}</h2>
+        )}
+        {description && <p className="text-gray-800 mb-8">{description}</p>}
+        {children && <div>{children}</div>}
       </div>
     </section>
   );
 };
 
-export default CTA;
+export default InfoCard;

@@ -1,19 +1,19 @@
-// src/pages/BlogPage.jsx
+// src/components/BlogPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/shared/Layout';
-import Button from '../components/shared/Button';
-import { useTheme } from '../context/ThemeContext';
 import FooterWithCurve from '../components/shared/FooterWithCurve';
 import { motion } from 'framer-motion';
-import theme from '../styles/theme';
+import SectionHeader from '../components/shared/SectionHeader';
+import BlogPostCard from '../components/shared/BlogPostCard';
+import NewsletterSignup from '../components/shared/NewsletterSignup';
+import './OrganicWebsite.module.css'
 
 // Import SVG assets directly
 import Blob1 from '../components/shared/assets/1.svg';
 import CircleGroup from '../components/shared/assets/2.svg';
 import OutlinedBlob from '../components/shared/assets/3.svg';
 import CloudBlob from '../components/shared/assets/4.svg';
-
 // Animated SVG Component with hover effect
 const AnimatedSvg = ({
   src,
@@ -49,6 +49,7 @@ const AnimatedSvg = ({
     }
   };
 
+
   const rotateAnimation = {
     rotate: [0, 3, 0, -3, 0],
     transition: {
@@ -59,6 +60,7 @@ const AnimatedSvg = ({
       delay: delay
     }
   };
+
 
   // Choose animation based on type
   let animation = {};
@@ -75,6 +77,7 @@ const AnimatedSvg = ({
     default:
       animation = floatAnimation;
   }
+
 
   return (
     <motion.div
@@ -93,7 +96,7 @@ const AnimatedSvg = ({
     </motion.div>
   );
 };
-
+// Wave Divider component
 // Wave Divider component
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
@@ -113,8 +116,7 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
           />
         </svg>
       </div>
-    );
-  } else {
+    );  } else {
     return (
       <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
         <svg
@@ -132,6 +134,7 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
       </div>
     );
   }
+
 };
 
 // Dummy blog post data
@@ -202,13 +205,9 @@ const blogPosts = [
 const categories = ['Alle', 'Selbsthilfe', 'Wohlbefinden', 'Achtsamkeit', 'Arbeitsgesundheit', 'Ernährung', 'Soziale Gesundheit'];
 
 const BlogPage = () => {
-  const themeContext = useTheme();
   const [activeCategory, setActiveCategory] = useState('Alle');
 
-  // Color definitions
   const blueBackground = '#2F5EA8'; // Blue for footer section
-  const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
-  const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
   // Filter posts by category
   const filteredPosts = activeCategory === 'Alle'
@@ -305,47 +304,27 @@ const BlogPage = () => {
 
       {/* Use Layout's Header but not its footer */}
       <Layout>
-        {/* Hero Section - Now transparent */}
-        <section className="relative pt-20 bg-transparent">
-          <div className="container mx-auto px-4 py-16 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
-              <motion.h1
-                className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+        <SectionHeader
+          title="Unser Blog"
+          description="Aktuelle Informationen, Tipps und Forschung rund um psychische Gesundheit, Wohlbefinden und Selbstfürsorge."
+        >
+          {/* Category filters in hero section */}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm transition-colors duration-300 ${
+                  activeCategory === category
+                    ? 'bg-primary text-white'
+                    : 'bg-white/30 backdrop-blur-sm text-gray-800 hover:bg-white/40'
+                }`}
               >
-                Unser Blog
-              </motion.h1>
-              <motion.p
-                className="text-lg text-gray-700 mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                Aktuelle Informationen, Tipps und Forschung rund um psychische Gesundheit,
-                Wohlbefinden und Selbstfürsorge.
-              </motion.p>
-
-              {/* Category filters in hero section */}
-              <div className="flex flex-wrap gap-2 justify-center">
-                {categories.map(category => (
-                  <button
-                    key={category}
-                    onClick={() => setActiveCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm transition-colors duration-300 ${
-                      activeCategory === category 
-                        ? 'bg-primary text-white' 
-                        : 'bg-white/30 backdrop-blur-sm text-gray-800 hover:bg-white/40'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
+                {category}
+              </button>
+            ))}
           </div>
-        </section>
+        </SectionHeader>
 
         {/* Blog Posts Grid - Now transparent */}
         <section className="relative bg-transparent">
@@ -353,44 +332,8 @@ const BlogPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
                 <motion.article
-                  key={post.id}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-200"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                >
-                  <Link to={`/blog/${post.id}`} className="block">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-48 object-cover"
-                    />
-                  </Link>
-                  <div className="p-6">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="px-3 py-1 rounded-full text-sm font-medium"
-                            style={{
-                              backgroundColor: 'rgba(161, 62, 75, 0.1)',
-                              color: theme.colors.primary
-                            }}>
-                        {post.category}
-                      </span>
-                      <span className="text-sm text-gray-600">{post.readTime}</span>
-                    </div>
-                    <Link to={`/blog/${post.id}`} className="block">
-                      <h2 className="text-xl font-bold mb-3 text-gray-900 hover:text-primary transition-colors duration-300">
-                        {post.title}
-                      </h2>
-                    </Link>
-                    <p className="text-gray-600 mb-4">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">{post.date}</span>
-                      <span className="text-sm text-gray-700 font-medium">{post.author}</span>
-                    </div>
-                  </div>
+                key={post.id}
+                >                  <BlogPostCard {...post} />
                 </motion.article>
               ))}
             </div>
@@ -398,46 +341,11 @@ const BlogPage = () => {
         </section>
 
         {/* Newsletter Section - Now transparent with contrasting card */}
-        <section className="relative bg-transparent py-16">
-          <div className="container mx-auto px-4">
-            <motion.div
-              className="max-w-xl mx-auto text-center bg-[#2F5EA8]/90 backdrop-blur-md rounded-2xl p-8 shadow-xl relative z-10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl font-bold mb-6 text-white">Bleiben Sie informiert</h2>
-              <p className="text-white/80 mb-8">
-                Abonnieren Sie unseren Newsletter und erhalten Sie die neuesten Artikel
-                und Tipps direkt in Ihr Postfach.
-              </p>
-              <form className="flex flex-col sm:flex-row gap-3 mb-6">
-                <input
-                  type="email"
-                  placeholder="Ihre E-Mail-Adresse"
-                  className="flex-grow px-4 py-3 rounded-full border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 backdrop-blur-sm text-white"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-primary hover:bg-primaryHover text-white px-6 py-3 rounded-full transition-colors duration-300"
-                  style={{
-                    backgroundColor: theme.colors.primary,
-                    transition: theme.transitions.default
-                  }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = theme.colors.primaryHover}
-                  onMouseOut={(e) => e.target.style.backgroundColor = theme.colors.primary}
-                >
-                  Abonnieren
-                </button>
-              </form>
-              <p className="text-xs text-white/60">
-                Wir respektieren Ihre Privatsphäre. Sie können den Newsletter jederzeit abbestellen.
-              </p>
-            </motion.div>
-          </div>
-        </section>
+        <NewsletterSignup
+          title="Bleiben Sie informiert"
+          description="Abonnieren Sie unseren Newsletter und erhalten Sie die neuesten Artikel und Tipps direkt in Ihr Postfach."
+          backgroundColor="#2F5EA8"
+        />
 
         {/* Transition to footer */}
         <div className="relative z-10 mt-8">

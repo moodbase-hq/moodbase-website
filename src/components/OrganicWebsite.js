@@ -1,5 +1,6 @@
 // src/components/OrganicWebsite.jsx
 import React from 'react';
+import styles from './OrganicWebsite.module.css';
 import Header from './shared/Header';
 import Footer from './shared/FooterWithCurve';
 import RoundContentSection from './shared/RoundContentSection';
@@ -12,86 +13,6 @@ import Blob1 from './shared/assets/1.svg';
 import CircleGroup from './shared/assets/2.svg';
 import OutlinedBlob from './shared/assets/3.svg';
 import CloudBlob from './shared/assets/4.svg';
-
-// Animated SVG Component with hover effect
-const AnimatedSvg = ({
-  src,
-  width,
-  height,
-  className,
-  alt = "Decorative element",
-  style = {},
-  delay = 0,
-  animationType = "float" // Options: "float", "pulse", "rotate"
-}) => {
-  // Define different animation variants
-  const floatAnimation = {
-    y: [0, -20, 0],
-    transition: {
-      duration: 8 + Math.random() * 4, // Random duration between 8-12s
-      repeat: Infinity,
-      repeatType: "mirror",
-      ease: "easeInOut",
-      delay: delay
-    }
-  };
-
-  const pulseAnimation = {
-    scale: [1, 1.05, 1],
-    opacity: [style.opacity || 0.7, (style.opacity || 0.7) + 0.1, style.opacity || 0.7],
-    transition: {
-      duration: 6 + Math.random() * 3, // Random duration between 6-9s
-      repeat: Infinity,
-      repeatType: "mirror",
-      ease: "easeInOut",
-      delay: delay
-    }
-  };
-
-  const rotateAnimation = {
-    rotate: [0, 3, 0, -3, 0],
-    transition: {
-      duration: 12 + Math.random() * 5, // Random duration between 12-17s
-      repeat: Infinity,
-      repeatType: "mirror",
-      ease: "easeInOut",
-      delay: delay
-    }
-  };
-
-  // Choose animation based on type
-  let animation = {};
-  switch (animationType) {
-    case "float":
-      animation = floatAnimation;
-      break;
-    case "pulse":
-      animation = pulseAnimation;
-      break;
-    case "rotate":
-      animation = rotateAnimation;
-      break;
-    default:
-      animation = floatAnimation;
-  }
-
-  return (
-    <motion.div
-      className={`absolute pointer-events-none ${className}`}
-      style={{ width, height, zIndex: 0, ...style }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: style.opacity || 0.7 }}
-      transition={{ duration: 1.5, delay: delay }}
-    >
-      <motion.img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-contain"
-        animate={animation}
-      />
-    </motion.div>
-  );
-};
 
 // Wave Divider component
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
@@ -134,10 +55,6 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
 };
 
 const OrganicWebsite = () => {
-  // Color definitions
-  const blueBackground = '#2F5EA8'; // Blue for footer section
-  const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
-  const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
   return (
     <div className="relative min-h-screen bg-transparent">
@@ -145,151 +62,27 @@ const OrganicWebsite = () => {
       <Header />
 
       {/* SVG Decorations - Using absolute positioning with overflow visible */}
-      <div className="absolute inset-0 overflow-visible pointer-events-none">
+      <div className={styles.backgroundContainer}>
         {/* MUCH BIGGER SVGs with repetition, specific colors, and animations */}
 
         {/* Blob1 instances - Floating animation */}
-        <AnimatedSvg
-          src={Blob1}
-          alt="Background Blob 1"
-          width="2400px"
-          height="2400px"
-          className="left-[-500px] top-[-300px]"
-          style={{ opacity: 0.7 }}
-          delay={0}
-          animationType="float"
-        />
-
-        <AnimatedSvg
-          src={Blob1}
-          alt="Background Blob 2"
-          width="2000px"
-          height="2000px"
-          className="right-[-400px] top-[800px]"
-          style={{ opacity: 0.6 }}
-          delay={1.2}
-          animationType="float"
-        />
-
-        <AnimatedSvg
-          src={Blob1}
-          alt="Background Blob 3"
-          width="2800px"
-          height="2800px"
-          className="left-[-600px] bottom-[-400px]"
-          style={{ opacity: 0.5 }}
-          delay={0.7}
-          animationType="pulse"
-        />
-
+        <img src={Blob1} alt="Background Blob 1" className={`${styles['blob1-1']} ${styles.blob} w-full h-full`} />
+        <img src={Blob1} alt="Background Blob 2" className={`${styles['blob1-2']} ${styles.blob} w-full h-full`} />
+        <img src={Blob1} alt="Background Blob 3" className={`${styles['blob1-3']} ${styles.blob} w-full h-full`} />
+        
         {/* CircleGroup instances - DARK BLUE with pulsing animation */}
-        <AnimatedSvg
-          src={CircleGroup}
-          alt="Circle Group 1"
-          width="1900px"
-          height="1900px"
-          className="right-[-300px] top-[50px]"
-          style={{
-            opacity: 0.9,
-            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
-          }}
-          delay={0.3}
-          animationType="pulse"
-        />
-
-        <AnimatedSvg
-          src={CircleGroup}
-          alt="Circle Group 2"
-          width="1800px"
-          height="1800px"
-          className="left-[100px] top-[500px]"
-          style={{
-            opacity: 0.8,
-            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
-          }}
-          delay={1.5}
-          animationType="rotate"
-        />
-
-        <AnimatedSvg
-          src={CircleGroup}
-          alt="Circle Group 3"
-          width="1000px"
-          height="1000px"
-          className="right-[200px] bottom-[100px]"
-          style={{
-            opacity: 0.7,
-            filter: `brightness(0) saturate(100%) invert(21%) sepia(92%) saturate(1069%) hue-rotate(199deg) brightness(94%) contrast(90%)`
-          }}
-          delay={0.9}
-          animationType="pulse"
-        />
+        <img src={CircleGroup} alt="Circle Group 1" className={`${styles['circleGroup-1']} ${styles.blob} ${styles.darkBlue} w-full h-full`} />
+        <img src={CircleGroup} alt="Circle Group 2" className={`${styles['circleGroup-2']} ${styles.blob} ${styles.darkBlue} w-full h-full`} />
+        <img src={CircleGroup} alt="Circle Group 3" className={`${styles['circleGroup-3']} ${styles.blob} ${styles.darkBlue} w-full h-full`} />
 
         {/* OutlinedBlob instances - Rotating animation */}
-        <AnimatedSvg
-          src={OutlinedBlob}
-          alt="Outlined Blob 1"
-          width="3000px"
-          height="3000px"
-          className="left-[200px] top-[200px]"
-          style={{ opacity: 0.7 }}
-          delay={0.4}
-          animationType="rotate"
-        />
-
-        <AnimatedSvg
-          src={OutlinedBlob}
-          alt="Outlined Blob 2"
-          width="2200px"
-          height="2200px"
-          className="right-[-500px] top-[1200px]"
-          style={{ opacity: 0.6 }}
-          delay={1.1}
-          animationType="float"
-        />
+        <img src={OutlinedBlob} alt="Outlined Blob 1" className={`${styles['outlinedBlob-1']} ${styles.blob} w-full h-full`} />
+        <img src={OutlinedBlob} alt="Outlined Blob 2" className={`${styles['outlinedBlob-2']} ${styles.blob} w-full h-full`} />
 
         {/* CloudBlob instances - BURGUNDY with mixed animations */}
-        <AnimatedSvg
-          src={CloudBlob}
-          alt="Cloud Blob 1"
-          width="3000px"
-          height="3000px"
-          className="right-[-300px] top-[400px]"
-          style={{
-            opacity: 0.8,
-            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
-          }}
-          delay={0.6}
-          animationType="pulse"
-        />
-
-        <AnimatedSvg
-          src={CloudBlob}
-          alt="Cloud Blob 2"
-          width="2000px"
-          height="2000px"
-          className="left-[-300px] top-[1100px]"
-          style={{
-            opacity: 0.7,
-            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
-          }}
-          delay={1.0}
-          animationType="float"
-        />
-
-        <AnimatedSvg
-          src={CloudBlob}
-          alt="Cloud Blob 3"
-          width="2500px"
-          height="2500px"
-          className="right-[100px] bottom-[-400px]"
-          style={{
-            opacity: 0.6,
-            filter: `brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%)`
-          }}
-          delay={0.2}
-          animationType="rotate"
-        />
+        <img src={CloudBlob} alt="Cloud Blob 1" className={`${styles['cloudBlob-1']} ${styles.blob} ${styles.burgundy} w-full h-full`} />
+        <img src={CloudBlob} alt="Cloud Blob 2" className={`${styles['cloudBlob-2']} ${styles.blob} ${styles.burgundy} w-full h-full`} />
+        <img src={CloudBlob} alt="Cloud Blob 3" className={`${styles['cloudBlob-3']} ${styles.blob} ${styles.burgundy} w-full h-full`} />
       </div>
 
       {/* Hero Section - Now transparent */}
@@ -317,6 +110,45 @@ const OrganicWebsite = () => {
               >
                 Zum Blog
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Moodbase Process Section */}
+      <section className="relative py-16 bg-transparent">
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Title with animated icons */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-[#A13E4B]">
+              <span className="inline-flex items-center">
+                <span className="mr-2">So funktioniert Moodbase</span>
+                {/* Animated Icons */}
+                <Search size={32} className="text-[#A13E4B] animate-icon-title" />
+                <Database size={32} className="text-[#A13E4B] animate-icon-title" />
+                <Users size={32} className="text-[#A13E4B] animate-icon-title" />
+              </span>
+            </h2>
+          </div>
+          {/* Steps */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="step">
+              <Search size={48} className="text-[#A13E4B] mb-4" />
+              <h3 className="text-xl font-bold mb-2">1. Bedürfnisse klären</h3>
+              <p>Finde heraus, welche Art von Unterstützung du suchst.</p>
+            </div>
+            {/* Step 2 */}
+            <div className="step">
+              <Database size={48} className="text-[#A13E4B] mb-4" />
+              <h3 className="text-xl font-bold mb-2">2. Passende Angebote finden</h3>
+              <p>Entdecke Angebote, die zu deinen Bedürfnissen passen.</p>
+            </div>
+            {/* Step 3 */}
+            <div className="step">
+              <Users size={48} className="text-[#A13E4B] mb-4" />
+              <h3 className="text-xl font-bold mb-2">3. Vernetzen und Teilen</h3>
+              <p>Tritt in Kontakt, teile Erfahrungen und unterstütze andere.</p>
             </div>
           </div>
         </div>
@@ -397,12 +229,12 @@ const OrganicWebsite = () => {
       </section>
 
       {/* Transition to footer */}
-      <div className="relative z-10">
-        <WaveDivider position="bottom" color={blueBackground} />
+      <div className={`relative z-10 `}>
+        <WaveDivider position="bottom" color={'#2F5EA8'} />
       </div>
 
       {/* Footer - Keep the blue background */}
-      <section style={{ backgroundColor: blueBackground }} className="relative z-10">
+      <section style={{ backgroundColor: '#2F5EA8' }} className="relative z-10">
         <Footer />
       </section>
     </div>
