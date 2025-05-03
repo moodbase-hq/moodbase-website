@@ -6,6 +6,7 @@ src/config/config.js
 .pnp.js
 .idea
 .env
+.vscode
 
 # testing
 /coverage
