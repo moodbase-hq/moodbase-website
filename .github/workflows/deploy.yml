@@ -1,4 +1,4 @@
-name: Build and Deploy with Secrets
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
@@ -7,10 +7,17 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: github-pages  # This references your GitHub Pages environment with secrets
+    # These permissions are specifically needed for GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         
       - name: Setup Node.js
@@ -18,20 +25,26 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           npm install
           npm install --save-dev @babel/plugin-proposal-private-property-in-object
-        
-      - name: Build with environment secrets
+      
+      - name: Build
         env:
-          CI: false
+          CI: false 
           REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
         run: npm run build
-        
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          folder: build
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: 'build'  
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
