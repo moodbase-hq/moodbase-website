@@ -1,28 +1,31 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy with Secrets
 
 on:
   push:
-    branches: [ main ]  # or whatever your default branch is named
+    branches: [ main ]  # or your default branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: github-pages  # This must match your environment name exactly
-
+    environment: github-pages  # This references your GitHub Pages environment with secrets
+    
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
+          
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
+        
+      - name: Build with environment secrets
         env:
+          CI: false
           REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
 
