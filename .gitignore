@@ -6,6 +6,7 @@ src/config/config.js
 .pnp.js
 .idea
 .env
+.vscode
 
 # testing
 /coverage
@@ -14,6 +15,7 @@ src/config/config.js
 /build
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local

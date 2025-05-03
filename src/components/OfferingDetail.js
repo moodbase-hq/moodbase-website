@@ -1,9 +1,21 @@
 // src/pages/OfferingDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { Star, ChevronLeft, Phone, Mail, Globe, Clock, MapPin, AlertCircle, MessageCircle } from 'lucide-react';
+import axios from 'axios';
 import Layout from '../components/shared/Layout';
 import Button from '../components/shared/Button';
 import { useTheme } from '../context/ThemeContext';
+import { useParams, useNavigate } from 'react-router-dom';
+
+// API client setup
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 // Rating component with clickable stars
 const StarRating = ({ rating, setRating, disabled = false }) => {
@@ -54,7 +66,7 @@ const RatingBar = ({ rating, category }) => {
   );
 };
 
-// Sample testimonials to display randomly
+// Sample testimonials to display randomly - these could be moved to the database later
 const sampleTestimonials = [
   {
     id: 1,
@@ -83,39 +95,73 @@ const sampleTestimonials = [
   }
 ];
 
-// Mock ratings for offerings
-const mockRatings = {
-  1: [
-    { id: 101, offerId: 1, categories: { "Freundlichkeit": 4.5, "Verfügbarkeit": 4.0, "Fachliche Kompetenz": 4.8, "Preis-Leistungs-Verhältnis": 4.2 }, comment: "Sehr freundliches Team", date: "2024-01-10" },
-    { id: 102, offerId: 1, categories: { "Freundlichkeit": 5.0, "Verfügbarkeit": 3.5, "Fachliche Kompetenz": 4.5, "Preis-Leistungs-Verhältnis": 5.0 }, comment: "Hat mir in einer schweren Zeit geholfen", date: "2024-01-18" }
-  ],
-  2: [
-    { id: 201, offerId: 2, categories: { "Freundlichkeit": 4.2, "Verfügbarkeit": 3.0, "Fachliche Kompetenz": 4.8, "Preis-Leistungs-Verhältnis": 3.5 }, comment: "Gute Beratung, etwas lange Wartezeit", date: "2024-01-15" }
-  ],
-  10: [
-    { id: 1001, offerId: 10, categories: { "Freundlichkeit": 5.0, "Verfügbarkeit": 4.5, "Fachliche Kompetenz": 4.7, "Preis-Leistungs-Verhältnis": 5.0 }, comment: "Hervorragende Unterstützung", date: "2024-01-20" },
-    { id: 1002, offerId: 10, categories: { "Freundlichkeit": 4.8, "Verfügbarkeit": 4.0, "Fachliche Kompetenz": 5.0, "Preis-Leistungs-Verhältnis": 4.5 }, comment: "Fühle mich verstanden und gut aufgehoben", date: "2024-01-26" }
-  ]
+// Default category mapping
+const defaultCategories = {
+  "Freundlichkeit": 0,
+  "Verfügbarkeit": 0,
+  "Fachliche Kompetenz": 0,
+  "Preis-Leistungs-Verhältnis": 0
 };
 
-const OfferingDetail = ({ offering, onBack }) => {
+// Map database category names to UI friendly names
+const categoryMapping = {
+  "Verfügbarkeit": "Verfügbarkeit",
+  "Freundlichkeit": "Freundlichkeit",
+  "Professionalität": "Fachliche Kompetenz",
+  "Atmosphäre": "Atmosphäre",
+  "Preis-Leistung": "Preis-Leistungs-Verhältnis",
+  "Datenschutz": "Datenschutz",
+  "Vertraulichkeit": "Vertraulichkeit",
+  "Nachbetreuung": "Nachbetreuung",
+  "Gruppendynamik": "Gruppendynamik"
+};
+
+const OfferingDetail = ({ offering: propOffering, onBack }) => {
   const theme = useTheme();
   const [showRatingForm, setShowRatingForm] = useState(false);
-  const [ratings, setRatings] = useState({});
+  const [offering, setOffering] = useState(propOffering);
+  const [ratings, setRatings] = useState({...defaultCategories});
   const [comment, setComment] = useState("");
   const [randomTestimonial, setRandomTestimonial] = useState(null);
   const [ratingsData, setRatingsData] = useState(null);
   const [ratingSubmitted, setRatingSubmitted] = useState(false);
+  const [loading, setLoading] = useState(!propOffering);
+  const [error, setError] = useState(null);
+  const params = useParams();
+  const navigate = useNavigate();
 
-  // Initialize category ratings
-  const defaultCategories = {
-    "Freundlichkeit": 0,
-    "Verfügbarkeit": 0,
-    "Fachliche Kompetenz": 0,
-    "Preis-Leistungs-Verhältnis": 0
-  };
-
+  // Fetch offering data if not provided as prop
   useEffect(() => {
+    // If offering is passed as prop, use it
+    if (propOffering) {
+      setOffering(propOffering);
+      return;
+    }
+
+    // Otherwise, fetch from API using ID from URL params
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/offerings/${params.id}`);
+        setOffering(response.data);
+        setError(null);
+      } catch (error) {
+        setError('Could not load the offering details. Please try again later.');
+        console.error('Error loading offering:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchData();
+    }
+  }, [propOffering, params.id]);
+
+  // Initialize ratings and testimonial
+  useEffect(() => {
+    if (!offering) return;
+
     // Initialize ratings
     setRatings({ ...defaultCategories });
 
@@ -123,43 +169,38 @@ const OfferingDetail = ({ offering, onBack }) => {
     const randomIndex = Math.floor(Math.random() * sampleTestimonials.length);
     setRandomTestimonial(sampleTestimonials[randomIndex]);
 
-    // Load ratings for this offering
-    if (offering) {
-      const offeringRatings = mockRatings[offering.id] || [];
+    // Process ratings data from the database
+    if (offering.detailedInfo?.ratings) {
+      const dbRatings = offering.detailedInfo.ratings;
 
-      if (offeringRatings.length > 0) {
-        // Calculate average ratings
-        const calculatedRatings = { ...defaultCategories };
-        let totalOverall = 0;
-
-        // Sum up all category ratings
-        offeringRatings.forEach(rating => {
-          Object.keys(rating.categories).forEach(category => {
-            calculatedRatings[category] = (calculatedRatings[category] || 0) + rating.categories[category];
-          });
-        });
-
-        // Calculate averages
-        Object.keys(calculatedRatings).forEach(category => {
-          calculatedRatings[category] = calculatedRatings[category] / offeringRatings.length;
-          totalOverall += calculatedRatings[category];
-        });
-
-        // Calculate overall average
-        const overallAverage = totalOverall / Object.keys(calculatedRatings).length;
-
-        setRatingsData({
-          ratings: offeringRatings,
-          averages: calculatedRatings,
-          overallRating: overallAverage.toFixed(1),
-          count: offeringRatings.length
+      // Process ratings categories
+      const processedCategories = {};
+      if (dbRatings.categories) {
+        Object.entries(dbRatings.categories).forEach(([key, value]) => {
+          const displayName = categoryMapping[key] || key; // Use mapping or default to DB name
+          processedCategories[displayName] = value;
         });
       }
+
+      setRatingsData({
+        ratings: [], // We don't have individual ratings from the DB yet
+        averages: processedCategories,
+        overallRating: dbRatings.overallRating.toFixed(1),
+        count: 1 // Placeholder - would come from DB in a real implementation
+      });
     }
   }, [offering]);
 
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
+
   // Handle rating submission
-  const handleSubmitRating = () => {
+  const handleSubmitRating = async () => {
     // Check if any ratings are still at 0
     const hasZeroRating = Object.values(ratings).some(rating => rating === 0);
 
@@ -168,63 +209,112 @@ const OfferingDetail = ({ offering, onBack }) => {
       return;
     }
 
-    // Create new rating object
-    const newRating = {
-      id: Date.now(), // Generate a unique ID
-      offerId: offering.id,
-      categories: { ...ratings },
-      comment: comment,
-      date: new Date().toISOString().split('T')[0] // Format: YYYY-MM-DD
-    };
-
-    // In a real application, this would be an API call to save the rating
-    console.log("Submitting new rating:", newRating);
-
-    // Update local ratings data
-    const updatedRatings = ratingsData ? [...ratingsData.ratings, newRating] : [newRating];
-
-    // Calculate new averages
-    const calculatedRatings = { ...defaultCategories };
-    let totalOverall = 0;
-
-    updatedRatings.forEach(rating => {
-      Object.keys(rating.categories).forEach(category => {
-        calculatedRatings[category] = (calculatedRatings[category] || 0) + rating.categories[category];
+    try {
+      // Convert UI category names back to database format if needed
+      const dbCategories = {};
+      Object.entries(ratings).forEach(([key, value]) => {
+        // Find original DB category name
+        const dbKey = Object.keys(categoryMapping).find(
+          dbName => categoryMapping[dbName] === key
+        ) || key;
+        dbCategories[dbKey] = value;
       });
-    });
 
-    Object.keys(calculatedRatings).forEach(category => {
-      calculatedRatings[category] = calculatedRatings[category] / updatedRatings.length;
-      totalOverall += calculatedRatings[category];
-    });
+      // Create new rating object
+      const newRating = {
+        userId: 1, // For demo purposes - would be the actual user's ID in a real app
+        entryId: offering.id,
+        overall: Object.values(ratings).reduce((sum, val) => sum + val, 0) / Object.keys(ratings).length,
+        categories: dbCategories,
+        comment: comment
+      };
 
-    const overallAverage = totalOverall / Object.keys(calculatedRatings).length;
+      // In a real application, this would be an API call to save the rating
+      console.log("Submitting new rating:", newRating);
+      // Use this in production:
+      // await api.post('/ratings', newRating);
 
-    // Update state
-    setRatingsData({
-      ratings: updatedRatings,
-      averages: calculatedRatings,
-      overallRating: overallAverage.toFixed(1),
-      count: updatedRatings.length
-    });
+      // Update UI to show new rating
+      // For demo purposes, we'll calculate the new averages locally
+      const oldAverages = ratingsData?.averages || {};
+      const oldCount = ratingsData?.count || 0;
 
-    // Reset form and show success message
-    setRatingSubmitted(true);
-    setShowRatingForm(false);
-    setRatings({ ...defaultCategories });
-    setComment("");
+      // Calculate new averages
+      const newAverages = { ...oldAverages };
 
-    // Hide success message after 3 seconds
-    setTimeout(() => setRatingSubmitted(false), 3000);
+      Object.entries(ratings).forEach(([category, value]) => {
+        // If this category already exists, update its average
+        if (newAverages[category] !== undefined) {
+          newAverages[category] = ((newAverages[category] * oldCount) + value) / (oldCount + 1);
+        } else {
+          // Otherwise add this new category
+          newAverages[category] = value;
+        }
+      });
+
+      // Calculate new overall
+      const newOverall = Object.values(newAverages).reduce((sum, val) => sum + val, 0) / Object.keys(newAverages).length;
+
+      // Update ratings data
+      setRatingsData({
+        ratings: [], // We don't have individual ratings
+        averages: newAverages,
+        overallRating: newOverall.toFixed(1),
+        count: oldCount + 1
+      });
+
+      // Reset form and show success message
+      setRatingSubmitted(true);
+      setShowRatingForm(false);
+      setRatings({ ...defaultCategories });
+      setComment("");
+
+      // Hide success message after 3 seconds
+      setTimeout(() => setRatingSubmitted(false), 3000);
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      alert('Es gab einen Fehler beim Speichern Ihrer Bewertung. Bitte versuchen Sie es später erneut.');
+    }
   };
 
-  // Safety check for missing data
-  if (!offering) {
+  if (loading) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto px-4">
           <Button
-            onClick={onBack}
+            onClick={handleBack}
+            variant="outline"
+            className="flex items-center mb-6"
+          >
+            <ChevronLeft className="h-5 w-5 mr-1" />
+            Zurück zur Übersicht
+          </Button>
+
+          <div className="animate-pulse">
+            <div className="h-10 bg-gray-200 rounded w-1/3 mb-6"></div>
+            <div className="h-6 bg-gray-200 rounded w-1/2 mb-10"></div>
+            <div className="h-40 bg-gray-200 rounded mb-8"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="h-60 bg-gray-200 rounded"></div>
+              <div className="space-y-4">
+                <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-6 bg-gray-200 rounded w-2/3"></div>
+                <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Safety check for missing data
+  if (error || !offering) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto px-4">
+          <Button
+            onClick={handleBack}
             variant="outline"
             className="flex items-center mb-6"
           >
@@ -235,9 +325,9 @@ const OfferingDetail = ({ offering, onBack }) => {
           <div className="bg-white rounded-lg shadow-lg p-8 text-center">
             <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-red-500 mb-4">Fehler beim Laden der Daten</h1>
-            <p className="text-gray-600 mb-4">Die Detailinformationen konnten nicht geladen werden.</p>
+            <p className="text-gray-600 mb-4">{error || 'Die Detailinformationen konnten nicht geladen werden.'}</p>
             <Button
-              onClick={onBack}
+              onClick={handleBack}
               variant="primary"
             >
               Zurück zur Übersicht
@@ -264,15 +354,15 @@ const OfferingDetail = ({ offering, onBack }) => {
   };
 
   // Extract coordinates for potential map display
-  const hasCoordinates = offering.coordinates &&
-                        offering.coordinates.latitude &&
-                        offering.coordinates.longitude;
-
+const hasCoordinates = offering.latitude &&
+                     offering.longitude &&
+                     !isNaN(parseFloat(offering.latitude)) &&
+                     !isNaN(parseFloat(offering.longitude));
   return (
     <Layout>
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Button
-          onClick={onBack}
+          onClick={handleBack}
           variant="outline"
           className="flex items-center mb-6"
         >
@@ -327,31 +417,42 @@ const OfferingDetail = ({ offering, onBack }) => {
                   <div className="flex items-start text-gray-600">
                     <MapPin className="h-5 w-5 mr-2 text-primary mt-0.5" />
                     <div>
-                      <div>{detailedInfo.address}</div>
+                      <div>{offering.address || detailedInfo.address}</div>
                       {hasCoordinates && (
-                        <div className="text-sm text-gray-500 mt-1">
-                          Koordinaten: {offering.coordinates.latitude.toFixed(4)}, {offering.coordinates.longitude.toFixed(4)}
+                      <div className="text-sm text-gray-500 mt-1">
+                        Koordinaten: {parseFloat(offering.latitude).toFixed(4)}, {parseFloat(offering.longitude).toFixed(4)}
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex items-center text-gray-600">
-                    <Phone className="h-5 w-5 mr-2 text-primary" />
-                    {detailedInfo.contactInfo.phone}
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Mail className="h-5 w-5 mr-2 text-primary" />
-                    {detailedInfo.contactInfo.email}
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Globe className="h-5 w-5 mr-2 text-primary" />
-                    {detailedInfo.contactInfo.website}
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="h-5 w-5 mr-2 text-primary" />
-                    {detailedInfo.openingHours}
-                  </div>
+                  {detailedInfo.contactInfo?.phone && detailedInfo.contactInfo.phone !== "Nicht angegeben" && (
+                    <div className="flex items-center text-gray-600">
+                      <Phone className="h-5 w-5 mr-2 text-primary" />
+                      {detailedInfo.contactInfo.phone}
+                    </div>
+                  )}
+
+                  {detailedInfo.contactInfo?.email && detailedInfo.contactInfo.email !== "Nicht angegeben" && (
+                    <div className="flex items-center text-gray-600">
+                      <Mail className="h-5 w-5 mr-2 text-primary" />
+                      {detailedInfo.contactInfo.email}
+                    </div>
+                  )}
+
+                  {detailedInfo.contactInfo?.website && detailedInfo.contactInfo.website !== "Nicht angegeben" && (
+                    <div className="flex items-center text-gray-600">
+                      <Globe className="h-5 w-5 mr-2 text-primary" />
+                      {detailedInfo.contactInfo.website}
+                    </div>
+                  )}
+
+                  {detailedInfo.openingHours && detailedInfo.openingHours !== "Nicht angegeben" && (
+                    <div className="flex items-center text-gray-600">
+                      <Clock className="h-5 w-5 mr-2 text-primary" />
+                      {detailedInfo.openingHours}
+                    </div>
+                  )}
                 </div>
 
                 {/* Languages */}
@@ -375,7 +476,7 @@ const OfferingDetail = ({ offering, onBack }) => {
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold mb-3">Angebote</h3>
                   <div className="flex flex-wrap gap-2">
-                    {detailedInfo.services.map((service, index) => (
+                    {(detailedInfo.services || [offering.type]).map((service, index) => (
                       <span
                         key={index}
                         className="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm"
@@ -466,7 +567,7 @@ const OfferingDetail = ({ offering, onBack }) => {
                     {offering.lastUpdated && (
                       <div className="flex justify-between py-2">
                         <span className="text-gray-600">Letztes Update</span>
-                        <span className="font-medium">{offering.lastUpdated}</span>
+                        <span className="font-medium">{new Date(offering.lastUpdated).toLocaleDateString('de-DE')}</span>
                       </div>
                     )}
                   </div>
@@ -533,7 +634,7 @@ const OfferingDetail = ({ offering, onBack }) => {
               )}
 
               {/* Additional Info Box */}
-              {detailedInfo.approach && (
+              {detailedInfo.approach && detailedInfo.approach !== "Keine Angaben" && (
                 <div className="bg-primary/10 p-6 rounded-lg">
                   <h3 className="text-xl font-semibold mb-3">Unser Ansatz</h3>
                   <p className="text-gray-600">{detailedInfo.approach}</p>
