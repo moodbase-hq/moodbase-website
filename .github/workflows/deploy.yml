@@ -28,9 +28,9 @@ jobs:
           CI: false
           REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
-
-
-      - name: Deploy
+        run: npm run build
+        
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build
