@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Map } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../components/shared/Header';
-import Button from '../components/shared/Button';
-import { useTheme } from '../context/ThemeContext';
 import FooterWithCurve from '../components/shared/FooterWithCurve';
 import OfferingDetail from './OfferingDetail';
-import databaseData from '../data/database.json';
 import AIAssistant from '../components/AIAssistant';
 import theme from '../styles/theme';
 import { motion } from 'framer-motion';
@@ -17,6 +15,16 @@ import Blob1 from '../components/shared/assets/1.svg';
 import CircleGroup from '../components/shared/assets/2.svg';
 import OutlinedBlob from '../components/shared/assets/3.svg';
 import CloudBlob from '../components/shared/assets/4.svg';
+
+// API client setup
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 // Animated SVG Component with hover effect
 const AnimatedSvg = ({
@@ -139,7 +147,6 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
 };
 
 const DatabasePage = () => {
-  const themeContext = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -153,32 +160,70 @@ const DatabasePage = () => {
   const darkBlue = '#2F5EA8';      // Dark blue for CircleGroup SVGs
   const burgundy = '#A13E4B';      // Burgundy for CloudBlob SVGs
 
+  // Fetch all offerings from the API
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.get('/offerings');
+        setData(response.data);
+        setFilteredData(response.data);
+        setError(null);
+      } catch (error) {
+        setError('Could not load the data. Please try again later.');
+        console.error('Error loading data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Search functionality
+  useEffect(() => {
+    const performSearch = async () => {
+      if (searchTerm.trim() === '') {
+        setFilteredData(data);
+        return;
+      }
+
+      try {
+        const response = await api.get(`/offerings/search?term=${encodeURIComponent(searchTerm)}`);
+        setFilteredData(response.data);
+      } catch (error) {
+        console.error('Search error:', error);
+        // Fall back to client-side filtering in case of API error
+        const filtered = data.filter(item =>
+          Object.values(item).some(value =>
+            value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+        setFilteredData(filtered);
+      }
+    };
+
+    // Debounce search to avoid too many API calls
+    const timerId = setTimeout(() => {
+      performSearch();
+    }, 300);
+
+    return () => clearTimeout(timerId);
+  }, [searchTerm, data]);
+
+  const handleRowClick = async (id) => {
     try {
       setIsLoading(true);
-      setData(databaseData.offers);
-      setFilteredData(databaseData.offers);
-      setError(null);
+      const response = await api.get(`/offerings/${id}`);
+      setSelectedOffer(response.data);
     } catch (error) {
-      setError('Could not load the data. Please try again later.');
-      console.error('Error loading data:', error);
+      console.error('Error loading offering details:', error);
+      // Fallback to the local data if API fails
+      const offer = data.find(item => item.id === id);
+      setSelectedOffer(offer);
     } finally {
       setIsLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    const filtered = data.filter(item =>
-      Object.values(item).some(value =>
-        value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilteredData(filtered);
-  }, [searchTerm, data]);
-
-  const handleRowClick = (id) => {
-    const offer = data.find(item => item.id === id);
-    setSelectedOffer(offer);
   };
 
   // Handle recommendations from AI Assistant
