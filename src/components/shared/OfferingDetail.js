@@ -270,15 +270,14 @@ const OfferingDetail = ({ offering, onBack }) => {
 
   return (
     <Layout>
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <Button
-          onClick={onBack}
-          variant="outline"
-          className="flex items-center mb-6"
-        >
-          <ChevronLeft className="h-5 w-5 mr-1" />
-          Zurück zur Übersicht
-        </Button>
+      <main className="max-w-7xl mx-auto px-4 py-8 relative"> {/* Added relative positioning here */}
+        {/* Moved 'Zurück zur Übersicht' button to top right */}
+        <div className="absolute top-8 right-4 z-10"> {/* Absolute positioning */}
+          <Button onClick={onBack} variant="outline" className="flex items-center">
+            <ChevronLeft className="h-5 w-5 mr-1" />
+            Zurück zur Übersicht
+          </Button>
+        </div>
 
         {ratingSubmitted && (
           <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-lg flex items-center">

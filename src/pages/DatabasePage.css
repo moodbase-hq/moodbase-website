@@ -136,6 +136,11 @@
   animation: rotate 13s ease-in-out infinite; /* Adjusted animation duration */
 }
 
+/* Make footer sticky to the bottom */
+.footer-container {
+  margin-top: auto; /* Pushes the footer to the bottom */
+}
+
 /* Wave divider (if needed, add specific styles here) */
 .wave-divider {
   position: relative;

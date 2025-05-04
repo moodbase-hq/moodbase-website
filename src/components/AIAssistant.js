@@ -9,23 +9,12 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
   const { theme } = useTheme();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
+  const [isLoading, setIsLoading] = useState(false)
+;
   // Add initial welcome message when component mounts
   useEffect(() => {
     setMessages([{
-      role: 'assistant',
-      content: 'Hallo! Ich bin hier, um dir zu helfen, die richtige Unterstützung zu finden. Und ich bin bloß eine Demo bis wir uns das LLM wirklich leisten können :) Grundsätzlich jedoch, würde ich dann versuchen mit dir das Anliege zu klären und mit dir in der Datenbank was pasendes suchen! Derzeit kann ich dir noch nicht antworten, aber ich werde versuchen es in Kürze zu verbessern.'
-    }]);
+      role: 'assistant', content: 'Hallo! Ich bin hier, um dir zu helfen, die richtige Unterstützung zu finden. Und ich bin bloß eine Demo, bis wir uns das LLM wirklich leisten können :) Grundsätzlich jedoch, würde ich dann versuchen, mit dir dein Anliegen zu klären und mit dir in der Datenbank etwas Passendes zu suchen! Derzeit kann ich dir noch nicht antworten, aber ich werde versuchen, mich in Kürze zu verbessern.' }]);
   }, []);
 
   const initialPrompt = `You are a helpful mental health support assistant. You help people find the right psychosocial support from our database. Be empathetic and understanding. Ask questions to understand their situation better. Here is our database of services: ${JSON.stringify(servicesData)}`;
@@ -75,14 +64,14 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
         // Fallback for demo purposes
         setMessages(prev => [...prev,
           { role: 'user', content: userMessage },
-          { role: 'assistant', content: 'Basierend auf deiner Beschreibung, könnte ich folgendes Angebot empfehlen: "Psychologische Beratung" (ID: 1). Möchtest du mehr darüber erfahren?' }
+          { role: 'assistant', content: 'Basierend auf deiner Beschreibung könnte ich dir folgendes Angebot empfehlen: "Psychologische Beratung" (ID: 1). Möchtest du mehr darüber erfahren?' }
         ]);
       }
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev,
         { role: 'user', content: userMessage },
-        { role: 'assistant', content: 'Sorry, Ich kann dir leider noch nicht antworten. Ich bin noch nicht aktiviert. Als Demo-Empfehlung könnte ich dir den ersten Eintrag in unserer Datenbank vorschlagen.' }
+        { role: 'assistant', content: 'Sorry, ich kann dir leider noch nicht antworten. Ich bin noch nicht aktiviert. Als Demo-Empfehlung könnte ich dir den ersten Eintrag in unserer Datenbank vorschlagen.' }
       ]);
     } finally {
       setIsLoading(false);
@@ -106,7 +95,7 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
   };
 
   return (
-    <div className="flex flex-col h-[600px] bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200">
+    <div className="flex flex-col flex-grow h-[600px] bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200">
       {/* Chat Header */}
       <div className="px-6 py-4 bg-primary text-white rounded-t-lg">
         <h3 className="text-xl font-semibold">Beratungs-Assistent</h3>
@@ -146,7 +135,6 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
           </div>
         )}
 
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Area */}
@@ -154,7 +142,7 @@ const AIAssistant = ({ servicesData, onRecommendation }) => {
         <div className="flex space-x-4">
           <input
             type="text"
-            value={inputMessage}
+            value={inputMessage} 
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Ihre Nachricht..."
             className="flex-1 border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-white"

@@ -125,7 +125,7 @@ const DatabasePage = () => {
         <div className="container mx-auto px-4 py-12 relative z-10">
           <SectionHeader
             title="Psychosoziale Angebote"
-            description="Nutzen Sie die Suchfunktion oder lassen Sie sich von unserem KI-Assistenten beraten."
+            description="Nutze die Suchfunktion oder lass dich von unserem KI-Assistenten beraten."
             actionButton={mapViewButton}
           />
 
@@ -190,7 +190,7 @@ const DatabasePage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <InfoCard
             description="Benötigen Sie Hilfe bei der Suche? Unser KI-Assistent hilft Ihnen dabei, das passende Angebot zu finden."
-            backgroundColor="rgba(47, 94, 168, 0.9)"
+            backgroundColor="rgba(47, 94, 168, 0.9)" // Replace with actual background color class if available in theme
           >
             <p className="text-white/70 text-sm mt-2">
               Hinweis: Dies ist eine Demo-Version. Die angezeigten Angebote dienen nur zur Veranschaulichung.
