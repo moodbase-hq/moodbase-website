@@ -354,22 +354,14 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
   };
 
   // Extract coordinates for potential map display
-const hasCoordinates = offering.latitude &&
-                     offering.longitude &&
-                     !isNaN(parseFloat(offering.latitude)) &&
-                     !isNaN(parseFloat(offering.longitude));
+  const hasCoordinates = offering.latitude &&
+                      offering.longitude &&
+                      !isNaN(parseFloat(offering.latitude)) &&
+                      !isNaN(parseFloat(offering.longitude));
+
   return (
     <Layout>
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <Button
-          onClick={handleBack}
-          variant="outline"
-          className="flex items-center mb-6"
-        >
-          <ChevronLeft className="h-5 w-5 mr-1" />
-          Zurück zur Übersicht
-        </Button>
-
         {ratingSubmitted && (
           <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-lg flex items-center">
             <Star className="h-5 w-5 mr-2 text-green-600" />
@@ -377,9 +369,19 @@ const hasCoordinates = offering.latitude &&
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Header Section */}
-          <div className="bg-cta-gradient px-6 py-8 text-white">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden relative">
+          {/* Header Section with Back Button moved to top right */}
+          <div className="bg-cta-gradient px-6 py-8 text-white relative">
+            {/* Back Button positioned in top right */}
+            <Button
+              onClick={handleBack}
+              variant="light"
+              className="absolute top-3 right-3 flex items-center"
+            >
+              <ChevronLeft className="h-5 w-5 mr-1" />
+              Zurück
+            </Button>
+
             <h1 className="text-3xl font-bold mb-2">{offering.name}</h1>
             <p className="text-xl opacity-90">{offering.provider}</p>
             <div className="flex flex-wrap gap-3 mt-3">
@@ -653,7 +655,7 @@ const hasCoordinates = offering.latitude &&
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Removed the duplicate rating button */}
           <div className="p-6 bg-gray-50 border-t border-gray-100">
             <div className="flex flex-wrap gap-3">
               {detailedInfo.contactInfo?.phone && detailedInfo.contactInfo.phone !== "Nicht angegeben" && (
@@ -688,17 +690,6 @@ const hasCoordinates = offering.latitude &&
                 >
                   <Globe className="mr-2 h-4 w-4" />
                   Website besuchen
-                </Button>
-              )}
-
-              {!showRatingForm && (
-                <Button
-                  onClick={() => setShowRatingForm(true)}
-                  variant="outline"
-                  className="flex items-center ml-auto"
-                >
-                  <Star className="mr-2 h-4 w-4" />
-                  Bewertung abgeben
                 </Button>
               )}
             </div>
