@@ -2,7 +2,7 @@
 import React from 'react';
 import Layout from '../components/shared/Layout';
 import { motion } from 'framer-motion';
-import CurvedFooter from '../components/shared/CurvedFooter';
+import CurvedFooter from '../components/shared/FooterWithCurve';
 import BackgroundBlob from '../components/shared/BackgroundBlob';
 import Button from '../components/shared/Button';
 import './AboutPage.css';

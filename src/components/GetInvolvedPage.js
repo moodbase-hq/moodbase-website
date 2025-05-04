@@ -6,7 +6,7 @@ import { useTheme } from "../context/ThemeContext";
 import { motion } from "framer-motion";
 import BackgroundBlob from "../components/shared/BackgroundBlob"; // Import BackgroundBlob
 import getInvolvedData from "../content/getinvolved.json";
-import CurvedFooter from "./shared/CurvedFooter"; // Import the CurvedFooter
+import CurvedFooter from "./shared/FooterWithCurve"; // Import the CurvedFooter
 import "./GetInvolvedPage.css";
 
 
