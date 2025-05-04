@@ -4,7 +4,9 @@ import Layout from "../components/shared/Layout";
 import Button from "../components/shared/Button";
 import { useTheme } from "../context/ThemeContext";
 import { motion } from "framer-motion";
+import BackgroundBlob from "../components/shared/BackgroundBlob"; // Import BackgroundBlob
 import getInvolvedData from "../content/getinvolved.json";
+import CurvedFooter from "./shared/FooterWithCurve"; // Import the CurvedFooter
 import "./GetInvolvedPage.css";
 
 
@@ -203,15 +205,32 @@ const JoinSection = ({ data }) => {
 
 const GetInvolvedPage = () => {
   const theme = useTheme();
-  const blueBackground = '#2F5EA8'; // Blue for footer section
 
   return (
     <div className="relative min-h-screen bg-transparent">
 
       {/* SVG Decorations - Using absolute positioning with overflow visible */}
       <div className="absolute inset-0 overflow-visible pointer-events-none">
-      </div>
+ {/* Background blobs for other sections */}
+        <BackgroundBlob
+ color="#C8A0A0"
+ width="650px"
+ height="650px"
+ className="top-[10%] right-[-300px]"
+ opacity={0.2}
+ blur="70px"
+        />
 
+        <BackgroundBlob
+ color="#C8A0A0"
+ width="400px"
+ height="400px"
+ className="bottom-[5%] left-[-200px]"
+ opacity={0.15}
+ blur="50px"
+ delay={0.3}
+        />
+      </div>
       <Layout>
         {/* Hero Section - Now transparent */}
 
@@ -320,10 +339,8 @@ const GetInvolvedPage = () => {
           </div>
         </section>
 
-        {/* Footer - Keep the blue background */}
-        <section style={{ backgroundColor: blueBackground }} className="relative z-10">
-        </section>
       </Layout>
+        <CurvedFooter /> {/* Add the CurvedFooter component here */}
         
     </div>
     

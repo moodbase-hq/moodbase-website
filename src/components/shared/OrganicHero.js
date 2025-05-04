@@ -19,7 +19,7 @@ const OrganicHero = () => {
         color="#C8A0A0"
         width="650px"
         height="650px"
-        className="top-[-200px] right-[-300px]"
+        className="top-[-200px] right-[-400px]"
         opacity={0.4}
         blur="70px"
       />
@@ -28,7 +28,7 @@ const OrganicHero = () => {
         color="#C8A0A0"
         width="400px"
         height="400px"
-        className="bottom-[100px] left-[-200px]"
+        className="bottom-[100px] left-[-300px]"
         opacity={0.3}
         blur="50px"
         delay={0.3}
@@ -62,7 +62,7 @@ const OrganicHero = () => {
       <div className="container mx-auto px-4 flex-grow flex items-center relative z-10 pt-12">
         <div className="max-w-2xl">
           <p className="text-lg text-black mb-12 leading-relaxed">
-            Moodbase ist eine intelligente Plattform, die junge Menschen mit den besten psychosozialen Unterstützungsangeboten in Deutschland verbindet - unabhängig vom sozioökonomischen Status.
+            moodbase ist eine clevere Plattform, die junge Menschen mit den besten psychosozialen Unterstützungsangeboten in Deutschland verbindet - unabhängig vom sozioökonomischen Status.
           </p>
 
           <div className="flex flex-wrap gap-4">

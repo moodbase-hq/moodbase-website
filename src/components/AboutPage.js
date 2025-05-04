@@ -2,19 +2,36 @@
 import React from 'react';
 import Layout from '../components/shared/Layout';
 import { motion } from 'framer-motion';
-import FooterWithCurve from '../components/shared/FooterWithCurve';
+import CurvedFooter from '../components/shared/FooterWithCurve';
+import BackgroundBlob from '../components/shared/BackgroundBlob';
 import Button from '../components/shared/Button';
 import './AboutPage.css';
 
 
 const AboutPage = () => {
-  const blueBackground = '#2F5EA8'; // Blue for footer section
-
+ 
   return (
-    <div className="relative min-h-screen bg-transparent">
+    <div className="relative min-h-screen bg-[#E8D5C4]">
         <Layout>
 
-        {/* Top left blob */}
+        {/* Background blobs */}
+        <BackgroundBlob
+ color="#C8A0A0"
+ width="650px"
+ height="650px"
+ className="top-[-200px] right-[-300px]"
+ opacity={0.4}
+ blur="70px"
+        />
+ <BackgroundBlob
+ color="#C8A0A0"
+ width="400px"
+ height="400px"
+ className="bottom-[100px] left-[-200px]"
+ opacity={0.3}
+ blur="50px"
+ delay={0.3}
+        />
         {/* Hero Section - Now transparent */}
         <section className="relative pt-20 bg-transparent">
           {/* Hero Content */}
@@ -34,8 +51,8 @@ const AboutPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                MOODBASE wurde mit dem Ziel gegründet, psychische Gesundheit zugänglicher zu machen
-                und Menschen mit den richtigen Ressourcen zu verbinden.
+                moodbase wurde mit dem Ziel gegründet, psychische Gesundheit zugänglicher zu machen
+                und dich mit den richtigen Ressourcen zu verbinden.
               </motion.p>
             </div>
           </div>
@@ -58,7 +75,7 @@ const AboutPage = () => {
                 </p>
                 <p className="text-gray-700 mb-6">
                   Durch den Einsatz von Technologie machen wir den Prozess der Suche nach Unterstützung
-                  einfacher, schneller und effektiver.
+                  einfacher, schneller und effektiver für dich.
                 </p>
                 <Button
                   to="/database"
@@ -267,10 +284,8 @@ const AboutPage = () => {
         </section>
       </Layout>
 
-      {/* Footer - Keep the blue background */}
-      <section style={{ backgroundColor: blueBackground }} className="relative z-10">
-        <FooterWithCurve />
-      </section>
+      {/* Footer */}
+      <CurvedFooter />
     </div>
   );
 };
