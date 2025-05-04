@@ -7,7 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Header from './shared/Header';
 import FooterWithCurve from './shared/FooterWithCurve';
-import OfferingDetail from './OfferingDetail'; // Fixed import path
+import OfferingDetail from './OfferingDetail';
 
 // API client setup
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
@@ -24,6 +24,75 @@ const api = axios.create({
 // Default center of Germany
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
+
+// Simple decorative background component
+const BackgroundDecoration = ({ position = 'top-right', color = '#2F5EA8', size = 'md' }) => {
+  // Define size values based on the size prop
+  const sizeValues = {
+    sm: 'w-64 h-64',
+    md: 'w-96 h-96',
+    lg: 'w-[30rem] h-[30rem]',
+    xl: 'w-[40rem] h-[40rem]',
+    '2xl': 'w-[50rem] h-[50rem]'
+  };
+
+  // Define positions
+  const positions = {
+    'top-right': '-top-32 -right-32',
+    'top-left': '-top-32 -left-32',
+    'bottom-right': '-bottom-32 -right-32',
+    'bottom-left': '-bottom-32 -left-32',
+    'middle-right': 'top-1/3 -right-32',
+    'middle-left': 'top-1/3 -left-32'
+  };
+
+  return (
+    <div
+      className={`absolute rounded-full blur-3xl opacity-99 ${sizeValues[size]} ${positions[position]}`}
+      style={{ backgroundColor: color }}
+    ></div>
+  );
+};
+
+// Wave Divider component
+const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
+  // Use different curves based on position
+  if (position === 'bottom') {
+    return (
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          className="w-full h-auto block"
+          style={{ marginBottom: '-5px', display: 'block' }} // Fix for seams
+        >
+          <path
+            fill={color}
+            d="M0,96L48,106.7C96,117,192,139,288,128C384,117,480,75,576,80C672,85,768,139,864,154.7C960,171,1056,149,1152,122.7C1248,96,1344,64,1392,48L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+        </svg>
+      </div>
+    );
+  } else {
+    return (
+      <div className={`relative w-full overflow-hidden pointer-events-none ${className}`}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          className="w-full h-auto block"
+          style={{ marginTop: '-5px', display: 'block' }} // Fix for seams
+        >
+          <path
+            fill={color}
+            d="M0,320L48,304C96,288,192,256,288,245.3C384,235,480,245,576,229.3C672,213,768,171,864,165.3C960,160,1056,192,1152,186.7C1248,181,1344,139,1392,117.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+          />
+        </svg>
+      </div>
+    );
+  }
+};
 
 const MapsPage = () => {
   const [mapData, setMapData] = useState([]);
@@ -238,47 +307,50 @@ const MapsPage = () => {
     }
   };
 
+  // Color definitions for backgrounds
+  const primaryBlue = '#2F5EA8';
+  const secondaryRed = '#A13E4B';
+  const tertiaryGreen = '#4BAA7A';
+
   if (selectedOffer) {
     return <OfferingDetail offering={selectedOffer} onBack={() => setSelectedOffer(null)} />;
   }
 
-  // Group locations to organize the list
-  const locations = {};
-  mapData.forEach(item => {
-    // Group by city/region when possible
-    const location = item.location ? item.location.split('-')[0] : 'Online/Andere';
-    if (!locations[location]) {
-      locations[location] = [];
-    }
-    locations[location].push(item);
-  });
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="relative min-h-screen bg-gray-50/60 overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="pointer-events-none">
+        <BackgroundDecoration position="top-right" color={primaryBlue} size="2xl" />
+        <BackgroundDecoration position="middle-left" color={secondaryRed} size="xl" />
+        <BackgroundDecoration position="bottom-right" color={tertiaryGreen} size="lg" />
+        <BackgroundDecoration position="bottom-left" color={primaryBlue} size="xl" />
+      </div>
+
+      {/* Header */}
       <Header />
 
-      <div className="container mx-auto px-4 py-8 flex-grow">
+      <div className="container mx-auto px-4 py-8 mt-12 relative z-10">
         <div className="flex items-center justify-between mb-6">
-          <Link to="/" className="flex items-center text-primary hover:text-primaryHover transition-colors">
+          <Link to="/" className="flex items-center text-primary hover:text-primaryHover transition-colors z-10 relative">
             <ArrowLeft size={20} className="mr-2" />
             <span>Zurück zur Liste</span>
           </Link>
 
-          <h1 className="text-2xl font-bold text-gray-900">Angebote auf der Karte</h1>
+          <h1 className="text-2xl font-bold text-gray-900 z-10 relative">Angebote auf der Karte</h1>
         </div>
 
         {isLoading ? (
-          <div className="bg-white rounded-xl shadow-md p-8 text-center">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-8 text-center">
             <div className="animate-pulse">
               <div className="h-96 bg-gray-200 rounded-lg"></div>
             </div>
           </div>
         ) : error ? (
-          <div className="bg-white rounded-xl shadow-md p-8 text-center">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-8 text-center">
             <p className="text-red-500">{error}</p>
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden">
             <div
               ref={mapContainer}
               className="h-[70vh] w-full"
@@ -288,7 +360,7 @@ const MapsPage = () => {
               }}
             />
 
-            <div className="p-4 bg-gray-50">
+            <div className="p-4 bg-gray-50/70 backdrop-blur-sm">
               <p className="text-sm text-gray-600">
                 Nutzen Sie die Karte, um Angebote in Ihrer Nähe zu finden. Klicken Sie auf einen Marker, um Details zu einem Angebot zu sehen.
               </p>
@@ -296,7 +368,7 @@ const MapsPage = () => {
           </div>
         )}
 
-        <div className="mt-8 bg-white rounded-xl shadow-md p-6">
+        <div className="mt-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Angebote ohne Standort</h2>
           {mapData.filter(item => !item.latitude || !item.longitude || isNaN(parseFloat(item.latitude)) || isNaN(parseFloat(item.longitude))).length === 0 ? (
             <p className="text-gray-600">Keine Angebote ohne Standort verfügbar.</p>
@@ -321,9 +393,15 @@ const MapsPage = () => {
         </div>
       </div>
 
-      <div className="mt-auto">
-        <FooterWithCurve />
+      {/* Transition to footer */}
+      <div className="relative z-10 mt-12">
+        <WaveDivider position="bottom" color={primaryBlue} />
       </div>
+
+      {/* Footer */}
+      <section style={{ backgroundColor: primaryBlue }} className="relative z-10">
+        <FooterWithCurve />
+      </section>
     </div>
   );
 };
