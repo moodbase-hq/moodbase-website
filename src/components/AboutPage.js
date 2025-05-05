@@ -2,10 +2,15 @@
 import React from 'react';
 import Layout from '../components/shared/Layout';
 import { motion } from 'framer-motion';
-import Footer from './shared/FooterWithCurve';
-import BackgroundBlob from '../components/shared/BackgroundBlob';
+import FooterWithCurve from '../components/shared/FooterWithCurve';
 import Button from '../components/shared/Button';
-import './AboutPage.css';
+import styles from './AboutPage.module.css';
+
+// Import SVG assets
+import Blob1 from '../components/shared/assets/1.svg';
+import CircleGroup from '../components/shared/assets/2.svg';
+import OutlinedBlob from '../components/shared/assets/3.svg';
+import CloudBlob from '../components/shared/assets/4.svg';
 
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
@@ -46,31 +51,34 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
   }
 };
 
-
 const AboutPage = () => {
- 
-  return (
-    <div className="relative min-h-screen bg-[#E8D5C4]">
-        <Layout>
+  const primaryColor = "#2F5EA8"; // Blue
 
-        {/* Background blobs */}
-        <BackgroundBlob
- color="#C8A0A0"
- width="650px"
- height="650px"
- className="top-[-200px] right-[-300px]"
- opacity={0.4}
- blur="70px"
-        />
- <BackgroundBlob
- color="#C8A0A0"
- width="400px"
- height="400px"
- className="bottom-[100px] left-[-200px]"
- opacity={0.3}
- blur="50px"
- delay={0.3}
-        />
+  return (
+    <div className="relative min-h-screen bg-transparent">
+      {/* SVG Decorations */}
+      <div className={styles.svgBackgroundContainer}>
+        {/* Blob1 instances - Floating animation */}
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-1']}`} />
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-2']}`} />
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-3']}`} />
+
+        {/* CircleGroup instances - BLUE with pulsing animation */}
+        <img src={CircleGroup} alt="" className={`${styles.svgBlob} ${styles['circleGroup-1']}`} />
+        <img src={CircleGroup} alt="" className={`${styles.svgBlob} ${styles['circleGroup-2']}`} />
+
+        {/* OutlinedBlob instances - Rotating animation */}
+        <img src={OutlinedBlob} alt="" className={`${styles.svgBlob} ${styles['outlinedBlob-1']}`} />
+        <img src={OutlinedBlob} alt="" className={`${styles.svgBlob} ${styles['outlinedBlob-2']}`} />
+
+        {/* CloudBlob instances - mixed animations with different colors */}
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-1']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-2']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-3']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-4']}`} />
+      </div>
+
+      <Layout>
         {/* Hero Section - Now transparent */}
         <section className="relative pt-20 bg-transparent">
           {/* Hero Content */}
@@ -325,12 +333,12 @@ const AboutPage = () => {
 
       {/* Transition to footer */}
       <div className={`relative z-10 `}>
-        <WaveDivider position="bottom" color={'#2F5EA8'} />
+        <WaveDivider position="bottom" color={primaryColor} />
       </div>
 
       {/* Footer - Keep the blue background */}
-      <section style={{ backgroundColor: '#2F5EA8' }} className="relative z-10">
-        <Footer />
+      <section style={{ backgroundColor: primaryColor }} className="relative z-10">
+        <FooterWithCurve />
       </section>
     </div>
   );

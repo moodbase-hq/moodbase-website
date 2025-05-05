@@ -14,6 +14,16 @@ import AboutPage from './components/AboutPage'; // or './pages/AboutPage'
 import GetInvolvedPage from './components/GetInvolvedPage'; // or './pages/GetInvolvedPage'
 import KooperationenPage from './components/KooperationenPage'; // or './pages/KooperationenPage'
 
+// Import support pages
+import SupportPage from './components/TechSupport';
+import OrganizationPage from './components/SupportOrganizations';
+import FAQPage from './components/FAQ';
+
+// Import legal pages
+import ImpressumPage from './components/Impressum';
+import DatenschutzPage from './components/Datenschutz';
+import NutzungsbedingungenPage from './components/TOS';
+
 import './styles/global.css';
 
 const App = () => {
@@ -24,7 +34,7 @@ const App = () => {
           {/* Use OrganicWebsite as the landing page */}
           <Route path="/" element={<OrganicWebsite />} />
 
-          {/* All routes without Layout wrapper - pages handle their own layout */}
+          {/* Main navigation pages */}
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<ArticlePage />} />
           <Route path="/database" element={<DatabasePage />} />
@@ -33,6 +43,15 @@ const App = () => {
           <Route path="/support" element={<GetInvolvedPage />} />
           <Route path="/kooperationen" element={<KooperationenPage />} />
 
+          {/* Support section pages */}
+          <Route path="/technical-support" element={<SupportPage />} />
+          <Route path="/fuer-hilfeorganisationen" element={<OrganizationPage />} />
+          <Route path="/ressourcen/faq" element={<FAQPage />} />
+
+          {/* Legal pages */}
+          <Route path="/rechtliches/impressum" element={<ImpressumPage />} />
+          <Route path="/rechtliches/datenschutz" element={<DatenschutzPage />} />
+          <Route path="/rechtliches/nutzungsbedingungen" element={<NutzungsbedingungenPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

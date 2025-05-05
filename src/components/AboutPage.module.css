@@ -1,4 +1,4 @@
-/* src/pages/KooperationenPage.module.css */
+/* src/pages/AboutPage.module.css */
 
 .svgBackgroundContainer {
   position: absolute;
@@ -157,78 +157,22 @@
 .cloudBlob-3 {
   width: 2500px;
   height: 2500px;
-  right: 100px;
-  bottom: -400px;
-  opacity: 0.99;
+  right: 50px;
+  bottom: -150px;
+  opacity: 1;
   animation: svgRotate 14s ease-in-out infinite alternate;
   animation-delay: 0.2s;
-  filter: brightness(0) saturate(100%) invert(57%) sepia(11%) saturate(1142%) hue-rotate(314deg) brightness(92%) contrast(85%); /* Color Filter: green */
+  filter: brightness(0) saturate(100%) invert(57%) sepia(11%) saturate(1142%) hue-rotate(314deg) brightness(92%) contrast(100%); /* Color Filter: green */
 }
 
-/* Accent CloudBlob instance */
+/* Accent CloudBlob instance - Warm tone for About page */
 .cloudBlob-4 {
   width: 1800px;
   height: 1800px;
   left: -100px;
   bottom: 100px;
-  opacity: 0.1;
+  opacity: 0.15;
   animation: svgPulse 9s ease-in-out infinite alternate;
   animation-delay: 0.5s;
   filter: brightness(0) saturate(100%) invert(76%) sepia(8%) saturate(442%) hue-rotate(314deg) brightness(91%) contrast(92%); /* Color Filter: accent */
-}
-
-/* Card section styles */
-.card {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(209, 213, 219, 0.5);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Form styles */
-.formContainer {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(209, 213, 219, 0.5);
-}
-
-.formInput {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: white;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.formInput:focus {
-  outline: none;
-  border-color: #2F5EA8;
-  box-shadow: 0 0 0 3px rgba(47, 94, 168, 0.2);
-}
-
-.formTextarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: white;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  min-height: 150px;
-  resize: vertical;
-}
-
-.formTextarea:focus {
-  outline: none;
-  border-color: #2F5EA8;
-  box-shadow: 0 0 0 3px rgba(47, 94, 168, 0.2);
 }

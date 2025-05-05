@@ -186,11 +186,11 @@
 }
 
 .cloudBlob-3 {
-  width: 2500px;
+  width: 5000px;
   height: 2500px;
-  right: 100px;
-  bottom: -400px;
-  opacity: 0.6;
+  right: -100px;
+  bottom: -200px;
+  opacity: 0.7;
   animation: rotate 14s ease-in-out infinite alternate;
   animation-delay: 0.2s;
   filter: brightness(0) saturate(100%) invert(28%) sepia(9%) saturate(4661%) hue-rotate(314deg) brightness(93%) contrast(89%); /* Color Filter: burgundy */

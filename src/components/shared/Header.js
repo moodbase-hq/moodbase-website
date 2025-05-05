@@ -33,7 +33,7 @@ const Header = () => {
                 className="h-8 w-8 mr-2"
               />
               <span
-                style={{ color: theme.colors.primary }}
+                style={{ color: "black" }}
                 className="text-3xl font-bold">
                 moodbase
               </span>
