@@ -91,10 +91,10 @@ const OrganicWebsite = () => {
         <div className="container mx-auto px-4 py-12 relative z-10">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl font-bold text-[#A13E4B] mb-6">
-              Ich brauche hilfe, aber wo soll ich sie finden?
+              Ich brauche Hilfe, aber wo soll ich sie finden?
             </h1>
             <p className="text-lg text-black mb-12 leading-relaxed">
-              Moodbase ist eine intelligente Plattform, die junge Menschen mit den besten psychosozialen Unterstützungsangeboten in Deutschland verbindet - unabhängig vom sozioökonomischen Status.
+              moodbase ist eine intelligente Plattform, die junge Menschen mit den psychosozialen Unterstützungsangeboten in Deutschland verbindet - einfach, schnell und unabhängig vom sozioökonomischen Status.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-16">
@@ -122,7 +122,7 @@ const OrganicWebsite = () => {
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-[#A13E4B]">
               <span className="inline-flex items-center">
-                <span className="mr-2">So funktioniert Moodbase</span>
+                <span className="mr-2">So funktioniert moodbase</span>
                 {/* Animated Icons */}
                 <Search size={32} className="text-[#A13E4B] animate-icon-title" />
                 <Database size={32} className="text-[#A13E4B] animate-icon-title" />
