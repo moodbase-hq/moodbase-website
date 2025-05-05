@@ -67,15 +67,15 @@ const FooterWithCurve = () => {
             <h3 className="text-lg font-semibold mb-4 text-white">Ressourcen</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/ressourcen/techsupport" className="text-white/80 hover:text-white transition-colors flex items-center">
+                <Link to="/technical-support" className="text-white/80 hover:text-white transition-colors flex items-center">
                   <ArrowRight size={16} className="mr-2" />
-                  <span>Ratgeber</span>
+                  <span>Support</span>
                 </Link>
               </li>
               <li>
-                <Link to="/ressourcen/hilfeorganisationen" className="text-white/80 hover:text-white transition-colors flex items-center">
+                <Link to="/fuer-hilfeorganisationen" className="text-white/80 hover:text-white transition-colors flex items-center">
                   <ArrowRight size={16} className="mr-2" />
-                  <span>Selbsthilfe</span>
+                  <span>Für Hilfeorganisationen</span>
                 </Link>
               </li>
               <li>
