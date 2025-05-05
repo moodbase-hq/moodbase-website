@@ -111,8 +111,8 @@
 .circleGroup-1 {
   width: 1900px;
   height: 1900px;
-  right: -300px;
-  top: 50px;
+  right: -700px;
+  top: -200px;
   opacity: 0.9;
   animation: pulse 7.5s ease-in-out infinite alternate;
   animation-delay: 0.3s;
@@ -122,7 +122,7 @@
 .circleGroup-2 {
   width: 1800px;
   height: 1800px;
-  left: 100px;
+  left: -300px;
   top: 500px;
   opacity: 0.8;
   animation: rotate 14s ease-in-out infinite alternate;
@@ -143,7 +143,7 @@
 
 /* OutlinedBlob instances - Rotating animation */
 .outlinedBlob-1 {
-  width: 3000px;
+  width: 6000px;
   height: 3000px;
   left: 200px;
   top: 200px;
@@ -153,7 +153,7 @@
 }
 
 .outlinedBlob-2 {
-  width: 2200px;
+  width: 6000px;
   height: 2200px;
   right: -500px;
   top: 1200px;
@@ -167,7 +167,7 @@
   width: 3000px;
   height: 3000px;
   right: -300px;
-  top: 400px;
+  top: 1100px;
   opacity: 0.8;
   animation: pulse 7.5s ease-in-out infinite alternate;
   animation-delay: 0.6s;
@@ -177,8 +177,8 @@
 .cloudBlob-2 {
   width: 2000px;
   height: 2000px;
-  left: -300px;
-  top: 1100px;
+  left: -500px;
+  top: 1300px;
   opacity: 0.7;
   animation: float 10s ease-in-out infinite alternate;
   animation-delay: 1.0s;

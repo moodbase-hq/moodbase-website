@@ -4,11 +4,12 @@ import Layout from "../components/shared/Layout";
 import Button from "../components/shared/Button";
 import { useTheme } from "../context/ThemeContext";
 import { motion } from "framer-motion";
-import BackgroundBlob from "../components/shared/BackgroundBlob"; // Import BackgroundBlob
 import getInvolvedData from "../content/getinvolved.json";
-import CurvedFooter from "./shared/FooterWithCurve"; // Import the CurvedFooter
+import FooterWithCurve from "../components/shared/FooterWithCurve";
 import "./GetInvolvedPage.css";
-import Footer from "./shared/FooterWithCurve";
+
+// Import or create the component here
+import AnimatedBackgroundBlob from "../components/shared/AnimatedBackgroundBlob";
 
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
@@ -70,7 +71,7 @@ const SupportOption = ({ item, delay = 0 }) => {
         <p className="text-gray-600 mb-6">{item.description}</p>
         <Button
           href={item.link}
-          variant="primary"  
+          variant="primary"
         >
           {item.cta}
         </Button>
@@ -245,34 +246,104 @@ const JoinSection = ({ data }) => {
 const GetInvolvedPage = () => {
   const theme = useTheme();
 
+  // Define colors for blobs
+  const primaryColor = "#2F5EA8"; // Blue
+  const secondaryColor = "#A13E4B"; // Red
+  const tertiaryColor = "#4BAA7A"; // Green
+  const accentColor = "#C8A0A0"; // Mauve/Pink
+
   return (
     <div className="relative min-h-screen bg-transparent">
-
-      {/* SVG Decorations - Using absolute positioning with overflow visible */}
-      <div className="absolute inset-0 overflow-visible pointer-events-none">
- {/* Background blobs for other sections */}
-        <BackgroundBlob
- color="#C8A0A0"
- width="650px"
- height="650px"
- className="top-[10%] right-[-300px]"
- opacity={0.2}
- blur="70px"
+      {/* Background Blobs */}
+      {/* Make sure these are visible by setting higher z-index than -1 */}
+      <div className="absolute inset-0 overflow-visible" style={{ zIndex: 0 }}>
+        {/* Top right blob */}
+        <AnimatedBackgroundBlob
+          color={primaryColor}
+          width="900px"
+          height="900px"
+          className="right-[-450px] top-[-250px]"
+          opacity={0.15}
+          blur="90px"
+          animationType="rotate"
+          delay={0.2}
         />
 
-        <BackgroundBlob
- color="#C8A0A0"
- width="400px"
- height="400px"
- className="bottom-[5%] left-[-200px]"
- opacity={0.15}
- blur="50px"
- delay={0.3}
+        {/* Top left blob */}
+        <AnimatedBackgroundBlob
+          color={accentColor}
+          width="700px"
+          height="700px"
+          className="left-[-350px] top-[150px]"
+          opacity={0.2}
+          blur="70px"
+          animationType="float"
+          delay={0.5}
+        />
+
+        {/* Middle right blob */}
+        <AnimatedBackgroundBlob
+          color={tertiaryColor}
+          width="600px"
+          height="600px"
+          className="right-[-200px] top-[35%]"
+          opacity={0.2}
+          blur="60px"
+          animationType="pulse"
+          delay={0.7}
+        />
+
+        {/* Middle left blob */}
+        <AnimatedBackgroundBlob
+          color={secondaryColor}
+          width="550px"
+          height="550px"
+          className="left-[-250px] top-[50%]"
+          opacity={0.2}
+          blur="70px"
+          animationType="rotate"
+          delay={0.3}
+        />
+
+        {/* Bottom right blob */}
+        <AnimatedBackgroundBlob
+          color={primaryColor}
+          width="800px"
+          height="800px"
+          className="right-[-350px] bottom-[5%]"
+          opacity={0.15}
+          blur="80px"
+          animationType="float"
+          delay={0.4}
+        />
+
+        {/* Bottom left blob */}
+        <AnimatedBackgroundBlob
+          color={accentColor}
+          width="650px"
+          height="650px"
+          className="left-[-300px] bottom-[-100px]"
+          opacity={0.2}
+          blur="65px"
+          animationType="pulse"
+          delay={0.6}
+        />
+
+        {/* Center blob - very subtle */}
+        <AnimatedBackgroundBlob
+          color="#FFFFFF"
+          width="1000px"
+          height="1000px"
+          className="left-[20%] top-[40%]"
+          opacity={0.1}
+          blur="120px"
+          animationType="pulse"
+          delay={0.8}
         />
       </div>
+
       <Layout>
         {/* Hero Section - Now transparent */}
-
         <section className="relative pt-20 bg-transparent">
           <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
@@ -280,7 +351,7 @@ const GetInvolvedPage = () => {
                 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}            
+                transition={{ duration: 0.6 }}
               >
                 {getInvolvedData.hero.title}
               </motion.h1>
@@ -288,7 +359,7 @@ const GetInvolvedPage = () => {
                 className="text-lg text-gray-700 mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}           
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {getInvolvedData.hero.description}
               </motion.p>
@@ -377,18 +448,19 @@ const GetInvolvedPage = () => {
             </motion.div>
           </div>
         </section>
-
       </Layout>
+
       {/* Transition to footer */}
-      <div className={`relative z-10 `}>
-        <WaveDivider position="bottom" color={'#2F5EA8'} />
+      <div className="relative z-10">
+        <WaveDivider position="bottom" color={primaryColor} />
       </div>
 
       {/* Footer - Keep the blue background */}
-      <section style={{ backgroundColor: '#2F5EA8' }} className="relative z-10">
-        <Footer />
+      <section style={{ backgroundColor: primaryColor }} className="relative z-10">
+        <FooterWithCurve />
       </section>
     </div>
   );
 };
+
 export default GetInvolvedPage;
