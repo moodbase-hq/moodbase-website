@@ -1,4 +1,4 @@
-// src/components/MapsPage.js
+// src/components/MapsPage.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +8,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Header from './shared/Header';
 import FooterWithCurve from './shared/FooterWithCurve';
 import OfferingDetail from './OfferingDetail';
+import styles from './MapsPage.module.css';
+
+// Import SVG assets directly
+import Blob1 from './shared/assets/1.svg';
+import CircleGroup from './shared/assets/2.svg';
+import OutlinedBlob from './shared/assets/3.svg';
+import CloudBlob from './shared/assets/4.svg';
 
 // API client setup
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
@@ -24,35 +31,6 @@ const api = axios.create({
 // Default center of Germany
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
-
-// Simple decorative background component
-const BackgroundDecoration = ({ position = 'top-right', color = '#2F5EA8', size = 'md' }) => {
-  // Define size values based on the size prop
-  const sizeValues = {
-    sm: 'w-64 h-64',
-    md: 'w-96 h-96',
-    lg: 'w-[30rem] h-[30rem]',
-    xl: 'w-[40rem] h-[40rem]',
-    '2xl': 'w-[50rem] h-[50rem]'
-  };
-
-  // Define positions
-  const positions = {
-    'top-right': '-top-32 -right-32',
-    'top-left': '-top-32 -left-32',
-    'bottom-right': '-bottom-32 -right-32',
-    'bottom-left': '-bottom-32 -left-32',
-    'middle-right': 'top-1/3 -right-32',
-    'middle-left': 'top-1/3 -left-32'
-  };
-
-  return (
-    <div
-      className={`absolute rounded-full blur-3xl opacity-99 ${sizeValues[size]} ${positions[position]}`}
-      style={{ backgroundColor: color }}
-    ></div>
-  );
-};
 
 // Wave Divider component
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
@@ -239,14 +217,7 @@ const MapsPage = () => {
           try {
             // Create custom marker element
             const el = document.createElement('div');
-            el.className = 'custom-marker';
-            el.style.backgroundColor = '#2F5EA8';
-            el.style.width = '20px';
-            el.style.height = '20px';
-            el.style.borderRadius = '50%';
-            el.style.border = '2px solid white';
-            el.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.3)';
-            el.style.cursor = 'pointer';
+            el.className = styles.customMarker;
 
             // Create marker instance
             const marker = new mapboxgl.Marker(el)
@@ -310,20 +281,30 @@ const MapsPage = () => {
   // Color definitions for backgrounds
   const primaryBlue = '#2F5EA8';
   const secondaryRed = '#A13E4B';
-  const tertiaryGreen = '#4BAA7A';
 
   if (selectedOffer) {
     return <OfferingDetail offering={selectedOffer} onBack={() => setSelectedOffer(null)} />;
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-50/60 overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="pointer-events-none">
-        <BackgroundDecoration position="top-right" color={primaryBlue} size="2xl" />
-        <BackgroundDecoration position="middle-left" color={secondaryRed} size="xl" />
-        <BackgroundDecoration position="bottom-right" color={tertiaryGreen} size="lg" />
-        <BackgroundDecoration position="bottom-left" color={primaryBlue} size="xl" />
+    <div className="relative min-h-screen bg-transparent overflow-hidden">
+      {/* SVG Decorations - Using the same approach as OrganicWebsite */}
+      <div className={styles.backgroundContainer}>
+        {/* Blob1 instances - Floating animation */}
+        <img src={Blob1} alt="" className={`${styles['blob1-1']} ${styles.blob}`} />
+        <img src={Blob1} alt="" className={`${styles['blob1-2']} ${styles.blob}`} />
+
+        {/* CircleGroup instances - BLUE with pulsing animation */}
+        <img src={CircleGroup} alt="" className={`${styles['circleGroup-1']} ${styles.blob}`} />
+        <img src={CircleGroup} alt="" className={`${styles['circleGroup-2']} ${styles.blob}`} />
+
+        {/* OutlinedBlob instances - Rotating animation */}
+        <img src={OutlinedBlob} alt="" className={`${styles['outlinedBlob-1']} ${styles.blob}`} />
+
+        {/* CloudBlob instances - BURGUNDY with mixed animations */}
+        <img src={CloudBlob} alt="" className={`${styles['cloudBlob-1']} ${styles.blob}`} />
+        <img src={CloudBlob} alt="" className={`${styles['cloudBlob-2']} ${styles.blob}`} />
+        <img src={CloudBlob} alt="" className={`${styles['cloudBlob-3']} ${styles.blob}`} />
       </div>
 
       {/* Header */}
@@ -340,27 +321,23 @@ const MapsPage = () => {
         </div>
 
         {isLoading ? (
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-8 text-center">
+          <div className="bg-white/80 rounded-xl shadow-md p-8 text-center">
             <div className="animate-pulse">
               <div className="h-96 bg-gray-200 rounded-lg"></div>
             </div>
           </div>
         ) : error ? (
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-8 text-center">
+          <div className="bg-white/80 rounded-xl shadow-md p-8 text-center">
             <p className="text-red-500">{error}</p>
           </div>
         ) : (
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden">
+          <div className="bg-white/80 rounded-xl shadow-md overflow-hidden">
             <div
               ref={mapContainer}
-              className="h-[70vh] w-full"
-              style={{
-                position: 'relative',
-                zIndex: 1
-              }}
+              className={styles.mapContainer}
             />
 
-            <div className="p-4 bg-gray-50/70 backdrop-blur-sm">
+            <div className="p-4 bg-gray-50/70">
               <p className="text-sm text-gray-600">
                 Nutzen Sie die Karte, um Angebote in Ihrer Nähe zu finden. Klicken Sie auf einen Marker, um Details zu einem Angebot zu sehen.
               </p>
@@ -368,7 +345,7 @@ const MapsPage = () => {
           </div>
         )}
 
-        <div className="mt-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-6">
+        <div className="mt-8 bg-white/80 rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Angebote ohne Standort</h2>
           {mapData.filter(item => !item.latitude || !item.longitude || isNaN(parseFloat(item.latitude)) || isNaN(parseFloat(item.longitude))).length === 0 ? (
             <p className="text-gray-600">Keine Angebote ohne Standort verfügbar.</p>

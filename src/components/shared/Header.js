@@ -54,6 +54,12 @@ const Header = () => {
               }`}>
               Blog
             </Link>
+            <Link to="/kooperationen"
+              className={`transition-colors duration-300 ${
+                isScrolled ? 'text-gray-600 hover:text-[#A13E4B]' : 'text-white/90 hover:text-white'
+              }`}>
+              Kooperationen
+            </Link>
             <Link to="/support"
               className={`transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600 hover:text-[#A13E4B]' : 'text-white/90 hover:text-white'
@@ -87,6 +93,9 @@ const Header = () => {
               </Link>
               <Link to="/blog" className="block px-3 py-2 text-gray-600 hover:text-[#A13E4B]">
                 Blog
+              </Link>
+              <Link to="/kooperationen" className="block px-3 py-2 text-gray-600 hover:text-[#A13E4B]">
+                Kooperationen
               </Link>
               <Link to="/support" className="block px-3 py-2 text-gray-600 hover:text-[#A13E4B]">
                 Unterstützen

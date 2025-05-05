@@ -6,10 +6,13 @@ import { useTheme } from "../context/ThemeContext";
 import { motion } from "framer-motion";
 import getInvolvedData from "../content/getinvolved.json";
 import FooterWithCurve from "../components/shared/FooterWithCurve";
-import "./GetInvolvedPage.css";
+import styles from "./GetInvolvedPage.module.css";
 
-// Import or create the component here
-import AnimatedBackgroundBlob from "../components/shared/AnimatedBackgroundBlob";
+// Import SVG assets directly
+import Blob1 from '../components/shared/assets/1.svg';
+import CircleGroup from '../components/shared/assets/2.svg';
+import OutlinedBlob from '../components/shared/assets/3.svg';
+import CloudBlob from '../components/shared/assets/4.svg';
 
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
@@ -248,98 +251,29 @@ const GetInvolvedPage = () => {
 
   // Define colors for blobs
   const primaryColor = "#2F5EA8"; // Blue
-  const secondaryColor = "#A13E4B"; // Red
-  const tertiaryColor = "#4BAA7A"; // Green
-  const accentColor = "#C8A0A0"; // Mauve/Pink
 
   return (
     <div className="relative min-h-screen bg-transparent">
-      {/* Background Blobs */}
-      {/* Make sure these are visible by setting higher z-index than -1 */}
-      <div className="absolute inset-0 overflow-visible" style={{ zIndex: 0 }}>
-        {/* Top right blob */}
-        <AnimatedBackgroundBlob
-          color={primaryColor}
-          width="900px"
-          height="900px"
-          className="right-[-450px] top-[-250px]"
-          opacity={0.15}
-          blur="90px"
-          animationType="rotate"
-          delay={0.2}
-        />
+      {/* SVG Decorations - Replace the existing AnimatedBackgroundBlob container */}
+      <div className={styles.svgBackgroundContainer}>
+        {/* Blob1 instances - Floating animation */}
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-1']}`} />
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-2']}`} />
+        <img src={Blob1} alt="" className={`${styles.svgBlob} ${styles['blob1-3']}`} />
 
-        {/* Top left blob */}
-        <AnimatedBackgroundBlob
-          color={accentColor}
-          width="700px"
-          height="700px"
-          className="left-[-350px] top-[150px]"
-          opacity={0.2}
-          blur="70px"
-          animationType="float"
-          delay={0.5}
-        />
+        {/* CircleGroup instances - BLUE with pulsing animation */}
+        <img src={CircleGroup} alt="" className={`${styles.svgBlob} ${styles['circleGroup-1']}`} />
+        <img src={CircleGroup} alt="" className={`${styles.svgBlob} ${styles['circleGroup-2']}`} />
 
-        {/* Middle right blob */}
-        <AnimatedBackgroundBlob
-          color={tertiaryColor}
-          width="600px"
-          height="600px"
-          className="right-[-200px] top-[35%]"
-          opacity={0.2}
-          blur="60px"
-          animationType="pulse"
-          delay={0.7}
-        />
+        {/* OutlinedBlob instances - Rotating animation */}
+        <img src={OutlinedBlob} alt="" className={`${styles.svgBlob} ${styles['outlinedBlob-1']}`} />
+        <img src={OutlinedBlob} alt="" className={`${styles.svgBlob} ${styles['outlinedBlob-2']}`} />
 
-        {/* Middle left blob */}
-        <AnimatedBackgroundBlob
-          color={secondaryColor}
-          width="550px"
-          height="550px"
-          className="left-[-250px] top-[50%]"
-          opacity={0.2}
-          blur="70px"
-          animationType="rotate"
-          delay={0.3}
-        />
-
-        {/* Bottom right blob */}
-        <AnimatedBackgroundBlob
-          color={primaryColor}
-          width="800px"
-          height="800px"
-          className="right-[-350px] bottom-[5%]"
-          opacity={0.15}
-          blur="80px"
-          animationType="float"
-          delay={0.4}
-        />
-
-        {/* Bottom left blob */}
-        <AnimatedBackgroundBlob
-          color={accentColor}
-          width="650px"
-          height="650px"
-          className="left-[-300px] bottom-[-100px]"
-          opacity={0.2}
-          blur="65px"
-          animationType="pulse"
-          delay={0.6}
-        />
-
-        {/* Center blob - very subtle */}
-        <AnimatedBackgroundBlob
-          color="#FFFFFF"
-          width="1000px"
-          height="1000px"
-          className="left-[20%] top-[40%]"
-          opacity={0.1}
-          blur="120px"
-          animationType="pulse"
-          delay={0.8}
-        />
+        {/* CloudBlob instances - mixed animations with different colors */}
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-1']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-2']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-3']}`} />
+        <img src={CloudBlob} alt="" className={`${styles.svgBlob} ${styles['cloudBlob-4']}`} />
       </div>
 
       <Layout>

@@ -12,6 +12,8 @@ import DatabasePage from './components/DatabasePage'; // or './pages/DatabasePag
 import MapsPage from './components/MapsPage'; // or './pages/MapsPage'
 import AboutPage from './components/AboutPage'; // or './pages/AboutPage'
 import GetInvolvedPage from './components/GetInvolvedPage'; // or './pages/GetInvolvedPage'
+import KooperationenPage from './components/KooperationenPage'; // or './pages/KooperationenPage'
+
 import './styles/global.css';
 
 const App = () => {
@@ -29,6 +31,8 @@ const App = () => {
           <Route path="/maps" element={<MapsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/support" element={<GetInvolvedPage />} />
+          <Route path="/kooperationen" element={<KooperationenPage />} />
+
         </Routes>
       </Router>
     </ThemeProvider>
