@@ -117,7 +117,7 @@ const SupportPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Haben Sie ein technisches Problem oder eine Frage? Wir helfen Ihnen gerne weiter.
+                Etwas funktioniert nicht wie erwartet?" Text "Es gibt ein technisches Problem oder eine Frage zur Nutzung von moodbase? Wir sind für da & helfen gerne weiter.
               </motion.p>
             </div>
           </div>
