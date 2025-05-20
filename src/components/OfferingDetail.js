@@ -1,4 +1,3 @@
-// src/pages/OfferingDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { Star, ChevronLeft, Phone, Mail, Globe, Clock, MapPin, AlertCircle, MessageCircle } from 'lucide-react';
 import axios from 'axios';
@@ -8,7 +7,10 @@ import { useTheme } from '../context/ThemeContext';
 import { useParams, useNavigate } from 'react-router-dom';
 
 // API client setup
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+
+// Print the API URL for debugging
+console.log("API URL in OfferingDetail:", API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
@@ -120,6 +122,7 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
   const theme = useTheme();
   const [showRatingForm, setShowRatingForm] = useState(false);
   const [offering, setOffering] = useState(propOffering);
+  const [provider, setProvider] = useState(null);
   const [ratings, setRatings] = useState({...defaultCategories});
   const [comment, setComment] = useState("");
   const [randomTestimonial, setRandomTestimonial] = useState(null);
@@ -135,6 +138,11 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
     // If offering is passed as prop, use it
     if (propOffering) {
       setOffering(propOffering);
+
+      // If we have a provider_id, fetch provider details
+      if (propOffering.provider_id) {
+        fetchProviderDetails(propOffering.provider_id);
+      }
       return;
     }
 
@@ -142,12 +150,21 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/offerings/${params.id}`);
+        console.log(`Fetching offering details for ID: ${params.id} from ${API_URL}/api/offerings/${params.id}`);
+        const response = await api.get(`/api/offerings/${params.id}`);
+        console.log("Offering data received:", response.data);
+
         setOffering(response.data);
+
+        // Fetch provider details if available
+        if (response.data.provider_id) {
+          fetchProviderDetails(response.data.provider_id);
+        }
+
         setError(null);
       } catch (error) {
-        setError('Could not load the offering details. Please try again later.');
         console.error('Error loading offering:', error);
+        setError('Could not load the offering details. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -157,6 +174,19 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
       fetchData();
     }
   }, [propOffering, params.id]);
+
+  // Function to fetch provider details
+  const fetchProviderDetails = async (providerId) => {
+    try {
+      console.log(`Fetching provider details for ID: ${providerId}`);
+      const response = await api.get(`/api/providers/${providerId}`);
+      console.log("Provider data received:", response.data);
+      setProvider(response.data);
+    } catch (error) {
+      console.error('Error loading provider details:', error);
+      // We don't set an error state here as the offering details are still usable
+    }
+  };
 
   // Initialize ratings and testimonial
   useEffect(() => {
@@ -170,8 +200,8 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
     setRandomTestimonial(sampleTestimonials[randomIndex]);
 
     // Process ratings data from the database
-    if (offering.detailedInfo?.ratings) {
-      const dbRatings = offering.detailedInfo.ratings;
+    if (offering.ratings) {
+      const dbRatings = offering.ratings;
 
       // Process ratings categories
       const processedCategories = {};
@@ -220,19 +250,28 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
         dbCategories[dbKey] = value;
       });
 
+      // Calculate overall rating
+      const overallRating = Object.values(ratings).reduce((sum, val) => sum + val, 0) / Object.keys(ratings).length;
+
       // Create new rating object
       const newRating = {
         userId: 1, // For demo purposes - would be the actual user's ID in a real app
-        entryId: offering.id,
-        overall: Object.values(ratings).reduce((sum, val) => sum + val, 0) / Object.keys(ratings).length,
-        categories: dbCategories,
+        offeringId: offering.id,
+        overallRating: overallRating,
+        categoryRatings: dbCategories,
         comment: comment
       };
 
-      // In a real application, this would be an API call to save the rating
       console.log("Submitting new rating:", newRating);
-      // Use this in production:
-      // await api.post('/ratings', newRating);
+
+      // Make the API call to save the rating
+      try {
+        await api.post('/api/ratings', newRating);
+        console.log("Rating submitted successfully");
+      } catch (error) {
+        console.error("Error submitting rating to API:", error);
+        // Continue with local update even if API call fails
+      }
 
       // Update UI to show new rating
       // For demo purposes, we'll calculate the new averages locally
@@ -276,7 +315,6 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
       alert('Es gab einen Fehler beim Speichern Ihrer Bewertung. Bitte versuchen Sie es später erneut.');
     }
   };
-
   if (loading) {
     return (
       <Layout>
@@ -338,26 +376,40 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
     );
   }
 
-  // Handle case where detailed info might be missing
-  const detailedInfo = offering.detailedInfo || {
-    description: "Keine detaillierte Beschreibung verfügbar.",
-    address: offering.address || offering.location || "Adresse nicht angegeben",
-    contactInfo: {
-      phone: offering.contactInfo?.phone || "Nicht angegeben",
-      email: offering.contactInfo?.email || "Nicht angegeben",
-      website: offering.contactInfo?.website || "Nicht angegeben"
-    },
-    openingHours: "Nicht angegeben",
-    services: offering.type ? [offering.type] : ["Keine Angaben"],
-    insurance: offering.costs || "Keine Angaben",
-    approach: "Keine Angaben"
-  };
+  // Extract essential data with fallbacks
+  const providerName = offering.provider_name || provider?.name || offering.provider || "Unbekannter Anbieter";
+  const description = offering.description || provider?.description || "Keine detaillierte Beschreibung verfügbar.";
+  const offeringType = offering.service_type || offering.type || "Nicht spezifiziert";
+  const offeringAddress = offering.address || "Adresse nicht angegeben";
+  const contactPhone = offering.phone || provider?.phone || null;
+  const contactEmail = offering.email || provider?.email || null;
+  const contactWebsite = offering.website || provider?.website || null;
 
-  // Extract coordinates for potential map display
-  const hasCoordinates = offering.latitude &&
-                      offering.longitude &&
-                      !isNaN(parseFloat(offering.latitude)) &&
-                      !isNaN(parseFloat(offering.longitude));
+  // Format availability for display
+  const availability = offering.availability_times || offering.availability || "Nicht angegeben";
+
+  // Format costs for display
+  const costs = offering.cost || offering.costs || "Nicht angegeben";
+
+  // Get opening hours
+  const openingHours = offering.opening_hours || "Nicht angegeben";
+
+  // Check for coordinates
+  const hasCoordinates =
+    ((offering.latitude && offering.longitude) ||
+    (provider?.latitude && provider?.longitude)) &&
+    !isNaN(parseFloat(offering.latitude || provider?.latitude)) &&
+    !isNaN(parseFloat(offering.longitude || provider?.longitude));
+
+  // Get coordinates
+  const latitude = parseFloat(offering.latitude || provider?.latitude);
+  const longitude = parseFloat(offering.longitude || provider?.longitude);
+
+  // Main location type/modality
+  const locationType = offering.primary_location_type || "Nicht angegeben";
+
+  // Check for status indicator
+  const status = "Verfügbar"; // Default status, could be pulled from database in the future
 
   return (
     <Layout>
@@ -383,24 +435,23 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
             </Button>
 
             <h1 className="text-3xl font-bold mb-2">{offering.name}</h1>
-            <p className="text-xl opacity-90">{offering.provider}</p>
+            <p className="text-xl opacity-90">{providerName}</p>
             <div className="flex flex-wrap gap-3 mt-3">
-              {offering.status && (
-                <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  offering.status === 'Verfügbar' 
-                    ? 'bg-green-100 text-green-800' 
-                    : offering.status === 'Warteliste'
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-red-100 text-red-800'
-                }`}>
-                  {offering.status}
-                </div>
-              )}
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                {status}
+              </div>
 
               {ratingsData && (
                 <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                   <Star className="h-4 w-4 mr-1 fill-blue-800" />
                   {ratingsData.overallRating} ({ratingsData.count} {ratingsData.count === 1 ? 'Bewertung' : 'Bewertungen'})
+                </div>
+              )}
+
+              {/* Modality Badge */}
+              {locationType && (
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                  {locationType}
                 </div>
               )}
             </div>
@@ -412,47 +463,49 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
             <div>
               <div className="prose max-w-none">
                 <h2 className="text-2xl font-semibold mb-4">Über uns</h2>
-                <p className="text-gray-600 mb-6">{detailedInfo.description}</p>
+                <p className="text-gray-600 mb-6">{description}</p>
 
                 {/* Contact Information */}
                 <div className="space-y-3 mb-6">
-                  <div className="flex items-start text-gray-600">
-                    <MapPin className="h-5 w-5 mr-2 text-primary mt-0.5" />
-                    <div>
-                      <div>{offering.address || detailedInfo.address}</div>
-                      {hasCoordinates && (
-                      <div className="text-sm text-gray-500 mt-1">
-                        Koordinaten: {parseFloat(offering.latitude).toFixed(4)}, {parseFloat(offering.longitude).toFixed(4)}
-                        </div>
-                      )}
+                  {offeringAddress && (
+                    <div className="flex items-start text-gray-600">
+                      <MapPin className="h-5 w-5 mr-2 text-primary mt-0.5" />
+                      <div>
+                        <div>{offeringAddress}</div>
+                        {hasCoordinates && (
+                        <div className="text-sm text-gray-500 mt-1">
+                          Koordinaten: {latitude.toFixed(4)}, {longitude.toFixed(4)}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  {detailedInfo.contactInfo?.phone && detailedInfo.contactInfo.phone !== "Nicht angegeben" && (
+                  {contactPhone && (
                     <div className="flex items-center text-gray-600">
                       <Phone className="h-5 w-5 mr-2 text-primary" />
-                      {detailedInfo.contactInfo.phone}
+                      {contactPhone}
                     </div>
                   )}
 
-                  {detailedInfo.contactInfo?.email && detailedInfo.contactInfo.email !== "Nicht angegeben" && (
+                  {contactEmail && (
                     <div className="flex items-center text-gray-600">
                       <Mail className="h-5 w-5 mr-2 text-primary" />
-                      {detailedInfo.contactInfo.email}
+                      {contactEmail}
                     </div>
                   )}
 
-                  {detailedInfo.contactInfo?.website && detailedInfo.contactInfo.website !== "Nicht angegeben" && (
+                  {contactWebsite && (
                     <div className="flex items-center text-gray-600">
                       <Globe className="h-5 w-5 mr-2 text-primary" />
-                      {detailedInfo.contactInfo.website}
+                      {contactWebsite}
                     </div>
                   )}
 
-                  {detailedInfo.openingHours && detailedInfo.openingHours !== "Nicht angegeben" && (
+                  {openingHours && openingHours !== "Nicht angegeben" && (
                     <div className="flex items-center text-gray-600">
                       <Clock className="h-5 w-5 mr-2 text-primary" />
-                      {detailedInfo.openingHours}
+                      {openingHours}
                     </div>
                   )}
                 </div>
@@ -478,21 +531,16 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold mb-3">Angebote</h3>
                   <div className="flex flex-wrap gap-2">
-                    {(detailedInfo.services || [offering.type]).map((service, index) => (
-                      <span
-                        key={index}
-                        className="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm"
-                      >
-                        {service}
-                      </span>
-                    ))}
+                    <span className="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm">
+                      {offeringType}
+                    </span>
                   </div>
                 </div>
 
                 {/* Insurance Info */}
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="text-lg font-semibold mb-2">Kostenübernahme</h3>
-                  <p className="text-gray-600">{detailedInfo.insurance}</p>
+                  <p className="text-gray-600">{costs}</p>
                 </div>
 
                 {/* Testimonial Box */}
@@ -545,31 +593,45 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                   <h3 className="text-xl font-semibold mb-3">Informationen</h3>
 
                   <div className="space-y-4">
-                    {offering.type && (
+                    {offeringType && (
                       <div className="flex justify-between py-2 border-b border-gray-100">
                         <span className="text-gray-600">Art des Angebots</span>
-                        <span className="font-medium">{offering.type}</span>
+                        <span className="font-medium">{offeringType}</span>
                       </div>
                     )}
 
-                    {offering.availability && (
+                    {availability && (
                       <div className="flex justify-between py-2 border-b border-gray-100">
                         <span className="text-gray-600">Verfügbarkeit</span>
-                        <span className="font-medium">{offering.availability}</span>
+                        <span className="font-medium">{availability}</span>
                       </div>
                     )}
 
-                    {offering.costs && (
+                    {costs && (
                       <div className="flex justify-between py-2 border-b border-gray-100">
                         <span className="text-gray-600">Kosten</span>
-                        <span className="font-medium">{offering.costs}</span>
+                        <span className="font-medium">{costs}</span>
                       </div>
                     )}
 
-                    {offering.lastUpdated && (
+                    {locationType && (
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-600">Modalität</span>
+                        <span className="font-medium">{locationType}</span>
+                      </div>
+                    )}
+
+                    {offering.created_at && (
                       <div className="flex justify-between py-2">
-                        <span className="text-gray-600">Letztes Update</span>
-                        <span className="font-medium">{new Date(offering.lastUpdated).toLocaleDateString('de-DE')}</span>
+                        <span className="text-gray-600">Erfasst am</span>
+                        <span className="font-medium">{new Date(offering.created_at).toLocaleDateString('de-DE')}</span>
+                      </div>
+                    )}
+
+                    {offering.updated_at && (
+                      <div className="flex justify-between py-2">
+                        <span className="text-gray-600">Aktualisiert am</span>
+                        <span className="font-medium">{new Date(offering.updated_at).toLocaleDateString('de-DE')}</span>
                       </div>
                     )}
                   </div>
@@ -586,7 +648,49 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                 </div>
               )}
 
-              {/* Rating Form */}
+              {/* Provider Info Box */}
+              {provider && (
+                <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-6">
+                  <h3 className="text-xl font-semibold mb-3">Über den Anbieter</h3>
+
+                  <div className="space-y-4">
+                    {provider.founding_year && (
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-600">Gründungsjahr</span>
+                        <span className="font-medium">{provider.founding_year}</span>
+                      </div>
+                    )}
+
+                    {provider.legal_status && (
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-600">Rechtsform</span>
+                        <span className="font-medium">{provider.legal_status}</span>
+                      </div>
+                    )}
+
+                    {provider.main_focus && (
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-600">Schwerpunkt</span>
+                        <span className="font-medium">{provider.main_focus}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {provider.website && (
+                    <a
+                      href={provider.website.startsWith('http') ? provider.website : `https://${provider.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center text-primary hover:text-primary-dark"
+                    >
+                      <Globe className="h-4 w-4 mr-1" />
+                      Website des Anbieters besuchen
+                    </a>
+                  )}
+                </div>
+              )}
+
+      {/* Rating Form */}
               {showRatingForm && (
                 <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-secondary/30">
                   <h3 className="text-xl font-semibold mb-4 flex items-center">
@@ -635,14 +739,6 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                 </div>
               )}
 
-              {/* Additional Info Box */}
-              {detailedInfo.approach && detailedInfo.approach !== "Keine Angaben" && (
-                <div className="bg-primary/10 p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold mb-3">Unser Ansatz</h3>
-                  <p className="text-gray-600">{detailedInfo.approach}</p>
-                </div>
-              )}
-
               {/* Demo notice */}
               <div className="bg-secondary/10 p-4 rounded-lg mt-6">
                 <div className="flex items-start">
@@ -655,12 +751,12 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
             </div>
           </div>
 
-          {/* Action Buttons - Removed the duplicate rating button */}
+          {/* Action Buttons */}
           <div className="p-6 bg-gray-50 border-t border-gray-100">
             <div className="flex flex-wrap gap-3">
-              {detailedInfo.contactInfo?.phone && detailedInfo.contactInfo.phone !== "Nicht angegeben" && (
+              {contactPhone && (
                 <Button
-                  href={`tel:${detailedInfo.contactInfo.phone}`}
+                  href={`tel:${contactPhone}`}
                   variant="primary"
                   className="flex items-center"
                 >
@@ -669,9 +765,9 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                 </Button>
               )}
 
-              {detailedInfo.contactInfo?.email && detailedInfo.contactInfo.email !== "Nicht angegeben" && (
+              {contactEmail && (
                 <Button
-                  href={`mailto:${detailedInfo.contactInfo.email}`}
+                  href={`mailto:${contactEmail}`}
                   variant="outline"
                   className="flex items-center"
                 >
@@ -680,9 +776,9 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
                 </Button>
               )}
 
-              {detailedInfo.contactInfo?.website && detailedInfo.contactInfo.website !== "Nicht angegeben" && (
+              {contactWebsite && (
                 <Button
-                  href={detailedInfo.contactInfo.website.startsWith('http') ? detailedInfo.contactInfo.website : `https://${detailedInfo.contactInfo.website}`}
+                  href={contactWebsite.startsWith('http') ? contactWebsite : `https://${contactWebsite}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="outline"
@@ -701,3 +797,4 @@ const OfferingDetail = ({ offering: propOffering, onBack }) => {
 };
 
 export default OfferingDetail;
+

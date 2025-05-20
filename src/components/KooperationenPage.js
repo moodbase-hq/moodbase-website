@@ -154,7 +154,7 @@ const KooperationenPage = () => {
               viewport={{ once: false }}
               transition={{ duration: 0.6 }}
             >
-              So können wir zusammenarbeiten
+Unsere Zusammenarbeit kann viele Formen haben
             </motion.h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
@@ -214,7 +214,7 @@ const KooperationenPage = () => {
                 viewport={{ once: false }}
                 transition={{ duration: 0.6 }}
               >
-                Nehmen Sie Kontakt auf
+Gemeinsam mehr bewegen
               </motion.h2>
 
               <motion.p
@@ -224,7 +224,8 @@ const KooperationenPage = () => {
                 viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Haben Sie Interesse an einer Kooperation oder benötigen Sie Unterstützung? Kontaktieren Sie uns und wir finden gemeinsam Wege zur Zusammenarbeit.
+ie setzen sich für junge Menschen ein und möchten die Arbeit von moodbase unterstützen? Dann lassen Sie uns ins Gespräch kommen.
+Wir freuen uns auf Ihre Kooperationsanfrage und darauf, gemeinsam Perspektiven zu schaffen.
               </motion.p>
 
               <motion.div
