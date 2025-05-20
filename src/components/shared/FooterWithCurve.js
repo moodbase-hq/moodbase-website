@@ -69,7 +69,7 @@ const FooterWithCurve = () => {
               <li>
                 <Link to="/technical-support" className="text-white/80 hover:text-white transition-colors flex items-center">
                   <ArrowRight size={16} className="mr-2" />
-                  <span>Support</span>
+                  <span>Tech Support</span>
                 </Link>
               </li>
               <li>

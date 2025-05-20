@@ -17,7 +17,7 @@ const Logo = ({ size = 'medium' }) => {
     <div className="flex items-center">
       {/* Primary approach: use img with built-in fallback */}
       <img
-        src="/logo.svg"
+        src="/logo192.png"
         alt="moodbase logo"
         width={dimensions.width}
         height={dimensions.height}

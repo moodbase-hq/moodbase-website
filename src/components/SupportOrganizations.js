@@ -129,7 +129,7 @@ const OrganizationPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                Für Hilfeorganisationen
+                Für Einrichtungen, die junge Menschen stärken
               </motion.h1>
               <motion.p
                 className="text-lg text-gray-700 mb-8"
@@ -137,7 +137,7 @@ const OrganizationPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Hier finden Sie alle Informationen, um Ihre Angebote auf moodbase zu veröffentlichen oder zu aktualisieren.
+                Hier können Sie Ihre Unterstützungsangebote ganz einfach auf moodbase veröffentlichen oder aktualisieren – damit junge Menschen genau die Hilfe finden, die sie brauchen
               </motion.p>
             </div>
           </div>
@@ -149,13 +149,13 @@ const OrganizationPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
               <InfoCard
                 title="Angebot hinzufügen"
-                description="Fügen Sie Ihre Hilfs- und Unterstützungsangebote zu unserer Datenbank hinzu, um junge Menschen zu erreichen."
+                description="Tragen Sie Ihre Angebote ein und werden Sie Teil unseres wachsenden Netzwerks an Unterstützung."
                 icon={PlusCircle}
                 delay={0.1}
               />
               <InfoCard
                 title="Informationen aktualisieren"
-                description="Aktualisieren Sie bestehende Einträge, um sicherzustellen, dass alle Informationen korrekt und aktuell sind."
+                description="Halten Sie Ihre bestehenden Einträge aktuell, damit junge Menschen auf verlässliche Informationen zählen können."
                 icon={Edit}
                 delay={0.2}
               />

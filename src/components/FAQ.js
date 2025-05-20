@@ -81,15 +81,15 @@ const FAQPage = () => {
   const faqs = [
     {
       question: "Was ist moodbase?",
-      answer: "moodbase ist eine Plattform, die junge Menschen mit psychosozialen Unterstützungsangeboten in Deutschland verbindet. Wir möchten den Zugang zu Hilfsangeboten vereinfachen, unabhängig vom sozioökonomischen Status."
+      answer: "moodbase ist eine Plattform, die junge Menschen mit psychosozialen Unterstützungsangeboten in Deutschland verbindet. Wir möchten den Zugang zu Hilfsangeboten vereinfachen, unabhängig vom der Herkunft. dafür nutzen wir viel technik und viel Herz."
     },
     {
       question: "Wie kann ich Hilfsangebote finden?",
-      answer: "Auf der Datenbank-Seite können Sie nach verschiedenen Kriterien suchen, wie z.B. Ort, Art der Unterstützung oder spezifische Themen. Die Ergebnisse werden übersichtlich angezeigt und bieten alle wichtigen Informationen zu den jeweiligen Angeboten."
+      answer: "Auf der Datenbank-Seite kannst du nach verschiedenen Kriterien suchen, wie z.B. Ort, Art der Unterstützung oder spezifische Themen. Die Ergebnisse werden übersichtlich angezeigt und bieten alle wichtigen Informationen zu den jeweiligen Angeboten. Du kannst auch mit dem KI-Assistenten sprechen und er berät sich dann, er hat auch Zugang zur Datenbank."
     },
     {
       question: "Sind die Angebote kostenlos?",
-      answer: "moodbase selbst ist komplett kostenfrei. Die Kosten für die aufgelisteten Angebote variieren je nach Anbieter. Bei jedem Angebot finden Sie Informationen zu eventuellen Kosten oder Versicherungsleistungen."
+      answer: "moodbase selbst ist komplett kostenfrei. Die Kosten für die aufgelisteten Angebote variieren je nach Anbieter. Bei jedem Angebot findest du Informationen zu eventuellen Kosten oder Versicherungsleistungen."
     },
     {
       question: "Wie werden die Angebote ausgewählt?",
@@ -154,7 +154,7 @@ const FAQPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Hier finden Sie Antworten auf die häufigsten Fragen zu moodbase und unseren Angeboten.
+                Du hast eine Frage? Vielleicht findest du hier schon die passende Antwort. Wenn nicht, schreib uns einfach. Wir helfen dir gerne weiter.
               </motion.p>
             </div>
           </div>

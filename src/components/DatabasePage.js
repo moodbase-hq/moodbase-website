@@ -1,6 +1,5 @@
-// src/pages/DatabasePage.jsx
 import React, { useState, useEffect } from 'react';
-import { Search, Map } from 'lucide-react';
+import { Search, Map, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/shared/Header';
@@ -17,7 +16,9 @@ import OutlinedBlob from '../components/shared/assets/3.svg';
 import CloudBlob from '../components/shared/assets/4.svg';
 
 // API client setup
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+
+console.log("API URL:", API_URL); // Debug the API URL
 
 const api = axios.create({
   baseURL: API_URL,
@@ -106,6 +107,13 @@ const AnimatedSvg = ({
   );
 };
 
+// Helper function to truncate text with ellipsis
+const truncateText = (text, maxLength = 30) => {
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+};
+
 // Wave Divider component
 const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' }) => {
   // Use different curves based on position
@@ -146,6 +154,27 @@ const WaveDivider = ({ position = 'bottom', color = '#2F5EA8', className = '' })
   }
 };
 
+// Filter dropdown component
+const FilterDropdown = ({ label, options, value, onChange, className }) => {
+  return (
+    <div className={`relative z-10 ${className}`}>
+      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <select
+        value={value || ""}
+        onChange={(e) => onChange(e.target.value)}
+        className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-md"
+      >
+        <option value="">Alle</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
 const DatabasePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState([]);
@@ -154,6 +183,19 @@ const DatabasePage = () => {
   const [error, setError] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [showAssistant, setShowAssistant] = useState(false);
+
+  // New filter states
+  const [showFilters, setShowFilters] = useState(false);
+  const [serviceTypes, setServiceTypes] = useState([]);
+  const [selectedServiceType, setSelectedServiceType] = useState('');
+  const [modalities, setModalities] = useState([]);
+  const [selectedModality, setSelectedModality] = useState('');
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [languages, setLanguages] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState('');
 
   // Color definitions
   const blueBackground = '#2F5EA8'; // Blue for footer section
@@ -165,7 +207,105 @@ const DatabasePage = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get('/offerings');
+
+        console.log("Attempting to fetch data from API...");
+
+        // First check which endpoints are available
+        let offeringsEndpoint = '/api/offerings';
+        let languagesEndpoint = '/api/languages';
+
+        try {
+          // Test if we can access the offerings endpoint
+          console.log("Testing connection to:", API_URL + offeringsEndpoint);
+          await api.get(offeringsEndpoint);
+          console.log("Successfully connected to offerings endpoint");
+
+          // Check if languages endpoint exists
+          try {
+            await api.get(languagesEndpoint);
+            console.log("Languages endpoint available");
+          } catch (err) {
+            console.log("Languages endpoint not available, skipping language filters");
+            languagesEndpoint = null;
+          }
+        } catch (error) {
+          console.error("Error connecting to offerings endpoint:", error);
+          setError('Could not connect to the API. Please check the server connection.');
+          setIsLoading(false);
+          return;
+        }
+
+        // Fetch the offerings data
+        const response = await api.get(offeringsEndpoint);
+        console.log("Received offerings data:", response.data.length, "items");
+
+        // Extract unique service types for filters
+        const types = [...new Set(
+          response.data
+            .map(item => item.service_type || item.type)
+            .filter(Boolean)
+        )];
+
+        // Extract modalities (primary_location_type)
+        const modalitiesList = [...new Set(
+          response.data
+            .map(item => item.primary_location_type)
+            .filter(Boolean)
+        )];
+
+        // Extract cities from addresses
+        const citiesList = [];
+        response.data.forEach(item => {
+          if (item.address) {
+            // Try to extract city from address
+            const addressParts = item.address.split(',');
+            if (addressParts.length > 1) {
+              // Typically city is in the last part with postal code
+              const cityPart = addressParts[addressParts.length - 1].trim();
+              // Extract just the city name (without postal code if present)
+              const cityMatch = cityPart.match(/\d{5}\s+(.+)/) || cityPart.match(/(.+)/);
+              if (cityMatch && cityMatch[1]) {
+                citiesList.push(cityMatch[1].trim());
+              }
+            }
+          }
+        });
+
+        // Get unique cities
+        const uniqueCities = [...new Set(citiesList)].filter(city => city.length > 0);
+
+        // Extract location types
+        const locs = [...new Set(
+          response.data
+            .map(item => item.location_types || item.location)
+            .filter(Boolean)
+        )];
+
+        console.log("Extracted filter options:", {
+          types,
+          modalitiesList,
+          uniqueCities,
+          locs
+        });
+
+        setServiceTypes(types);
+        setModalities(modalitiesList);
+        setCities(uniqueCities);
+        setLocations(locs);
+
+        // Get available languages if endpoint exists
+        if (languagesEndpoint) {
+          try {
+            const langResponse = await api.get(languagesEndpoint);
+            if (langResponse.data && langResponse.data.length > 0) {
+              setLanguages(langResponse.data.map(lang => lang.name));
+              console.log("Loaded languages:", langResponse.data.length);
+            }
+          } catch (err) {
+            console.log('Error fetching languages:', err);
+          }
+        }
+
         setData(response.data);
         setFilteredData(response.data);
         setError(null);
@@ -180,25 +320,149 @@ const DatabasePage = () => {
     fetchData();
   }, []);
 
-  // Search functionality
+  // Search functionality with filters
   useEffect(() => {
     const performSearch = async () => {
-      if (searchTerm.trim() === '') {
-        setFilteredData(data);
-        return;
-      }
-
       try {
-        const response = await api.get(`/offerings/search?term=${encodeURIComponent(searchTerm)}`);
+        let url = '/api/offerings';
+        const hasFilters = searchTerm || selectedServiceType || selectedModality || selectedCity || selectedLocation || selectedLanguage;
+
+        if (hasFilters) {
+          // Check if we're hitting a 404 issue with search endpoint
+          console.log("Applying filters...");
+
+          // First, try to make a request to ensure the search endpoint exists
+          try {
+            await api.get('/api/offerings/search');
+            console.log("Search endpoint is available");
+          } catch (error) {
+            if (error.response && error.response.status === 404) {
+              console.warn("Search endpoint not found, falling back to client-side filtering");
+              // Fall back to client-side filtering if endpoint doesn't exist
+              let filtered = [...data];
+
+              if (searchTerm) {
+                const searchTermLower = searchTerm.toLowerCase();
+                filtered = filtered.filter(item => {
+                  // Check for postal code match
+                  const hasPostalCode = item.address && /\d{5}/.test(item.address) &&
+                                      item.address.match(/\d{5}/)[0].includes(searchTermLower);
+
+                  return hasPostalCode ||
+                    Object.values(item).some(value =>
+                      value?.toString().toLowerCase().includes(searchTermLower)
+                    );
+                });
+              }
+
+              if (selectedServiceType) {
+                filtered = filtered.filter(item =>
+                  (item.service_type || item.type)?.toLowerCase() === selectedServiceType.toLowerCase()
+                );
+              }
+
+              if (selectedModality) {
+                filtered = filtered.filter(item =>
+                  item.primary_location_type?.toLowerCase() === selectedModality.toLowerCase()
+                );
+              }
+
+              if (selectedCity) {
+                filtered = filtered.filter(item =>
+                  item.address?.toLowerCase().includes(selectedCity.toLowerCase())
+                );
+              }
+
+              if (selectedLocation) {
+                filtered = filtered.filter(item =>
+                  (item.location_types || item.location)?.toLowerCase() === selectedLocation.toLowerCase()
+                );
+              }
+
+              setFilteredData(filtered);
+              return;
+            }
+          }
+
+          // If we reach here, the endpoint exists, so use it
+          url = '/api/offerings/search';
+          const params = new URLSearchParams();
+
+          if (searchTerm) {
+            params.append('term', searchTerm);
+          }
+
+          if (selectedServiceType) {
+            params.append('serviceType', selectedServiceType);
+          }
+
+          if (selectedModality) {
+            params.append('modality', selectedModality);
+          }
+
+          if (selectedCity) {
+            params.append('city', selectedCity);
+          }
+
+          if (selectedLocation) {
+            params.append('location', selectedLocation);
+          }
+
+          if (selectedLanguage) {
+            params.append('language', selectedLanguage);
+          }
+
+          url += `?${params.toString()}`;
+        }
+
+        console.log("Making API request to:", API_URL + url);
+        const response = await api.get(url);
+        console.log("Search returned", response.data.length, "results");
         setFilteredData(response.data);
       } catch (error) {
         console.error('Search error:', error);
         // Fall back to client-side filtering in case of API error
-        const filtered = data.filter(item =>
-          Object.values(item).some(value =>
-            value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        );
+        let filtered = [...data];
+
+        if (searchTerm) {
+          const searchTermLower = searchTerm.toLowerCase();
+          filtered = filtered.filter(item => {
+            // Check for postal code match
+            const hasPostalCode = item.address && /\d{5}/.test(item.address) &&
+                                item.address.match(/\d{5}/)[0].includes(searchTermLower);
+
+            // General search on all fields
+            return hasPostalCode ||
+              Object.values(item).some(value =>
+                value?.toString().toLowerCase().includes(searchTermLower)
+              );
+          });
+        }
+
+        if (selectedServiceType) {
+          filtered = filtered.filter(item =>
+            (item.service_type || item.type)?.toLowerCase() === selectedServiceType.toLowerCase()
+          );
+        }
+
+        if (selectedModality) {
+          filtered = filtered.filter(item =>
+            item.primary_location_type?.toLowerCase() === selectedModality.toLowerCase()
+          );
+        }
+
+        if (selectedCity) {
+          filtered = filtered.filter(item =>
+            item.address?.toLowerCase().includes(selectedCity.toLowerCase())
+          );
+        }
+
+        if (selectedLocation) {
+          filtered = filtered.filter(item =>
+            (item.location_types || item.location)?.toLowerCase() === selectedLocation.toLowerCase()
+          );
+        }
+
         setFilteredData(filtered);
       }
     };
@@ -209,16 +473,19 @@ const DatabasePage = () => {
     }, 300);
 
     return () => clearTimeout(timerId);
-  }, [searchTerm, data]);
+  }, [searchTerm, selectedServiceType, selectedModality, selectedCity, selectedLocation, selectedLanguage, data]);
 
   const handleRowClick = async (id) => {
     try {
       setIsLoading(true);
-      const response = await api.get(`/offerings/${id}`);
+      console.log("Fetching offering details for ID:", id);
+      const response = await api.get(`/api/offerings/${id}`);
+      console.log("Received offering details:", response.data);
       setSelectedOffer(response.data);
     } catch (error) {
       console.error('Error loading offering details:', error);
       // Fallback to the local data if API fails
+      console.log("Falling back to local data");
       const offer = data.find(item => item.id === id);
       setSelectedOffer(offer);
     } finally {
@@ -232,6 +499,16 @@ const DatabasePage = () => {
     if (service) {
       handleRowClick(service.id);
     }
+  };
+
+  // Reset filters
+  const resetFilters = () => {
+    setSearchTerm('');
+    setSelectedServiceType('');
+    setSelectedModality('');
+    setSelectedCity('');
+    setSelectedLocation('');
+    setSelectedLanguage('');
   };
 
   if (selectedOffer) {
@@ -370,7 +647,64 @@ const DatabasePage = () => {
             >
               <span>{showAssistant ? 'Zur Suche' : 'KI-Assistent öffnen'}</span>
             </button>
+
+            {/* Filter toggle button */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-full transition-colors flex items-center justify-center space-x-2 relative z-20"
+            >
+              <Filter size={18} />
+              <span>Filter {showFilters ? 'ausblenden' : 'anzeigen'}</span>
+            </button>
           </div>
+
+          {/* Filter options */}
+          {showFilters && (
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 mb-6 flex flex-wrap gap-4 relative z-20">
+              <FilterDropdown
+                label="Angebotstyp"
+                options={serviceTypes}
+                value={selectedServiceType}
+                onChange={setSelectedServiceType}
+                className="w-full md:w-1/5"
+              />
+
+              <FilterDropdown
+                label="Stadt"
+                options={cities}
+                value={selectedCity}
+                onChange={setSelectedCity}
+                className="w-full md:w-1/5"
+              />
+
+              <FilterDropdown
+                label="Modalität"
+                options={locations}
+                value={selectedLocation}
+                onChange={setSelectedLocation}
+                className="w-full md:w-1/5"
+              />
+
+              {languages.length > 0 && (
+                <FilterDropdown
+                  label="Sprache"
+                  options={languages}
+                  value={selectedLanguage}
+                  onChange={setSelectedLanguage}
+                  className="w-full md:w-1/5"
+                />
+              )}
+
+              <div className="flex items-end justify-end w-full mt-2">
+                <button
+                  onClick={resetFilters}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Filter zurücksetzen
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -407,16 +741,17 @@ const DatabasePage = () => {
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Angebot</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Anbieter</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Angebotstyp</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Ort</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Verfügbarkeit</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Kosten</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Modalität</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Sprachen</th>
                         </tr>
                       </thead>
                       <tbody className="bg-transparent divide-y divide-gray-200">
                         {filteredData.length === 0 ? (
                           <tr>
-                            <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
+                            <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
                               Keine Angebote gefunden.
                             </td>
                           </tr>
@@ -434,29 +769,63 @@ const DatabasePage = () => {
                                   {item.name}
                                 </button>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">{item.provider}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">{item.location}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                                {item.provider_name || item.provider}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                                {truncateText(item.service_type || item.type, 20)}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                                {truncateText(item.address || item.location, 25)}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                                {truncateText(item.cost || item.costs, 15)}
+                              </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
                                       style={{
                                         backgroundColor: 'rgba(161, 62, 75, 0.1)',
                                         color: theme.colors.primary
                                       }}>
-                                  {item.availability}
+                                  {truncateText(item.primary_location_type || item.availability_times || item.availability || 'Vor Ort', 20)}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-gray-600">{item.costs}</td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex flex-wrap gap-1">
-                                  {item.languages && item.languages.map((lang, index) => (
-                                    <span key={index} className="px-2 py-1 text-xs rounded-full"
-                                        style={{
-                                          backgroundColor: 'rgba(47, 94, 168, 0.1)',
-                                          color: theme.colors.secondary
-                                        }}>
-                                      {lang}
-                                    </span>
-                                  ))}
+                              <td className="px-6 py-4">
+                                <div className="flex flex-wrap gap-1 max-w-[150px]">
+                                  {item.languages && item.languages.length > 0 ? (
+                                    item.languages.length <= 2 ? (
+                                      // Show all languages if there are 2 or fewer
+                                      item.languages.map((lang, index) => (
+                                        <span key={index} className="px-2 py-1 text-xs rounded-full"
+                                            style={{
+                                              backgroundColor: 'rgba(47, 94, 168, 0.1)',
+                                              color: theme.colors.secondary
+                                            }}>
+                                          {lang}
+                                        </span>
+                                      ))
+                                    ) : (
+                                      // Show first language + count if more than 2
+                                      <>
+                                        <span className="px-2 py-1 text-xs rounded-full"
+                                            style={{
+                                              backgroundColor: 'rgba(47, 94, 168, 0.1)',
+                                              color: theme.colors.secondary
+                                            }}>
+                                          {item.languages[0]}
+                                        </span>
+                                        <span className="px-2 py-1 text-xs rounded-full"
+                                            style={{
+                                              backgroundColor: 'rgba(47, 94, 168, 0.1)',
+                                              color: theme.colors.secondary
+                                            }}>
+                                          +{item.languages.length - 1}
+                                        </span>
+                                      </>
+                                    )
+                                  ) : (
+                                    <span className="text-xs text-gray-500">Deutsch</span>
+                                  )}
                                 </div>
                               </td>
                             </tr>

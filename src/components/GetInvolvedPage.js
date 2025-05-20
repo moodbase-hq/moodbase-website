@@ -317,18 +317,22 @@ const SupportExplainer = () => {
             <div className="rounded-full bg-[#4BAA7A]/10 p-3 mr-4">
               <Heart size={32} className="text-[#4BAA7A]" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900">Warum deine Unterstützung wichtig ist</h3>
+            <h3 className="text-2xl font-bold text-gray-900">Warum deine Unterstützung wichtig ist" --> "Gemeinsam für eine zugängliche Zukunft</h3>
           </div>
 
           <div className="space-y-4">
             <p className="text-gray-700">
-              Moodbase ist ein gemeinnütziges Projekt, das von deiner Unterstützung lebt. Wir haben zwei Hauptwege, über die du uns helfen kannst:
+              moodbase ist ein gemeinnütziges Projekt: und lebt durch Menschen und Teilhabe!
+Wenn du unsere Vision teilst, gibt es zwei einfache Wege, sie Wirklichkeit werden zu lassen:
             </p>
 
             <div className="pl-4 border-l-4 border-[#2F5EA8] bg-blue-50/50 p-4 rounded-r-lg">
               <h4 className="font-bold text-lg text-gray-900 mb-2">Crowdfunding: Die Startfinanzierung</h4>
               <p className="text-gray-700">
-                Mit unserer Crowdfunding-Kampagne finanzieren wir den Aufbau der grundlegenden Infrastruktur. Diese einmalige Investition ermöglicht es uns, die notwendige Technologie zu entwickeln, die moodbase zum Leben erweckt.
+unsere Startfinanzierung
+Mit unserer Crowdfunding-Kampagne bauen wir die technische Basis von moodbase auf.
+Dieser Beitrag hilft uns, die Plattform zu entwickeln, die junge Menschen mit den passenden psychosozialen Angeboten verbindet: niedrigschwellig, datensicher und wirkungsvoll.
+Eine einmalige Investition, mit der du viel bewegst.
               </p>
             </div>
 
@@ -338,8 +342,10 @@ const SupportExplainer = () => {
                 Über Steady kannst du uns mit regelmäßigen monatlichen Beiträgen unterstützen. Diese Mittel sichern den laufenden Betrieb und ermöglichen es uns, kontinuierlich neue Inhalte zu erstellen und die Plattform zu verbessern.
               </p>
               <p className="text-gray-700 mt-2">
-                Als Steady-Unterstützer erhältst du exklusive Einblicke in unseren Entwicklungsprozess, Vlogs und Artikel der Macher hinter moodbase, die dir zeigen, wie deine Unterstützung eingesetzt wird.
-              </p>
+für alle, die langfristig dabei sein wollen
+Mit einem monatlichen Beitrag über Steady wird der laufenden Betrieb von moodbase unterstützt.
+Dies ermöglicht neue Inhalte, den weiteren Ausbau der Plattform, und damit echten Zugang zu Hilfe für viele junge Menschen.
+Als Dankeschön nehmen wir gerne alle Unterstützenden mit auf unsere Reise und geben direkte Einblicke hinter die Kulissen: Vlogs, Artikel und Updates direkt von den Macher*innen von moodbase. Werde Teil an der Idee hinter moodbase.              </p>
             </div>
           </div>
         </motion.div>
