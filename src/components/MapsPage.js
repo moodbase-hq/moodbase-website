@@ -17,7 +17,7 @@ import OutlinedBlob from './shared/assets/3.svg';
 import CloudBlob from './shared/assets/4.svg';
 
 // API client setup
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 // Set your Mapbox access token
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'your_mapbox_token';
 
@@ -91,7 +91,7 @@ const MapsPage = () => {
     const fetchMapData = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get('/map');
+        const response = await api.get('/api/map');
         setMapData(response.data);
         setError(null);
 
