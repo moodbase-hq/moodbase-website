@@ -1,0 +1,29 @@
+.page {
+  background-color: var(--color-background-primary);
+  min-height: 100vh;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-xxl);
+  max-width: var(--breakpoint-desktop);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md) var(--spacing-xxl) var(--spacing-md);
+}
+
+.sidebar {
+  /* Styles handled by Filters component */
+}
+
+.main {
+  /* Styles handled by BlogResults component */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}

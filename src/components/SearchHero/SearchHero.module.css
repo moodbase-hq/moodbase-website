@@ -1,0 +1,31 @@
+.hero {
+  padding: var(--spacing-xl) 0 var(--spacing-xxl) 0;
+  background-color: var(--color-background-primary);
+}
+
+.container {
+  max-width: var(--breakpoint-desktop);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.title {
+  font-size: var(--font-size-700);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-lg);
+  text-align: left;
+  color: var(--color-foreground-primary);
+  line-height: var(--line-height-compact);
+}
+
+.searchContainer {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .searchContainer {
+    margin-bottom: var(--spacing-sm);
+  }
+}

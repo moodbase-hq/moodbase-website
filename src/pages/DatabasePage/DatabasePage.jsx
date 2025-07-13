@@ -1,0 +1,347 @@
+import React, { useState, useEffect } from 'react'
+import Header from '../../components/Header/Header'
+import SearchHero from '../../components/SearchHero/SearchHero'
+import Filters from '../../components/Filters/Filters'
+import SearchResults from '../../components/SearchResults/SearchResults'
+import Footer from '../../components/Footer/Footer'
+import OfferingDetail from '../../components/OfferingDetail/OfferingDetail'
+import apiService from '../../services/apiService'
+import styles from './DatabasePage.module.css'
+
+const DatabasePage = () => {
+  // State for data and UI
+  const [allData, setAllData] = useState([])
+  const [filteredData, setFilteredData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [selectedOffering, setSelectedOffering] = useState(null)
+
+  // Search and filter state
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filters, setFilters] = useState([])
+  const [filterValues, setFilterValues] = useState({})
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
+
+  // Calculate pagination
+  const totalItems = filteredData.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentResults = filteredData.slice(startIndex, endIndex)
+
+  // Load initial data
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+
+        // Fetch offerings data
+        const offerings = await apiService.fetchOfferings()
+        console.log('Loaded offerings:', offerings.length)
+        
+        // Extract filter options from data
+        const filterOptions = apiService.extractFilterOptions(offerings)
+        
+        // Create filter configuration
+        const filterConfig = [
+          {
+            key: "serviceType",
+            label: "Angebotstyp",
+            value: "alle",
+            options: [
+              { label: "Alle", value: "alle" },
+              ...filterOptions.serviceTypes.map(type => ({
+                label: type,
+                value: type
+              }))
+            ]
+          },
+          {
+            key: "city",
+            label: "Stadt",
+            value: "alle",
+            options: [
+              { label: "Alle", value: "alle" },
+              ...filterOptions.cities.map(city => ({
+                label: city,
+                value: city
+              }))
+            ]
+          },
+          {
+            key: "modality",
+            label: "Modalität",
+            value: "alle",
+            options: [
+              { label: "Alle", value: "alle" },
+              ...filterOptions.modalities.map(modality => ({
+                label: modality,
+                value: modality
+              }))
+            ]
+          }
+        ]
+
+        setAllData(offerings)
+        setFilteredData(offerings)
+        setFilters(filterConfig)
+        
+      } catch (err) {
+        console.error('Error loading data:', err)
+        setError('Fehler beim Laden der Daten. Bitte versuchen Sie es später erneut.')
+        
+        // Fallback to default filters if API fails
+        setFilters([
+          {
+            key: "serviceType",
+            label: "Angebotstyp",
+            value: "alle",
+            options: [{ label: "Alle", value: "alle" }]
+          },
+          {
+            key: "city",
+            label: "Stadt", 
+            value: "alle",
+            options: [{ label: "Alle", value: "alle" }]
+          },
+          {
+            key: "modality",
+            label: "Modalität",
+            value: "alle", 
+            options: [{ label: "Alle", value: "alle" }]
+          }
+        ])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
+  }, [])
+
+  // Search and filter effect
+  useEffect(() => {
+    const performSearch = async () => {
+      try {
+        // Build search parameters
+        const searchParams = {}
+        
+        if (searchTerm.trim()) {
+          searchParams.term = searchTerm.trim()
+        }
+        
+        // Add active filters
+        Object.entries(filterValues).forEach(([key, value]) => {
+          if (value && value !== 'alle') {
+            if (key === 'serviceType') searchParams.serviceType = value
+            if (key === 'city') searchParams.city = value
+            if (key === 'modality') searchParams.modality = value
+          }
+        })
+
+        // Perform search if we have search criteria, otherwise use all data
+        const hasSearchCriteria = Object.keys(searchParams).length > 0
+        
+        if (hasSearchCriteria) {
+          const results = await apiService.searchOfferings(searchParams)
+          setFilteredData(results)
+        } else {
+          setFilteredData(allData)
+        }
+        
+        // Reset to first page when search changes
+        setCurrentPage(1)
+        
+      } catch (err) {
+        console.error('Search error:', err)
+        // Fall back to client-side filtering
+        let filtered = [...allData]
+        
+        if (searchTerm.trim()) {
+          const term = searchTerm.toLowerCase()
+          filtered = filtered.filter(item => 
+            item.name?.toLowerCase().includes(term) ||
+            item.provider_name?.toLowerCase().includes(term) ||
+            item.address?.toLowerCase().includes(term) ||
+            item.service_type?.toLowerCase().includes(term)
+          )
+        }
+        
+        // Apply filters
+        Object.entries(filterValues).forEach(([key, value]) => {
+          if (value && value !== 'alle') {
+            if (key === 'serviceType') {
+              filtered = filtered.filter(item => item.service_type === value)
+            }
+            if (key === 'city') {
+              filtered = filtered.filter(item => item.address?.includes(value))
+            }
+            if (key === 'modality') {
+              filtered = filtered.filter(item => item.primary_location_type === value)
+            }
+          }
+        })
+        
+        setFilteredData(filtered)
+        setCurrentPage(1)
+      }
+    }
+
+    // Debounce search
+    const timeoutId = setTimeout(performSearch, 300)
+    return () => clearTimeout(timeoutId)
+  }, [searchTerm, filterValues, allData])
+
+  // Event handlers
+  const handleSearch = (term) => {
+    setSearchTerm(term)
+  }
+
+  const handleFilterChange = (filterKey, value) => {
+    setFilterValues(prev => ({
+      ...prev,
+      [filterKey]: value
+    }))
+  }
+
+  const handleResetFilters = () => {
+    setSearchTerm('')
+    setFilterValues({})
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
+
+  const handleDetailsClick = async (offeringId) => {
+    try {
+      setIsLoading(true)
+      const offering = await apiService.fetchOfferingById(offeringId)
+      setSelectedOffering(offering)
+    } catch (err) {
+      console.error('Error loading offering details:', err)
+      // Fallback to local data
+      const offering = allData.find(item => item.id === offeringId)
+      setSelectedOffering(offering)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleBackToSearch = () => {
+    setSelectedOffering(null)
+  }
+
+  // Show detail view if offering is selected
+  if (selectedOffering) {
+    return (
+      <OfferingDetail 
+        offering={selectedOffering} 
+        onBack={handleBackToSearch}
+      />
+    )
+  }
+
+  // Header navigation data
+  const headerProps = {
+    logo: "moodbase",
+    navigation: [
+      { text: "Über uns", href: "/about" },
+      { text: "Datenbank", href: "/database" },
+      { text: "Blog", href: "/blog" },
+      { text: "Unterstützen", href: "/support" }
+    ],
+    ctaText: "Hilfe finden"
+  }
+
+  // Footer data
+  const footerProps = {
+    logo: "moodbase",
+    plantDecoration: "/images/decorations/plant-decoration.png",
+    columns: [
+      {
+        title: "MOODBASE",
+        items: [
+          { text: "Über uns", href: "/about" },
+          { text: "Datenbank", href: "/database" },
+          { text: "Blog", href: "/blog" },
+          { text: "Unterstützen", href: "/support" }
+        ]
+      },
+      {
+        title: "RESSOURCEN",
+        items: [
+          { text: "Tech Support", href: "#tech-support" },
+          { text: "Hilforganisationen", href: "#help-organizations" },
+          { text: "FAQ", href: "#faq" }
+        ]
+      },
+      {
+        title: "RECHTLICHES & KONTAKT",
+        items: [
+          { text: "Impressum", href: "#impressum" },
+          { text: "Datenschutz", href: "#privacy" },
+          { text: "Nutzungsbedingungen", href: "#terms" },
+          { text: "info@moodbase.de", href: "mailto:info@moodbase.de" }
+        ]
+      },
+      {
+        title: "SOCIAL MEDIA",
+        items: [
+          { text: "Instagram", href: "#instagram" },
+          { text: "TikTok", href: "#tiktok" },
+          { text: "LinkedIn", href: "#linkedin" }
+        ]
+      }
+    ]
+  }
+
+  return (
+    <div className={styles.page}>
+      <Header {...headerProps} />
+      <SearchHero
+        title="Psychosoziale Angebote"
+        searchPlaceholder="Angebote durchsuchen"
+        onSearch={handleSearch}
+      />
+      {error && (
+        <div className={styles.errorMessage}>
+          <p>{error}</p>
+        </div>
+      )}
+      <div className={styles.content}>
+        <div className={styles.sidebar}>
+          <Filters
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onReset={handleResetFilters}
+          />
+        </div>
+        <div className={styles.main}>
+          {isLoading ? (
+            <div className={styles.loading}>
+              <p>Laden...</p>
+            </div>
+          ) : (
+            <SearchResults
+              results={currentResults}
+              resultCount={totalItems}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onDetailsClick={handleDetailsClick}
+            />
+          )}
+        </div>
+      </div>
+      <Footer {...footerProps} />
+    </div>
+  )
+}
+
+export default DatabasePage

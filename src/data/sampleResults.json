@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Allgemeine Sozialberatung in einem Bezirk von Berlin",
+    "organization": "Caritasverband für das Erztum Berlin e.v.",
+    "location": "Berlin",
+    "languages": ["Deutsch", "English", "Türkisch"],
+    "contactMethods": ["Online", "Telefon"],
+    "consultationTypes": ["Beratung", "Krisenintervention"],
+    "type": "beratung",
+    "modality": "hybrid"
+  },
+  {
+    "id": 2,
+    "title": "Digi Sucht",
+    "organization": "Stiftung SPI",
+    "location": "Berlin",
+    "languages": ["Deutsch"],
+    "contactMethods": ["Hybrid"],
+    "consultationTypes": ["Beratung"],
+    "type": "beratung",
+    "modality": "hybrid"
+  },
+  {
+    "id": 3,
+    "title": "Psychotherapeutische Praxis Dr. Müller",
+    "organization": "Privatpraxis Dr. Müller",
+    "location": "Hamburg",
+    "languages": ["Deutsch", "English"],
+    "contactMethods": ["Vor Ort", "Online"],
+    "consultationTypes": ["Therapie", "Einzelsitzungen"],
+    "type": "therapie",
+    "modality": "hybrid"
+  },
+  {
+    "id": 4,
+    "title": "Jugendberatung München",
+    "organization": "Stadtjugendamt München",
+    "location": "München",
+    "languages": ["Deutsch", "Türkisch", "Französisch"],
+    "contactMethods": ["Vor Ort", "Telefon"],
+    "consultationTypes": ["Beratung", "Familienberatung"],
+    "type": "beratung",
+    "modality": "vor-ort"
+  },
+  {
+    "id": 5,
+    "title": "Online Therapie Portal",
+    "organization": "TeleTherapie GmbH",
+    "location": "Deutschlandweit",
+    "languages": ["Deutsch", "English", "Spanisch"],
+    "contactMethods": ["Online", "Video"],
+    "consultationTypes": ["Therapie", "Coaching"],
+    "type": "therapie",
+    "modality": "online"
+  },
+  {
+    "id": 6,
+    "title": "Suchtberatung Köln",
+    "organization": "Diakonie Köln",
+    "location": "Köln",
+    "languages": ["Deutsch", "English"],
+    "contactMethods": ["Vor Ort", "Telefon", "Online"],
+    "consultationTypes": ["Beratung", "Gruppentherapie"],
+    "type": "beratung",
+    "modality": "hybrid"
+  }
+]

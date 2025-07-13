@@ -1,0 +1,91 @@
+{
+  "title": "Moodbase Landing Page",
+  "components": [
+    {
+      "type": "HomePage",
+      "props": {
+        "headerProps": {
+          "logo": "moodbase",
+          "navigation": [
+            { "text": "Über uns", "href": "/about" },
+            { "text": "Datenbank", "href": "/database" },
+            { "text": "Blog", "href": "/blog" },
+            { "text": "Unterstützen", "href": "/support" }
+          ],
+          "ctaText": "Hilfe finden"
+        },
+        "heroProps": {
+          "title": "Finde Hilfe bei psychischen und sozialen Herausforderungen",
+          "subtitle": "Wir bei Moodbase helfen dir psychische und soziale Unterstützung zu finden - schnell, einfach und egal aus welchem Umfeld du kommst.",
+          "primaryCta": "Hilfe finden",
+          "secondaryCta": "Unser Blog",
+          "heroImage": "/images/hero/hero-image.png",
+          "primaryCtaLink": "/database",
+          "secondaryCtaLink": "/blog",
+          "hasSecondaryButton": true
+        },
+        "howItWorksProps": {
+          "title": "So funktioniert moodbase",
+          "steps": [
+            {
+              "image": "/images/steps/step-1.png",
+              "title": "Bedürfnisse klären",
+              "description": "Finde heraus, welche Art von Unterstützung du suchst."
+            },
+            {
+              "image": "/images/steps/step-2.png",
+              "title": "Angebote finden",
+              "description": "Entdecke Angebote, die zu deinen Bedürfnissen passen."
+            },
+            {
+              "image": "/images/steps/step-3.png",
+              "title": "Vernetzen und Teilen",
+              "description": "Tritt in Kontakt, teile Erfahrungen und unterstütze andere."
+            }
+          ]
+        },
+        "footerProps": {
+          "logo": "moodbase",
+          "plantDecoration": "/images/decorations/plant-decoration.png",
+          "columns": [
+            {
+              "title": "MOODBASE",
+              "items": [
+                { "text": "Über uns", "href": "/about" },
+                { "text": "Datenbank", "href": "/database" },
+                { "text": "Blog", "href": "/blog" },
+                { "text": "Kooperationen", "href": "#partnerships" },
+                { "text": "Unterstützen", "href": "/support" }
+              ]
+            },
+            {
+              "title": "RESSOURCEN",
+              "items": [
+                { "text": "Tech Support", "href": "#tech-support" },
+                { "text": "Hilforganisationen", "href": "#help-organizations" },
+                { "text": "FAQ", "href": "#faq" }
+              ]
+            },
+            {
+              "title": "RECHTLICHES & KONTAKT",
+              "items": [
+                { "text": "Impressum", "href": "#impressum" },
+                { "text": "Datenschutz", "href": "#privacy" },
+                { "text": "Nutzungsbedingungen", "href": "#terms" },
+                { "text": "info@moodbase.de", "href": "mailto:info@moodbase.de" }
+              ]
+            },
+            {
+              "title": "SOCIAL MEDIA",
+              "items": [
+                { "text": "Instagram", "href": "#instagram" },
+                { "text": "TikTok", "href": "#tiktok" },
+                { "text": "LinkedIn", "href": "#linkedin" }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

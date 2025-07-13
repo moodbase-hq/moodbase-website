@@ -1,0 +1,122 @@
+.footer {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  padding: var(--spacing-xxl) 0;
+}
+
+.container {
+  max-width: var(--breakpoint-desktop);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-xxl);
+  align-items: center;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  min-width: 450px;
+}
+
+.logo {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.10;
+  color: var(--color-foreground-on-emphasis);
+}
+
+.plantDecoration {
+  flex-shrink: 0;
+}
+
+.plantDecoration img {
+  width: 180px;
+  height: auto;
+  display: block;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xl);
+  align-self: start;
+}
+
+.column {
+  /* No additional styles needed */
+}
+
+.columnTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.10;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-foreground-on-emphasis);
+}
+
+.columnList {
+  list-style: none;
+}
+
+.columnItem {
+  margin-bottom: var(--spacing-sm);
+}
+
+.columnLink {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.40;
+  color: var(--color-foreground-on-emphasis);
+  text-decoration: none;
+  transition: var(--transition-normal);
+}
+
+.columnLink:hover {
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  .branding {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: auto;
+    gap: var(--spacing-lg);
+  }
+  
+  .columns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+  
+  .plantDecoration img {
+    width: 140px;
+  }
+  
+  .logo {
+    font-size: 36px;
+  }
+}

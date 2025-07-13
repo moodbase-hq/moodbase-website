@@ -1,0 +1,68 @@
+{
+  "title": "Über Moodbase",
+  "components": [
+    {
+      "type": "MarkdownPage",
+      "props": {
+        "headerProps": {
+          "logo": "moodbase",
+          "navigation": [
+            { "text": "Über uns", "href": "/about" },
+            { "text": "Datenbank", "href": "/database" },
+            { "text": "Blog", "href": "/blog" },
+            { "text": "Unterstützen", "href": "/support" }
+          ],
+          "ctaText": "Hilfe finden"
+        },
+        "title": "Über Moodbase",
+        "subtitle": "Psychische Gesundheit für alle zugänglich machen – das ist unsere Mission.",
+        "metadata": {
+          "lastUpdated": "2024-01-15",
+          "author": "Moodbase Team"
+        },
+        "content": "# Warum Moodbase?\n\nDie Hilfelandschaft ist unübersichtlich und verändert sich ständig. Besonders junge Hilfesuchende sind oft orientierungslos und haben wenig Halt. Oft wird über sie entschieden, nicht mit ihnen. Der Zugang zu Hilfe wird häufig von Erwachsenen kontrolliert.\n\nBesonders in nicht privilegierten Haushalten fehlen oft das Wissen und die Ressourcen, um Hilfe zu finden und in Anspruch zu nehmen. Angebote werden nicht richtig eingeordnet oder verstanden.\n\nMit viel Glück findet man eine gute Anbindung im Hilfssystem - vorausgesetzt, das System ist gut vernetzt und arbeitet zusammen. Realistisch hat aber niemand einen vollständigen Überblick.\n\n**Moodbase möchte eine Plattform für junge Menschen sein, die Zugang schafft, Angebote einordnet und partizipativen Austausch ermöglicht.**\n\n## Wie machen wir das?\n\nMit dieser Plattform bieten wir eine einheitliche Datenbank, die perspektivisch alle Angebote listet und einordnet.\n\nIm Hintergrund arbeitet ein Crawler-Backend, das neue KI-Technologie nutzt, um stetig neue Angebote hinzuzufügen. Wir bereinigen die Daten und recherchieren weiter.\n\nDen Nutzern bieten wir die Möglichkeit, Angebote zu bewerten und sich auszutauschen. Euren Content zeigen wir in der Datenbankansicht.\n\n## Wer wir sind\n\nWir drei Gründerinnen arbeiten alle aktiv in der freien Jugendhilfe und kennen die Zustände. Wir sind daran interessiert, dass alle Kinder und Jugendlichen befähigt werden, die Hilfe in Anspruch zu nehmen, die ihnen zusteht und oft verfügbar ist - wenn man nur weiß wo und wie.\n\n**J - Gründerin und Technical Officer**  \nSowohl psychologische Psychotherapeutin als auch Softwareentwicklerin mit KI-Fokus. Sie entwickelt die Plattform und die Schnittstellen.\n\n**J - Gründerin und Geschäftsleitung**  \nEbenfalls Psychotherapeutin mit jahrelanger Leitungserfahrung in der freien Jugendhilfe. Sie koordiniert das Unternehmen und kümmert sich um Kooperationen.\n\n**H - Gründerin**  \nPsychotherapeutin im Social Entrepreneurship. Sie hat viele Organisationen dabei begleitet, partizipative Jugendarbeit zu leisten und kümmert sich um PR und Social Media Kampagnen.",
+        "footerProps": {
+          "logo": "moodbase",
+          "plantDecoration": "/images/decorations/plant-decoration.png",
+          "columns": [
+            {
+              "title": "MOODBASE",
+              "items": [
+                { "text": "Über uns", "href": "/about" },
+                { "text": "Datenbank", "href": "/database" },
+                { "text": "Blog", "href": "/blog" },
+                { "text": "Kooperationen", "href": "#partnerships" },
+                { "text": "Unterstützen", "href": "/support" }
+              ]
+            },
+            {
+              "title": "RESSOURCEN",
+              "items": [
+                { "text": "Tech Support", "href": "#tech-support" },
+                { "text": "Hilforganisationen", "href": "#help-organizations" },
+                { "text": "FAQ", "href": "#faq" }
+              ]
+            },
+            {
+              "title": "RECHTLICHES & KONTAKT",
+              "items": [
+                { "text": "Impressum", "href": "#impressum" },
+                { "text": "Datenschutz", "href": "#privacy" },
+                { "text": "Nutzungsbedingungen", "href": "#terms" },
+                { "text": "info@moodbase.de", "href": "mailto:info@moodbase.de" }
+              ]
+            },
+            {
+              "title": "SOCIAL MEDIA",
+              "items": [
+                { "text": "Instagram", "href": "#instagram" },
+                { "text": "TikTok", "href": "#tiktok" },
+                { "text": "LinkedIn", "href": "#linkedin" }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

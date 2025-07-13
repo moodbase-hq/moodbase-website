@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital,wght@0,300..700;1,300..700&display=swap');
+
+:root {
+    --color-foreground-primary: #383838;
+    --color-foreground-on-emphasis: #F5ECE5;
+    --color-background-primary: #F5ECE5;
+    --color-background-emphasis: #A13E4B;
+    --color-border-primary: #3C3732;
+
+    --font-family-primary: "Inclusive Sans", sans-serif;
+    --font-size-100: 12px;
+    --font-size-200: 14px;
+    --font-size-300: 16px;
+    --font-size-400: 18px;
+    --font-size-500: 20px;
+    --font-size-600: 24px;
+    --font-size-700: 32px;
+    --font-size-800: 48px;
+    --font-weight-primary: 400;
+    --line-height-compact: 1.1;
+    --line-height-normal: 1.4;
+
+    --content-width-xl: 1200px;
+    --content-width-lg: 1060px;
+    --content-width-md: 920px;
+    --content-width-sm: 740px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    color: var(--color-foreground-primary);
+    background-color: var(--color-background-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+.heading-xl, h1 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-800);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.heading-lg, h2 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-700);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.heading-md, h3 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-600);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.body-lg {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-500);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-normal);
+}
+
+.body-md, p {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-300);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-normal);
+}
+
+.annotation-sm {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-100);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+    text-transform: uppercase;
+}
