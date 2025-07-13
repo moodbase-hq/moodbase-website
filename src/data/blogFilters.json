@@ -1,0 +1,62 @@
+[
+  {
+    "key": "category",
+    "label": "Kategorie",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Artikel", "value": "artikel" },
+      { "label": "Ratgeber", "value": "ratgeber" },
+      { "label": "News", "value": "news" },
+      { "label": "Persönliche Geschichten", "value": "geschichten" },
+      { "label": "Interview", "value": "interview" },
+      { "label": "Forschung", "value": "forschung" }
+    ]
+  },
+  {
+    "key": "topic",
+    "label": "Thema",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Depression", "value": "depression" },
+      { "label": "Angststörungen", "value": "angst" },
+      { "label": "Selbstfürsorge", "value": "selbstfuersorge" },
+      { "label": "Stress & Burnout", "value": "stress" },
+      { "label": "Beziehungen", "value": "beziehungen" },
+      { "label": "Trauma", "value": "trauma" },
+      { "label": "Essstörungen", "value": "essstoerungen" },
+      { "label": "Sucht", "value": "sucht" },
+      { "label": "Schlaf", "value": "schlaf" }
+    ]
+  },
+  {
+    "key": "audience",
+    "label": "Zielgruppe",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Studierende", "value": "studierende" },
+      { "label": "Berufstätige", "value": "berufstaetige" },
+      { "label": "Eltern", "value": "eltern" },
+      { "label": "Jugendliche", "value": "jugendliche" },
+      { "label": "Senioren", "value": "senioren" },
+      { "label": "Angehörige", "value": "angehoerige" },
+      { "label": "Fachkräfte", "value": "fachkraefte" }
+    ]
+  },
+  {
+    "key": "format",
+    "label": "Format",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Artikel", "value": "text" },
+      { "label": "Video", "value": "video" },
+      { "label": "Podcast", "value": "podcast" },
+      { "label": "Infografik", "value": "infografik" },
+      { "label": "Checkliste", "value": "checkliste" },
+      { "label": "Übung", "value": "uebung" }
+    ]
+  }
+]

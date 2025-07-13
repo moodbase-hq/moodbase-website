@@ -1,0 +1,121 @@
+.resultCard {
+  background-color: var(--color-foreground-on-emphasis);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.resultCard:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.cardInfo {
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: var(--font-size-500);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-foreground-primary);
+  line-height: var(--line-height-compact);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.cardOrg {
+  font-size: var(--font-size-300);
+  color: var(--color-foreground-primary);
+  margin-bottom: var(--spacing-xs);
+  opacity: 0.8;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.cardLocation {
+  font-size: var(--font-size-300);
+  color: var(--color-foreground-primary);
+  opacity: 0.7;
+  font-family: "Inclusive Sans", sans-serif;
+  text-align: right;
+}
+
+.cardDivider {
+  height: 1px;
+  background-color: var(--color-border-primary);
+  margin: var(--spacing-md) 0;
+  opacity: 0.3;
+}
+
+.cardTags {
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.tagGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.tagLabel {
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-foreground-primary);
+  opacity: 0.7;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.tag {
+  display: inline-block;
+  background-color: var(--color-gray-100);
+  color: var(--color-foreground-primary);
+  padding: 2px 8px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-200);
+  font-family: "Inclusive Sans", sans-serif;
+  font-weight: var(--font-weight-medium);
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.detailsButton {
+  background-color: transparent;
+  color: var(--color-foreground-primary);
+  border: 2px solid var(--color-border-primary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.detailsButton:hover {
+  background-color: var(--color-border-primary);
+  color: var(--color-foreground-on-emphasis);
+}

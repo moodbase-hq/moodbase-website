@@ -1,70 +1,205 @@
-# Getting Started with Create React App
+# Moodbase Website Redesign
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, component-driven React website for psychosocial support services with JSON-based content management.
 
-## Available Scripts
+## 🚀 Quick Start
 
-In the project directory, you can run:
+```bash
+# Install dependencies
+npm install
 
-### `npm start`
+# Start development server
+npm run dev
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Build for production
+npm run build
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Preview production build
+npm run preview
+```
 
-### `npm test`
+Visit `http://localhost:5173` to see the application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📋 Project Overview
 
-### `npm run build`
+This project implements a complete redesign of the Moodbase website with a focus on:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Component-driven architecture** - Modular, reusable React components
+- **JSON-driven content** - Pages defined through JSON configuration files
+- **Modern styling** - CSS Modules with centralized design tokens
+- **Full functionality** - Working search, filtering, and pagination
+- **Responsive design** - Mobile-first approach with proper breakpoints
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🏗️ Architecture
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Core Technologies
+- **React 18** with functional components and hooks
+- **Vite** for fast development and building
+- **React Router** for client-side routing
+- **CSS Modules** for scoped component styling
+- **React Markdown** for dynamic content rendering
 
-### `npm run eject`
+### Project Structure
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header/
+│   ├── Hero/
+│   ├── SearchHero/
+│   ├── HowItWorks/
+│   ├── Filters/
+│   ├── SearchResults/
+│   ├── Footer/
+│   ├── MarkdownContent/
+│   ├── Pagination/
+│   └── Navigation/
+├── pages/              # Page components and layouts
+│   ├── HomePage/
+│   ├── DatabasePage/
+│   ├── MarkdownPage/
+│   ├── Home.jsx
+│   ├── Database.jsx
+│   ├── About.jsx
+│   └── PageRenderer.jsx
+├── styles/             # Global styles and design tokens
+│   ├── designTokens.js
+│   ├── globals.css
+│   └── utilities.css
+├── data/               # JSON configuration and sample data
+│   ├── pages/
+│   ├── filters.json
+│   └── sampleResults.json
+├── utils/              # Utility functions and configurations
+│   └── componentRegistry.js
+└── App.jsx             # Main application component
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🎨 Design System
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The project implements a comprehensive design system based on the provided style guide:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Colors
+- **Primary**: `#383838` (Dark gray text)
+- **Background**: `#F5ECE5` (Warm beige)
+- **Emphasis**: `#A13E4B` (Deep red)
+- **Border**: `#3C3732` (Dark brown)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Typography
+- **Font Family**: Inter (fallback for Inclusive Sans)
+- **Scale**: 12px - 48px with consistent ratios
+- **Weights**: Normal (400) to Bold (700)
 
-## Learn More
+### Spacing
+- **Consistent scale**: 8px - 64px increments
+- **Responsive breakpoints**: Mobile (768px), Tablet (1024px), Desktop (1200px)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ✨ Features Implemented
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🏠 Homepage
+- Hero section with call-to-action buttons
+- "How It Works" process explanation
+- Responsive navigation header
+- Multi-column footer
 
-### Code Splitting
+### 🔍 Database/Search Page
+- Real-time search functionality
+- Multi-filter system (Type, Location, Modality, Language)
+- Pagination with proper navigation
+- Result cards with service details
+- Responsive two-column layout
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📄 Markdown Pages
+- Dynamic content rendering from markdown
+- Support for all markdown elements
+- Styled components (headings, lists, links, code)
+- Metadata display (author, last updated)
+- Responsive typography
 
-### Analyzing the Bundle Size
+### 🧭 Navigation
+- React Router implementation
+- Active link highlighting
+- Seamless page transitions
+- Proper header navigation integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔧 Component Features
 
-### Making a Progressive Web App
+### Search & Filtering
+- **Real-time filtering**: Results update as you type and change filters
+- **Multi-criteria search**: Filter by service type, location, modality, and language
+- **Reset functionality**: Clear all filters with one click
+- **State management**: Maintains search state across interactions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Pagination
+- **Smart pagination**: Only shows when needed (>5 results)
+- **Ellipsis handling**: Proper page number display for large result sets
+- **Responsive design**: Adapts layout for mobile devices
+- **Result counters**: Shows current range and total results
 
-### Advanced Configuration
+### Markdown Rendering
+- **Full markdown support**: Headers, paragraphs, lists, links, images, code
+- **Syntax highlighting**: Styled code blocks and inline code
+- **Responsive images**: Automatic image sizing and centering
+- **Custom styling**: All elements styled to match design system
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📱 Responsive Design
 
-### Deployment
+The application is fully responsive with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Mobile-first approach**: Optimized for small screens
+- **Flexible layouts**: Grid and flexbox for dynamic content
+- **Touch-friendly**: Proper button sizes and spacing
+- **Navigation adaptation**: Mobile menu considerations
 
-### `npm run build` fails to minify
+## 🚀 Performance Optimizations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **CSS Modules**: Automatic style optimization and purging
+- **Component splitting**: Modular architecture for better code splitting
+- **Efficient state management**: Minimal re-renders with proper React patterns
+- **Image optimization**: Responsive images with proper alt text
+
+## 🎯 Next Steps
+
+The current implementation provides a solid foundation. Potential enhancements:
+
+1. **Backend Integration**
+   - Connect to real API endpoints
+   - User authentication system
+   - Content management system integration
+
+2. **Advanced Features**
+   - Service detail pages
+   - User favorites/bookmarking
+   - Advanced search filters
+   - Map integration
+
+3. **Performance**
+   - Image lazy loading
+   - Code splitting optimization
+   - SEO improvements
+   - Analytics integration
+
+4. **Testing**
+   - Unit tests for components
+   - Integration tests for user flows
+   - E2E testing with Cypress
+
+## 🛠️ Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+### Key Dependencies
+
+- **react**: ^18.2.0
+- **react-dom**: ^18.2.0
+- **react-router-dom**: ^6.8.1
+- **react-markdown**: ^9.0.1
+- **vite**: ^5.0.8
+
+## 📄 License
+
+This project is part of the Moodbase platform for mental health support services.

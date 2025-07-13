@@ -1,0 +1,186 @@
+/* CSS Variables from Design Tokens */
+:root {
+  /* Colors */
+    --color-foreground-primary: #383838;
+    --color-foreground-on-emphasis: #F5ECE5;
+    --color-background-primary: #F5ECE5;
+    --color-background-emphasis: #A13E4B;
+    --color-border-primary: #3C3732;
+
+  /* Typography */
+    --font-family-primary: "Inclusive Sans", sans-serif;
+
+  /* Font Sizes */
+    --font-size-100: 12px;
+    --font-size-200: 14px;
+    --font-size-300: 16px;
+    --font-size-400: 18px;
+    --font-size-500: 20px;
+    --font-size-600: 24px;
+    --font-size-700: 32px;
+    --font-size-800: 48px;
+    --font-weight-primary: 400;
+    --line-height-compact: 1.1;
+    --line-height-normal: 1.4;
+
+    --content-width-xl: 1200px;
+    --content-width-lg: 1060px;
+    --content-width-md: 920px;
+    --content-width-sm: 740px;
+
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 64px;
+
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  /* Shadows */
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Breakpoints (for use in container queries) */
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1200px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Styles */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    color: var(--color-foreground-primary);
+    background-color: var(--color-background-primary);
+    -webkit-font-smoothing: antialiased;
+}
+.heading-xl, h1 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-800);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.heading-lg, h2 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-700);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.heading-md, h3 {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-600);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+}
+
+.body-lg {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-500);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-normal);
+}
+
+.body-md, p {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-300);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-normal);
+}
+
+.annotation-sm {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-100);
+    font-weight: var(--font-weight-primary);
+    line-height: var(--line-height-compact);
+    text-transform: uppercase;
+}
+
+/* Focus Styles for Accessibility */
+*:focus {
+  outline: none;
+}
+
+/* Button Reset */
+button {
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Link Reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* List Reset */
+ul, ol {
+  list-style: none;
+}
+
+/* Input Reset */
+input, textarea, select {
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* Image Reset */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container Utility */
+.container {
+  max-width: var(--breakpoint-desktop);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

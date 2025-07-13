@@ -1,0 +1,67 @@
+{
+  "title": "Unterstützen",
+  "components": [
+    {
+      "type": "MarkdownPage",
+      "props": {
+        "headerProps": {
+          "logo": "moodbase",
+          "navigation": [
+            { "text": "Über uns", "href": "/about" },
+            { "text": "Datenbank", "href": "/database" },
+            { "text": "Blog", "href": "/blog" },
+            { "text": "Unterstützen", "href": "/support" }
+          ],
+          "ctaText": "Hilfe finden"
+        },
+        "title": "Gemeinsam Veränderung schaffen",
+        "subtitle": "Moodbase ist eine Genossenschaft in Gründung – ein Projekt, das der Gemeinschaft gehört.",
+        "metadata": {
+          "lastUpdated": "2024-01-15",
+          "author": "Moodbase Team"
+        },
+        "content": "# Eine Genossenschaft für alle\n\nAls Genossenschaft in Gründung gehört Moodbase der Gemeinschaft. Wir haben uns bewusst für diese Rechtsform entschieden, um sicherzustellen, dass unser Projekt langfristig dem Gemeinwohl dient.\n\nDurch die genossenschaftliche Struktur werden alle Entscheidungen partizipativ getroffen und keine Gewinne ausgeschüttet. Jeder Euro fließt zurück in die Verbesserung unserer Plattform.\n\n## Gemeinsam für eine zugängliche Zukunft\n\nMoodbase ist ein gemeinnütziges Projekt und lebt durch Menschen und Teilhabe. Wenn du unsere Vision teilst, gibt es zwei einfache Wege, sie Wirklichkeit werden zu lassen:\n\n### Crowdfunding: Die Startfinanzierung\n\nMit unserer Crowdfunding-Kampagne bauen wir die technische Basis von Moodbase auf. Dieser Beitrag hilft uns, die Plattform zu entwickeln, die junge Menschen mit den passenden psychosozialen Angeboten verbindet: niedrigschwellig, datensicher und wirkungsvoll.\n\n### Steady: Langfristige Unterstützung\n\nMit einem monatlichen Beitrag über Steady wird der laufende Betrieb von Moodbase unterstützt. Dies ermöglicht neue Inhalte, den weiteren Ausbau der Plattform und damit echten Zugang zu Hilfe für viele junge Menschen.\n\nAls Dankeschön nehmen wir alle Unterstützenden mit auf unsere Reise: Vlogs, Artikel und Updates direkt von den Macherinnen von Moodbase.\n\n## Werde Teil der Genossenschaft\n\nAls Genossenschaftsmitglied kannst du aktiv die Zukunft von Moodbase mitgestalten. Wir befinden uns noch in der Gründungsphase.\n\nHinterlasse uns deine Kontaktdaten, und wir informieren dich, sobald die Mitgliedschaft möglich ist.",
+        "footerProps": {
+          "logo": "moodbase",
+          "plantDecoration": "/images/decorations/plant-decoration.png",
+          "columns": [
+            {
+              "title": "MOODBASE",
+              "items": [
+                { "text": "Über uns", "href": "/about" },
+                { "text": "Datenbank", "href": "/database" },
+                { "text": "Blog", "href": "/blog" },
+                { "text": "Unterstützen", "href": "/support" }
+              ]
+            },
+            {
+              "title": "RESSOURCEN",
+              "items": [
+                { "text": "Tech Support", "href": "#tech-support" },
+                { "text": "Hilforganisationen", "href": "#help-organizations" },
+                { "text": "FAQ", "href": "#faq" }
+              ]
+            },
+            {
+              "title": "RECHTLICHES & KONTAKT",
+              "items": [
+                { "text": "Impressum", "href": "#impressum" },
+                { "text": "Datenschutz", "href": "#privacy" },
+                { "text": "Nutzungsbedingungen", "href": "#terms" },
+                { "text": "info@moodbase.de", "href": "mailto:info@moodbase.de" }
+              ]
+            },
+            {
+              "title": "SOCIAL MEDIA",
+              "items": [
+                { "text": "Instagram", "href": "#instagram" },
+                { "text": "TikTok", "href": "#tiktok" },
+                { "text": "LinkedIn", "href": "#linkedin" }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

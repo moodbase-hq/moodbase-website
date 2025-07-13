@@ -1,0 +1,9 @@
+{
+  "title": "Moodbase Blog",
+  "components": [
+    {
+      "type": "BlogPage",
+      "props": {}
+    }
+  ]
+}

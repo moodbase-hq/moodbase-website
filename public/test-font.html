@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        .test-inclusive {
+            font-family: "Inclusive Sans", sans-serif;
+            font-size: 24px;
+            margin: 20px;
+        }
+        .test-fallback {
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-inclusive">This text should be in Inclusive Sans font</div>
+    <div class="test-fallback">This text is in Arial for comparison</div>
+    
+    <script>
+        // Check if font is loaded
+        document.fonts.ready.then(function() {
+            console.log('Fonts loaded');
+            const fonts = Array.from(document.fonts);
+            console.log('Available fonts:', fonts.map(f => f.family));
+            
+            // Check if Inclusive Sans is loaded
+            const inclusiveSans = document.fonts.check('12px "Inclusive Sans"');
+            console.log('Inclusive Sans loaded:', inclusiveSans);
+        });
+    </script>
+</body>
+</html>

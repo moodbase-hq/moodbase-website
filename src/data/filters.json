@@ -1,0 +1,50 @@
+[
+  {
+    "key": "type",
+    "label": "Angebotstyp",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Beratung", "value": "beratung" },
+      { "label": "Therapie", "value": "therapie" },
+      { "label": "Unterstützung", "value": "unterstuetzung" }
+    ]
+  },
+  {
+    "key": "location",
+    "label": "PLZ",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Berlin", "value": "berlin" },
+      { "label": "Hamburg", "value": "hamburg" },
+      { "label": "München", "value": "muenchen" },
+      { "label": "Köln", "value": "koeln" },
+      { "label": "Frankfurt", "value": "frankfurt" }
+    ]
+  },
+  {
+    "key": "modality",
+    "label": "Modalität",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Online", "value": "online" },
+      { "label": "Vor Ort", "value": "vor-ort" },
+      { "label": "Hybrid", "value": "hybrid" }
+    ]
+  },
+  {
+    "key": "language",
+    "label": "Sprache",
+    "value": "alle",
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Deutsch", "value": "deutsch" },
+      { "label": "English", "value": "english" },
+      { "label": "Türkisch", "value": "tuerkisch" },
+      { "label": "Französisch", "value": "franzoesisch" },
+      { "label": "Spanisch", "value": "spanisch" }
+    ]
+  }
+]
