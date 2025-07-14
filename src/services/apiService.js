@@ -1,5 +1,5 @@
 // API client setup using fetch
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.REACT_APP_API_URI || 'http://localhost:3001';
 
 // Sample data for fallback when API is not available
 const SAMPLE_DATA = [
