@@ -89,6 +89,47 @@ export const designTokens = {
       letterSpacing: '0.5px'
     }
   },
+  // Mobile-optimized text styles
+  mobileTextStyles: {
+    headingXL: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '32px',
+      fontWeight: 800,
+      lineHeight: 1.10
+    },
+    headingLG: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '24px',
+      fontWeight: 700,
+      lineHeight: 1.10
+    },
+    headingMD: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '20px',
+      fontWeight: 600,
+      lineHeight: 1.10
+    },
+    bodyLG: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '18px',
+      fontWeight: 400,
+      lineHeight: 1.40
+    },
+    bodyMD: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '16px',
+      fontWeight: 400,
+      lineHeight: 1.40
+    },
+    annotationSM: {
+      fontFamily: '"Inclusive Sans", sans-serif',
+      fontSize: '12px',
+      fontWeight: 400,
+      lineHeight: 1.10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    }
+  },
   spacing: {
     xs: '8px',
     sm: '16px',
@@ -97,10 +138,20 @@ export const designTokens = {
     xl: '48px',
     xxl: '64px'
   },
+  mobileSpacing: {
+    xs: '4px',
+    sm: '8px',
+    md: '16px',
+    lg: '20px',
+    xl: '32px',
+    xxl: '40px'
+  },
   breakpoints: {
-    mobile: '768px',
-    tablet: '1024px',
-    desktop: '1200px'
+    mobileSmall: '320px',
+    mobileLarge: '480px', 
+    tablet: '768px',
+    desktop: '1024px',
+    desktopLarge: '1200px'
   },
   borderRadius: {
     sm: '4px',
@@ -117,6 +168,12 @@ export const designTokens = {
     fast: '0.2s ease',
     normal: '0.3s ease',
     slow: '0.5s ease'
+  },
+  // Touch target sizes for mobile accessibility
+  touchTargets: {
+    minimum: '44px',
+    comfortable: '48px',
+    large: '56px'
   }
 }
 

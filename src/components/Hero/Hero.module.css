@@ -91,16 +91,77 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .hero {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+  
   .title {
     font-size: 32px;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.15;
   }
   
   .subtitle {
     font-size: 18px;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.45;
   }
   
   .buttons {
     flex-direction: column;
     align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .primaryBtn,
+  .secondaryBtn {
+    min-width: 280px;
+    min-height: 48px;
+    font-size: 16px;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .primaryBtn:active,
+  .secondaryBtn:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Small mobile optimization */
+@media (max-width: 480px) {
+  .hero {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .title {
+    font-size: 28px;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .buttons {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .primaryBtn,
+  .secondaryBtn {
+    min-width: 100%;
+    font-size: 16px;
   }
 }

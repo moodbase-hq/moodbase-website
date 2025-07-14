@@ -71,7 +71,6 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
-    position: static;
-    margin-bottom: var(--spacing-lg);
+    display: none;
   }
 }
