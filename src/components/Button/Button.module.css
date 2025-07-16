@@ -1,0 +1,19 @@
+.base {
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.primary {
+    background-color: var(--color-background-emphasis);
+    color: var(--color-foreground-on-emphasis);
+}
+
+.secondary {
+    background-color: var(--color-background-base);
+    color: var(--color-foreground-base);
+    border-color: var(--color-border-accent);
+}

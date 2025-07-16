@@ -1,5 +1,6 @@
 // Component imports
 import Header from '../components/Header/Header'
+import Button from '../components/Button/Button'
 import Hero from '../components/Hero/Hero'
 import SearchHero from '../components/SearchHero/SearchHero'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -25,6 +26,7 @@ import MarkdownPage from '../pages/MarkdownPage/MarkdownPage'
 export const COMPONENT_REGISTRY = {
   // Individual Components
   Header,
+  Button,
   Hero,
   SearchHero,
   SearchBar,
