@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import MobileNavigation from '../MobileNavigation/MobileNavigation'
+//import MobileNavigation from '../MobileNavigation/MobileNavigation'
 import styles from './Header.module.css'
 
 const Header = ({ navigation, logo, ctaText, onCtaClick }) => {
@@ -34,13 +34,13 @@ const Header = ({ navigation, logo, ctaText, onCtaClick }) => {
         </Link>
 
         {/* Mobile Navigation */}
-        <MobileNavigation
+        {/* <MobileNavigation
           navigation={navigation}
           ctaText={ctaText}
           ctaLink="/database"
           isOpen={isMobileMenuOpen}
           onToggle={setIsMobileMenuOpen}
-        />
+        /> */}
       </nav>
     </header>
   );
