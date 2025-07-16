@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Button from '../Button/Button'
 import styles from './Hero.module.css'
 
 const Hero = ({ 
@@ -19,13 +20,9 @@ const Hero = ({
       <h1 className={styles.title}>{title}</h1>
       <p className={styles.subtitle}>{subtitle}</p>
       <div className={styles.buttons}>
-        <Link to={primaryCtaLink} className={styles.primaryBtn} onClick={onPrimaryClick}>
-          {primaryCta}
-        </Link>
+        <Button to={primaryCtaLink} text={primaryCta}></Button>
         {hasSecondaryButton && secondaryCta && (
-          <Link to={secondaryCtaLink} className={styles.secondaryBtn} onClick={onSecondaryClick}>
-            {secondaryCta}
-          </Link>
+          <Button to={secondaryCtaLink} text={secondaryCta} type='secondary'></Button>
         )}
       </div>
       {heroImage && (

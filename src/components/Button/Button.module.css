@@ -1,6 +1,7 @@
 .base {
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
+    padding: 8px 14px;
+    font-size: var(--font-size-400);
+    border-radius: 12px;
     text-decoration: none;
     border: 1px solid transparent;
     cursor: pointer;
