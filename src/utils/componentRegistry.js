@@ -1,12 +1,13 @@
 // Component imports
 import Header from '../components/Header/Header'
+import Button from '../components/Button/Button'
 import Hero from '../components/Hero/Hero'
 import SearchHero from '../components/SearchHero/SearchHero'
 import SearchBar from '../components/SearchBar/SearchBar'
 import HowItWorks from '../components/HowItWorks/HowItWorks'
 import Filters from '../components/Filters/Filters'
-import MobileFilters from '../components/MobileFilters/MobileFilters'
-import MobileNavigation from '../components/MobileNavigation/MobileNavigation'
+//import MobileFilters from '../components/MobileFilters/MobileFilters'
+//import MobileNavigation from '../components/MobileNavigation/MobileNavigation'
 import SearchResults from '../components/SearchResults/SearchResults'
 import BlogResults from '../components/BlogResults/BlogResults'
 import Footer from '../components/Footer/Footer'
@@ -25,13 +26,14 @@ import MarkdownPage from '../pages/MarkdownPage/MarkdownPage'
 export const COMPONENT_REGISTRY = {
   // Individual Components
   Header,
+  Button,
   Hero,
   SearchHero,
   SearchBar,
   HowItWorks,
   Filters,
-  MobileFilters,
-  MobileNavigation,
+  //MobileFilters,
+  //MobileNavigation,
   SearchResults,
   BlogResults,
   Footer,

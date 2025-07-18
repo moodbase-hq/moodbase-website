@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import MobileNavigation from '../MobileNavigation/MobileNavigation'
+import Button from '../Button/Button'
+//import MobileNavigation from '../MobileNavigation/MobileNavigation'
 import styles from './Header.module.css'
 
 const Header = ({ navigation, logo, ctaText, onCtaClick }) => {
@@ -29,18 +30,16 @@ const Header = ({ navigation, logo, ctaText, onCtaClick }) => {
         </ul>
         
         {/* Desktop CTA */}
-        <Link to="/database" className={styles.cta}>
-          {ctaText}
-        </Link>
+        <Button to="/database" text={ctaText}></Button>
 
         {/* Mobile Navigation */}
-        <MobileNavigation
+        {/* <MobileNavigation
           navigation={navigation}
           ctaText={ctaText}
           ctaLink="/database"
           isOpen={isMobileMenuOpen}
           onToggle={setIsMobileMenuOpen}
-        />
+        /> */}
       </nav>
     </header>
   );

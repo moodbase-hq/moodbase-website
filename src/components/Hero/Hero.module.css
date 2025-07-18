@@ -33,48 +33,9 @@
 
 .buttons {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 12px;
   justify-content: center;
   margin-bottom: var(--spacing-xxl);
-}
-
-.primaryBtn {
-  font-family: "Inclusive Sans", sans-serif;
-  font-size: 18px;
-  line-height: 1.40;
-  background-color: var(--color-background-emphasis);
-  color: var(--color-foreground-on-emphasis);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius-md);
-  cursor: pointer;
-  transition: var(--transition-normal);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.primaryBtn:hover {
-  opacity: 0.9;
-}
-
-.secondaryBtn {
-  font-family: "Inclusive Sans", sans-serif;
-  font-size: 18px;
-  line-height: 1.40;
-  background-color: transparent;
-  color: var(--color-foreground-primary);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: 2px solid var(--color-border-primary);
-  border-radius: var(--border-radius-md);
-  cursor: pointer;
-  transition: var(--transition-normal);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.secondaryBtn:hover {
-  background-color: var(--color-border-primary);
-  color: var(--color-foreground-on-emphasis);
 }
 
 .heroImage {

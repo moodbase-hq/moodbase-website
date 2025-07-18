@@ -1,15 +1,15 @@
 import React from 'react'
-import MobileFilters from '../MobileFilters/MobileFilters'
+//import MobileFilters from '../MobileFilters/MobileFilters'
 import styles from './Filters.module.css'
 
 const Filters = ({ filters, onFilterChange, onReset }) => (
   <>
-    {/* Mobile Filters */}
+    {/* Mobile Filters
     <MobileFilters 
       filters={filters}
       onFilterChange={onFilterChange}
       onReset={onReset}
-    />
+    /> */}
     
     {/* Desktop Filters */}
     <aside className={styles.sidebar}>
