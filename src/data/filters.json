@@ -2,7 +2,7 @@
   {
     "key": "type",
     "label": "Angebotstyp",
-    "value": "alle",
+    "value": [],
     "options": [
       { "label": "Alle", "value": "alle" },
       { "label": "Beratung", "value": "beratung" },
@@ -13,7 +13,7 @@
   {
     "key": "location",
     "label": "PLZ",
-    "value": "alle",
+    "value": [],
     "options": [
       { "label": "Alle", "value": "alle" },
       { "label": "Berlin", "value": "berlin" },
@@ -26,7 +26,7 @@
   {
     "key": "modality",
     "label": "Modalität",
-    "value": "alle",
+    "value": [],
     "options": [
       { "label": "Alle", "value": "alle" },
       { "label": "Online", "value": "online" },
@@ -37,7 +37,7 @@
   {
     "key": "language",
     "label": "Sprache",
-    "value": "alle",
+    "value": [],
     "options": [
       { "label": "Alle", "value": "alle" },
       { "label": "Deutsch", "value": "deutsch" },
@@ -45,6 +45,30 @@
       { "label": "Türkisch", "value": "tuerkisch" },
       { "label": "Französisch", "value": "franzoesisch" },
       { "label": "Spanisch", "value": "spanisch" }
+    ]
+  },
+  {
+    "key": "themes",
+    "label": "Themen",
+    "value": [],
+    "options": [
+      { "label": "Alle", "value": "alle" },
+      { "label": "Angst & Depression", "value": "angst-depression" },
+      { "label": "Sucht & Abhängigkeit", "value": "sucht-abhaengigkeit" },
+      { "label": "Trauma & PTBS", "value": "trauma-ptbs" },
+      { "label": "Burnout & Stress", "value": "burnout-stress" },
+      { "label": "Familienberatung", "value": "familienberatung" },
+      { "label": "Jugendliche", "value": "jugendliche" },
+      { "label": "Krisenintervention", "value": "krisenintervention" },
+      { "label": "Gruppentherapie", "value": "gruppentherapie" },
+      { "label": "Online Therapie", "value": "online-therapie" },
+      { "label": "Coaching", "value": "coaching" },
+      { "label": "Soziale Probleme", "value": "soziale-probleme" },
+      { "label": "Digitale Medien", "value": "digitale-medien" },
+      { "label": "Prävention", "value": "praevention" },
+      { "label": "Entwicklungsprobleme", "value": "entwicklungsprobleme" },
+      { "label": "Persönlichkeitsentwicklung", "value": "persoenlichkeitsentwicklung" },
+      { "label": "Rehabilitation", "value": "rehabilitation" }
     ]
   }
 ]

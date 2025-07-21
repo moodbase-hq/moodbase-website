@@ -9,7 +9,7 @@ const ResultCard = ({ result, onDetailsClick }) => {
   const languages = result.languages || ['Deutsch'];
   const serviceType = result.service_type || result.type;
   const modality = result.primary_location_type || 'Vor Ort';
-  const cost = result.cost || result.costs;
+  const themes = result.themes || result.topics || result.themen;
 
   // Helper function to truncate address for display
   const getDisplayLocation = (address) => {
@@ -64,14 +64,18 @@ const ResultCard = ({ result, onDetailsClick }) => {
           </div>
         )}
 
-        {cost && (
-          <div className={styles.tagGroup}>
-            <span className={styles.tagLabel}>KOSTEN</span>
-            <div className={styles.tagList}>
-              <span className={styles.tag}>{cost}</span>
-            </div>
+        <div className={styles.tagGroup}>
+          <span className={styles.tagLabel}>THEMEN</span>
+          <div className={styles.tagList}>
+            {themes && themes.length > 0 ? (
+              themes.map((theme, index) => (
+                <span key={index} className={styles.tag}>{theme}</span>
+              ))
+            ) : (
+              <span className={styles.tag}>Keine Themen angegeben</span>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       <div className={styles.cardActions}>

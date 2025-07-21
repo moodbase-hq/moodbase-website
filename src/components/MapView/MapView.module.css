@@ -1,0 +1,159 @@
+.mapView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.customMarker {
+  background-color: var(--color-background-emphasis);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.customMarker:hover {
+  background-color: var(--color-border-primary);
+  transform: scale(1.1);
+}
+
+.noResults {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-white);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  color: var(--color-foreground-primary);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius-md);
+  color: var(--color-background-emphasis);
+  font-family: "Inclusive Sans", sans-serif;
+  text-align: center;
+}
+
+.nonMappableResults {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-lg);
+}
+
+.nonMappableTitle {
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-foreground-primary);
+  margin-bottom: var(--spacing-md);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.nonMappableList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.nonMappableItem {
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+.nonMappableItem:hover {
+  border-color: var(--color-background-emphasis);
+  box-shadow: var(--shadow-sm);
+}
+
+.nonMappableButton {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: "Inclusive Sans", sans-serif;
+  transition: var(--transition-normal);
+}
+
+.nonMappableButton:hover {
+  background-color: var(--color-background-primary);
+}
+
+.nonMappableItemTitle {
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-background-emphasis);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.nonMappableItemOrg {
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.nonMappableItemDetails {
+  font-size: var(--font-size-200);
+  color: var(--color-border-primary);
+  margin: 0;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mapContainer {
+    height: 400px;
+  }
+  
+  .nonMappableList {
+    grid-template-columns: 1fr;
+  }
+  
+  .nonMappableResults {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .mapContainer {
+    height: 300px;
+  }
+  
+  .customMarker {
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -19,7 +19,6 @@ const DatabasePage = () => {
   // Search and filter state
   const [searchTerm, setSearchTerm] = useState('')
   const [filters, setFilters] = useState([])
-  const [filterValues, setFilterValues] = useState({})
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
@@ -51,7 +50,7 @@ const DatabasePage = () => {
           {
             key: "serviceType",
             label: "Angebotstyp",
-            value: "alle",
+            value: [],
             options: [
               { label: "Alle", value: "alle" },
               ...filterOptions.serviceTypes.map(type => ({
@@ -63,7 +62,7 @@ const DatabasePage = () => {
           {
             key: "city",
             label: "Stadt",
-            value: "alle",
+            value: [],
             options: [
               { label: "Alle", value: "alle" },
               ...filterOptions.cities.map(city => ({
@@ -75,13 +74,37 @@ const DatabasePage = () => {
           {
             key: "modality",
             label: "Modalität",
-            value: "alle",
+            value: [],
             options: [
               { label: "Alle", value: "alle" },
               ...filterOptions.modalities.map(modality => ({
                 label: modality,
                 value: modality
               }))
+            ]
+          },
+          {
+            key: "themes",
+            label: "Themen",
+            value: [],
+            options: [
+              { label: "Alle", value: "alle" },
+              { label: "Angst & Depression", value: "angst-depression" },
+              { label: "Sucht & Abhängigkeit", value: "sucht-abhaengigkeit" },
+              { label: "Trauma & PTBS", value: "trauma-ptbs" },
+              { label: "Burnout & Stress", value: "burnout-stress" },
+              { label: "Familienberatung", value: "familienberatung" },
+              { label: "Jugendliche", value: "jugendliche" },
+              { label: "Krisenintervention", value: "krisenintervention" },
+              { label: "Gruppentherapie", value: "gruppentherapie" },
+              { label: "Online Therapie", value: "online-therapie" },
+              { label: "Coaching", value: "coaching" },
+              { label: "Soziale Probleme", value: "soziale-probleme" },
+              { label: "Digitale Medien", value: "digitale-medien" },
+              { label: "Prävention", value: "praevention" },
+              { label: "Entwicklungsprobleme", value: "entwicklungsprobleme" },
+              { label: "Persönlichkeitsentwicklung", value: "persoenlichkeitsentwicklung" },
+              { label: "Rehabilitation", value: "rehabilitation" }
             ]
           }
         ]
@@ -99,19 +122,25 @@ const DatabasePage = () => {
           {
             key: "serviceType",
             label: "Angebotstyp",
-            value: "alle",
+            value: [],
             options: [{ label: "Alle", value: "alle" }]
           },
           {
             key: "city",
             label: "Stadt", 
-            value: "alle",
+            value: [],
             options: [{ label: "Alle", value: "alle" }]
           },
           {
             key: "modality",
             label: "Modalität",
-            value: "alle", 
+            value: [], 
+            options: [{ label: "Alle", value: "alle" }]
+          },
+          {
+            key: "themes",
+            label: "Themen",
+            value: [],
             options: [{ label: "Alle", value: "alle" }]
           }
         ])
@@ -135,11 +164,12 @@ const DatabasePage = () => {
         }
         
         // Add active filters
-        Object.entries(filterValues).forEach(([key, value]) => {
-          if (value && value !== 'alle') {
-            if (key === 'serviceType') searchParams.serviceType = value
-            if (key === 'city') searchParams.city = value
-            if (key === 'modality') searchParams.modality = value
+        filters.forEach(filter => {
+          if (filter.value && filter.value.length > 0) {
+            if (filter.key === 'serviceType') searchParams.serviceType = filter.value
+            if (filter.key === 'city') searchParams.city = filter.value
+            if (filter.key === 'modality') searchParams.modality = filter.value
+            if (filter.key === 'themes') searchParams.themes = filter.value
           }
         })
 
@@ -172,16 +202,27 @@ const DatabasePage = () => {
         }
         
         // Apply filters
-        Object.entries(filterValues).forEach(([key, value]) => {
-          if (value && value !== 'alle') {
-            if (key === 'serviceType') {
-              filtered = filtered.filter(item => item.service_type === value)
+        filters.forEach(filter => {
+          if (filter.value && filter.value.length > 0) {
+            if (filter.key === 'serviceType') {
+              filtered = filtered.filter(item => filter.value.includes(item.service_type))
             }
-            if (key === 'city') {
-              filtered = filtered.filter(item => item.address?.includes(value))
+            if (filter.key === 'city') {
+              filtered = filtered.filter(item => filter.value.some(city => item.address?.includes(city)))
             }
-            if (key === 'modality') {
-              filtered = filtered.filter(item => item.primary_location_type === value)
+            if (filter.key === 'modality') {
+              filtered = filtered.filter(item => filter.value.includes(item.primary_location_type))
+            }
+            if (filter.key === 'themes') {
+              filtered = filtered.filter(item => {
+                const itemThemes = item.themes || item.topics || item.themen || []
+                return filter.value.some(selectedTheme => 
+                  itemThemes.some(itemTheme => 
+                    itemTheme.toLowerCase().includes(selectedTheme.replace('-', ' ').toLowerCase()) ||
+                    selectedTheme.replace('-', ' ').toLowerCase().includes(itemTheme.toLowerCase())
+                  )
+                )
+              })
             }
           }
         })
@@ -194,23 +235,25 @@ const DatabasePage = () => {
     // Debounce search
     const timeoutId = setTimeout(performSearch, 300)
     return () => clearTimeout(timeoutId)
-  }, [searchTerm, filterValues, allData])
+  }, [searchTerm, filters, allData])
 
   // Event handlers
   const handleSearch = (term) => {
     setSearchTerm(term)
   }
 
-  const handleFilterChange = (filterKey, value) => {
-    setFilterValues(prev => ({
-      ...prev,
-      [filterKey]: value
-    }))
+  const handleFilterChange = (filterKey, newValue) => {
+    // Update the filters array directly
+    setFilters(prev => prev.map(filter => 
+      filter.key === filterKey 
+        ? { ...filter, value: newValue }
+        : filter
+    ))
   }
 
   const handleResetFilters = () => {
     setSearchTerm('')
-    setFilterValues({})
+    setFilters(prev => prev.map(filter => ({ ...filter, value: [] })))
   }
 
   const handlePageChange = (page) => {
