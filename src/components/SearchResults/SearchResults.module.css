@@ -8,6 +8,11 @@
 
 .header {
   margin-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
 .count {
@@ -21,4 +26,81 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+}
+
+.viewToggle {
+  display: flex;
+  gap: var(--spacing-xs);
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius-md);
+  padding: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.toggleButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: none;
+  background: none;
+  color: var(--color-foreground-primary);
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
+}
+
+.toggleButton:hover {
+  background-color: var(--color-white);
+  color: var(--color-background-emphasis);
+}
+
+.toggleButton.active {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+}
+
+.toggleIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+
+.toggleText {
+  white-space: nowrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .viewToggle {
+    align-self: stretch;
+  }
+  
+  .toggleButton {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .toggleText {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .toggleButton {
+    padding: var(--spacing-sm);
+  }
+  
+  .toggleIcon {
+    width: 18px;
+    height: 18px;
+  }
 }

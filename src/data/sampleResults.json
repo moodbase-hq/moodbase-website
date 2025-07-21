@@ -4,44 +4,60 @@
     "title": "Allgemeine Sozialberatung in einem Bezirk von Berlin",
     "organization": "Caritasverband für das Erztum Berlin e.v.",
     "location": "Berlin",
+    "entry_location": "Berlin",
+    "latitude": 52.5200,
+    "longitude": 13.4050,
     "languages": ["Deutsch", "English", "Türkisch"],
     "contactMethods": ["Online", "Telefon"],
     "consultationTypes": ["Beratung", "Krisenintervention"],
     "type": "beratung",
-    "modality": "hybrid"
+    "modality": "hybrid",
+    "themes": ["Soziale Probleme", "Krisenintervention", "Familienberatung"]
   },
   {
     "id": 2,
     "title": "Digi Sucht",
     "organization": "Stiftung SPI",
     "location": "Berlin",
+    "entry_location": "Berlin",
+    "latitude": 52.5170,
+    "longitude": 13.3888,
     "languages": ["Deutsch"],
     "contactMethods": ["Hybrid"],
     "consultationTypes": ["Beratung"],
     "type": "beratung",
-    "modality": "hybrid"
+    "modality": "hybrid",
+    "themes": ["Sucht & Abhängigkeit", "Digitale Medien", "Prävention"]
   },
   {
     "id": 3,
     "title": "Psychotherapeutische Praxis Dr. Müller",
     "organization": "Privatpraxis Dr. Müller",
     "location": "Hamburg",
+    "entry_location": "Hamburg",
+    "latitude": 53.5511,
+    "longitude": 9.9937,
     "languages": ["Deutsch", "English"],
     "contactMethods": ["Vor Ort", "Online"],
     "consultationTypes": ["Therapie", "Einzelsitzungen"],
     "type": "therapie",
-    "modality": "hybrid"
+    "modality": "hybrid",
+    "themes": ["Angst & Depression", "Trauma & PTBS", "Burnout & Stress"]
   },
   {
     "id": 4,
     "title": "Jugendberatung München",
     "organization": "Stadtjugendamt München",
     "location": "München",
+    "entry_location": "München",
+    "latitude": 48.1351,
+    "longitude": 11.5820,
     "languages": ["Deutsch", "Türkisch", "Französisch"],
     "contactMethods": ["Vor Ort", "Telefon"],
     "consultationTypes": ["Beratung", "Familienberatung"],
     "type": "beratung",
-    "modality": "vor-ort"
+    "modality": "vor-ort",
+    "themes": ["Jugendliche", "Familienberatung", "Entwicklungsprobleme"]
   },
   {
     "id": 5,
@@ -52,17 +68,33 @@
     "contactMethods": ["Online", "Video"],
     "consultationTypes": ["Therapie", "Coaching"],
     "type": "therapie",
-    "modality": "online"
+    "modality": "online",
+    "themes": ["Online Therapie", "Coaching", "Persönlichkeitsentwicklung"]
   },
   {
     "id": 6,
     "title": "Suchtberatung Köln",
     "organization": "Diakonie Köln",
     "location": "Köln",
+    "entry_location": "Köln",
+    "latitude": 50.9375,
+    "longitude": 6.9603,
     "languages": ["Deutsch", "English"],
     "contactMethods": ["Vor Ort", "Telefon", "Online"],
     "consultationTypes": ["Beratung", "Gruppentherapie"],
     "type": "beratung",
-    "modality": "hybrid"
+    "modality": "hybrid",
+    "themes": ["Sucht & Abhängigkeit", "Gruppentherapie", "Rehabilitation"]
+  },
+  {
+    "id": 7,
+    "title": "Beratungsstelle ohne Themen",
+    "organization": "Test Organisation",
+    "location": "Frankfurt",
+    "languages": ["Deutsch"],
+    "contactMethods": ["Vor Ort"],
+    "consultationTypes": ["Beratung"],
+    "type": "beratung",
+    "modality": "vor-ort"
   }
 ]
