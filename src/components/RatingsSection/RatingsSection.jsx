@@ -11,9 +11,10 @@ const RatingsSection = ({
   showSubmissionForm = true,
   onSubmitRating = null,
   loading = false 
-) => {
+}) => {
   const [isLoading, setIsLoading] = useState(loading)
   const [showForm, setShowForm] = useState(false)
+  
   
   // Handle loading state
   useEffect(() => {
@@ -68,6 +69,15 @@ const RatingsSection = ({
             </button>
           )}
         </div>
+        
+        {/* Rating Submission Form - also render in no ratings case */}
+        {showForm && (
+          <RatingSubmissionForm
+            offeringId={offeringId}
+            onSubmissionSuccess={handleFormSubmissionSuccess}
+            onCancel={handleFormCancel}
+          />
+        )}
       </div>
     )
   }

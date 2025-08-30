@@ -113,10 +113,6 @@ const OfferingDetail = ({ offering, onBack }) => {
             userRatings={offering.userRatings}
             platformRatings={offering.platformRatings}
             showSubmissionForm={true}
-            onSubmitRating={(id) => {
-              console.log('Rating submission requested for offering:', id)
-              // TODO: Implement rating submission modal/form
-            }}
           />
         </div>
       </div>
