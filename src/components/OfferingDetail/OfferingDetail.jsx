@@ -1,4 +1,5 @@
 import React from 'react'
+import RatingsSection from '../RatingsSection/RatingsSection'
 import styles from './OfferingDetail.module.css'
 
 const OfferingDetail = ({ offering, onBack }) => {
@@ -105,6 +106,18 @@ const OfferingDetail = ({ offering, onBack }) => {
               </div>
             </div>
           )}
+
+          {/* Ratings Section */}
+          <RatingsSection 
+            offeringId={offering.id}
+            userRatings={offering.userRatings}
+            platformRatings={offering.platformRatings}
+            showSubmissionForm={true}
+            onSubmitRating={(id) => {
+              console.log('Rating submission requested for offering:', id)
+              // TODO: Implement rating submission modal/form
+            }}
+          />
         </div>
       </div>
     </div>

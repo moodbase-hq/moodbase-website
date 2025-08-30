@@ -12,7 +12,39 @@
     "consultationTypes": ["Beratung", "Krisenintervention"],
     "type": "beratung",
     "modality": "hybrid",
-    "themes": ["Soziale Probleme", "Krisenintervention", "Familienberatung"]
+    "themes": ["Soziale Probleme", "Krisenintervention", "Familienberatung"],
+    "userRatings": {
+      "overall": 4.2,
+      "access": 4.1,
+      "treatment": 4.5,
+      "helpful": 4.0,
+      "effectiveness": 4.3,
+      "reviewCount": 28,
+      "comments": [
+        {"text": "Sehr hilfsreich und verständnisvoll. Das Team hat mir wirklich geholfen.", "date": "2024-02-15"},
+        {"text": "Lange Wartezeit, aber die Beratung war dann sehr gut.", "date": "2024-02-10"},
+        {"text": "Kompetente Beratung zu sozialen Problemen.", "date": "2024-02-08"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 4.1,
+      "offerType": {
+        "diversity": 4.2,
+        "accessibility": 4.0
+      },
+      "quality": {
+        "qualification": 4.5,
+        "feedback": 3.8,
+        "protection": 4.2,
+        "privacy": 4.4
+      },
+      "impact": {
+        "scientific": 4.0
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-15T00:00:00.000Z",
+      "notes": "Etablierte Beratungsstelle mit erfahrenem Personal und guter Ausstattung."
+    }
   },
   {
     "id": 2,
@@ -27,7 +59,38 @@
     "consultationTypes": ["Beratung"],
     "type": "beratung",
     "modality": "hybrid",
-    "themes": ["Sucht & Abhängigkeit", "Digitale Medien", "Prävention"]
+    "themes": ["Sucht & Abhängigkeit", "Digitale Medien", "Prävention"],
+    "userRatings": {
+      "overall": 4.6,
+      "access": 4.8,
+      "treatment": 4.7,
+      "helpful": 4.5,
+      "effectiveness": 4.4,
+      "reviewCount": 15,
+      "comments": [
+        {"text": "Endlich jemand der sich mit digitaler Sucht auskennt!", "date": "2024-02-20"},
+        {"text": "Sehr moderne Ansätze und gut erreichbar.", "date": "2024-02-18"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 4.3,
+      "offerType": {
+        "diversity": 4.1,
+        "accessibility": 4.5
+      },
+      "quality": {
+        "qualification": 4.6,
+        "feedback": 4.2,
+        "protection": 4.0,
+        "privacy": 4.3
+      },
+      "impact": {
+        "scientific": 4.4
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-20T00:00:00.000Z",
+      "notes": "Innovativer Ansatz für digitale Suchtproblematik mit wissenschaftlicher Fundierung."
+    }
   },
   {
     "id": 3,
@@ -42,7 +105,39 @@
     "consultationTypes": ["Therapie", "Einzelsitzungen"],
     "type": "therapie",
     "modality": "hybrid",
-    "themes": ["Angst & Depression", "Trauma & PTBS", "Burnout & Stress"]
+    "themes": ["Angst & Depression", "Trauma & PTBS", "Burnout & Stress"],
+    "userRatings": {
+      "overall": 4.8,
+      "access": 4.5,
+      "treatment": 5.0,
+      "helpful": 4.9,
+      "effectiveness": 4.7,
+      "reviewCount": 42,
+      "comments": [
+        {"text": "Dr. Müller ist außergewöhnlich empathisch und kompetent.", "date": "2024-02-22"},
+        {"text": "Hat mir sehr bei meinen Angststörungen geholfen.", "date": "2024-02-19"},
+        {"text": "Privatpraxis ist teuer, aber die Qualität stimmt absolut.", "date": "2024-02-17"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 4.6,
+      "offerType": {
+        "diversity": 4.3,
+        "accessibility": 3.8
+      },
+      "quality": {
+        "qualification": 4.9,
+        "feedback": 4.5,
+        "protection": 4.7,
+        "privacy": 4.8
+      },
+      "impact": {
+        "scientific": 4.7
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-10T00:00:00.000Z",
+      "notes": "Hochqualifizierte Privatpraxis mit exzellenten Behandlungsmethoden."
+    }
   },
   {
     "id": 4,
@@ -57,7 +152,38 @@
     "consultationTypes": ["Beratung", "Familienberatung"],
     "type": "beratung",
     "modality": "vor-ort",
-    "themes": ["Jugendliche", "Familienberatung", "Entwicklungsprobleme"]
+    "themes": ["Jugendliche", "Familienberatung", "Entwicklungsprobleme"],
+    "userRatings": {
+      "overall": 3.9,
+      "access": 3.6,
+      "treatment": 4.2,
+      "helpful": 4.0,
+      "effectiveness": 3.8,
+      "reviewCount": 23,
+      "comments": [
+        {"text": "Gute Beratung, aber manchmal lange Wartezeiten.", "date": "2024-02-16"},
+        {"text": "Die Berater verstehen Jugendliche gut.", "date": "2024-02-14"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 3.8,
+      "offerType": {
+        "diversity": 4.0,
+        "accessibility": 3.5
+      },
+      "quality": {
+        "qualification": 4.1,
+        "feedback": 3.6,
+        "protection": 4.3,
+        "privacy": 3.8
+      },
+      "impact": {
+        "scientific": 3.7
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-25T00:00:00.000Z",
+      "notes": "Staatliche Einrichtung mit solider Grundausstattung, aber Kapazitätsengpässe."
+    }
   },
   {
     "id": 5,
@@ -69,7 +195,39 @@
     "consultationTypes": ["Therapie", "Coaching"],
     "type": "therapie",
     "modality": "online",
-    "themes": ["Online Therapie", "Coaching", "Persönlichkeitsentwicklung"]
+    "themes": ["Online Therapie", "Coaching", "Persönlichkeitsentwicklung"],
+    "userRatings": {
+      "overall": 4.1,
+      "access": 4.7,
+      "treatment": 3.8,
+      "helpful": 4.0,
+      "effectiveness": 4.0,
+      "reviewCount": 67,
+      "comments": [
+        {"text": "Super flexibel und gut erreichbar. Qualität der Therapeuten variiert.", "date": "2024-02-21"},
+        {"text": "Praktisch für Menschen in ländlichen Gebieten.", "date": "2024-02-18"},
+        {"text": "Nicht alle Therapeuten sind gleich gut, aber insgesamt ok.", "date": "2024-02-16"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 3.9,
+      "offerType": {
+        "diversity": 4.2,
+        "accessibility": 4.8
+      },
+      "quality": {
+        "qualification": 3.7,
+        "feedback": 4.1,
+        "protection": 3.5,
+        "privacy": 4.0
+      },
+      "impact": {
+        "scientific": 3.6
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-30T00:00:00.000Z",
+      "notes": "Gute Zugänglichkeit, aber unterschiedliche Qualitätsstandards bei den Anbietern."
+    }
   },
   {
     "id": 6,
@@ -84,7 +242,39 @@
     "consultationTypes": ["Beratung", "Gruppentherapie"],
     "type": "beratung",
     "modality": "hybrid",
-    "themes": ["Sucht & Abhängigkeit", "Gruppentherapie", "Rehabilitation"]
+    "themes": ["Sucht & Abhängigkeit", "Gruppentherapie", "Rehabilitation"],
+    "userRatings": {
+      "overall": 4.4,
+      "access": 4.2,
+      "treatment": 4.6,
+      "helpful": 4.3,
+      "effectiveness": 4.5,
+      "reviewCount": 31,
+      "comments": [
+        {"text": "Sehr professionelle Suchtberatung mit viel Erfahrung.", "date": "2024-02-20"},
+        {"text": "Die Gruppentherapie hat mir sehr geholfen.", "date": "2024-02-17"},
+        {"text": "Verständnisvolle und nicht wertende Beratung.", "date": "2024-02-15"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 4.2,
+      "offerType": {
+        "diversity": 4.1,
+        "accessibility": 4.0
+      },
+      "quality": {
+        "qualification": 4.4,
+        "feedback": 4.0,
+        "protection": 4.3,
+        "privacy": 4.2
+      },
+      "impact": {
+        "scientific": 4.3
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-01-12T00:00:00.000Z",
+      "notes": "Etablierte Suchtberatungsstelle mit langjähriger Erfahrung und bewährten Methoden."
+    }
   },
   {
     "id": 7,
@@ -95,6 +285,37 @@
     "contactMethods": ["Vor Ort"],
     "consultationTypes": ["Beratung"],
     "type": "beratung",
-    "modality": "vor-ort"
+    "modality": "vor-ort",
+    "userRatings": {
+      "overall": 2.8,
+      "access": 2.5,
+      "treatment": 3.2,
+      "helpful": 2.6,
+      "effectiveness": 2.9,
+      "reviewCount": 8,
+      "comments": [
+        {"text": "Wenig hilfreich, sehr allgemeine Beratung.", "date": "2024-02-12"},
+        {"text": "Nicht sehr professionell.", "date": "2024-02-08"}
+      ]
+    },
+    "platformRatings": {
+      "overall": 2.9,
+      "offerType": {
+        "diversity": 2.5,
+        "accessibility": 2.8
+      },
+      "quality": {
+        "qualification": 3.0,
+        "feedback": 2.5,
+        "protection": 3.2,
+        "privacy": 3.1
+      },
+      "impact": {
+        "scientific": 2.7
+      },
+      "assessedBy": "Moodbase Team",
+      "assessedAt": "2024-02-01T00:00:00.000Z",
+      "notes": "Grundlegende Beratungsleistungen, aber Verbesserungspotential in mehreren Bereichen."
+    }
   }
 ]

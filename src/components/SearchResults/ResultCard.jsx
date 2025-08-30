@@ -1,4 +1,5 @@
 import React from 'react'
+import RatingDisplay from '../RatingDisplay/RatingDisplay'
 import styles from './ResultCard.module.css'
 
 const ResultCard = ({ result, onDetailsClick }) => {
@@ -10,6 +11,10 @@ const ResultCard = ({ result, onDetailsClick }) => {
   const serviceType = result.service_type || result.type;
   const modality = result.primary_location_type || 'Vor Ort';
   const themes = result.themes || result.topics || result.themen;
+  
+  // Extract ratings data
+  const userRating = result.userRatings?.overall;
+  const platformRating = result.platformRatings?.overall;
 
   // Helper function to truncate address for display
   const getDisplayLocation = (address) => {
@@ -79,6 +84,38 @@ const ResultCard = ({ result, onDetailsClick }) => {
       </div>
 
       <div className={styles.cardActions}>
+        {(userRating || platformRating) && (
+          <div className={styles.ratingSummary}>
+            {userRating && (
+              <div className={styles.ratingItem}>
+                <RatingDisplay 
+                  rating={userRating} 
+                  size="small" 
+                  showValue={true}
+                  showCount={false}
+                />
+                <span className={styles.ratingLabel}>User</span>
+              </div>
+            )}
+            
+            {userRating && platformRating && (
+              <span className={styles.ratingSeparator}>|</span>
+            )}
+            
+            {platformRating && (
+              <div className={styles.ratingItem}>
+                <RatingDisplay 
+                  rating={platformRating} 
+                  size="small" 
+                  showValue={true}
+                  showCount={false}
+                />
+                <span className={styles.ratingLabel}>Moodbase</span>
+              </div>
+            )}
+          </div>
+        )}
+        
         <button 
           className={styles.detailsButton}
           onClick={() => onDetailsClick && onDetailsClick(result.id)}

@@ -100,6 +100,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: var(--spacing-md);
 }
 
 .detailsButton {
@@ -118,6 +119,35 @@
 .detailsButton:hover {
   background-color: var(--color-border-primary);
   color: var(--color-foreground-on-emphasis);
+}
+
+/* Rating Summary Styles */
+.ratingSummary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ratingItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.ratingLabel {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground-primary);
+  opacity: 0.7;
+}
+
+.ratingSeparator {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-300);
+  color: var(--color-foreground-primary);
+  opacity: 0.5;
+  margin: 0 var(--spacing-xs);
 }
 
 /* Mobile Responsive Design */
@@ -179,6 +209,14 @@
   
   .cardActions {
     justify-content: stretch;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .ratingSummary {
+    order: -1;
+    justify-content: center;
+    gap: var(--spacing-md);
   }
   
   .detailsButton {
