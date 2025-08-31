@@ -121,7 +121,7 @@ CREATE INDEX idx_platform_ratings_overall_rating ON platform_ratings(overall_rat
 
 CREATE VIEW rating_aggregations AS
 SELECT 
-    offering_id,
+    pr.offering_id,
     
     -- User ratings aggregation
     COUNT(ur.id) as user_rating_count,

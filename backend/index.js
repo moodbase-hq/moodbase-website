@@ -439,55 +439,7 @@ app.get('/api/offerings/:id', async (req, res) => {
       // Continue without ratings - don't fail the entire request
     }
 
-    // Legacy ratings support (keep for backwards compatibility)
-    try {
-      const checkRatingsTableSql = `
-        SELECT EXISTS (
-          SELECT FROM information_schema.tables 
-          WHERE table_name = 'ratings'
-        );
-      `;
-
-      const tableExists = await query(checkRatingsTableSql);
-
-      if (tableExists.rows[0].exists) {
-        // Get legacy ratings
-        const ratingsSql = `
-          SELECT AVG(overall_rating) as overall_rating
-          FROM ratings
-          WHERE offering_id = $1
-        `;
-        const ratingsResult = await query(ratingsSql, [id]);
-
-        if (ratingsResult.rows[0].overall_rating) {
-          const overallRating = parseFloat(ratingsResult.rows[0].overall_rating);
-
-          // Get category ratings
-          const categoryRatingsSql = `
-            SELECT rc.name, AVG(cr.score) as score
-            FROM category_ratings cr
-            JOIN rating_categories rc ON cr.category_id = rc.id
-            JOIN ratings r ON cr.rating_id = r.id
-            WHERE r.offering_id = $1
-            GROUP BY rc.name
-          `;
-          const categoryRatingsResult = await query(categoryRatingsSql, [id]);
-
-          const categories = {};
-          categoryRatingsResult.rows.forEach(row => {
-            categories[row.name] = parseFloat(row.score);
-          });
-
-          offering.ratings = {
-            overallRating,
-            categories
-          };
-        }
-      }
-    } catch (error) {
-      console.log('Legacy ratings tables might not exist yet:', error.message);
-      // Continue without legacy ratings if tables don't exist
-    }
+    // Legacy code removed - using new dual rating system above
 
     res.json(offering);
   } catch (error) {

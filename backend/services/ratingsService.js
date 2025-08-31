@@ -226,30 +226,7 @@ async function submitUserRating(ratingData) {
       }
     }
     
-    // Check if staging table exists, create if not
-    const createTableSql = `
-      CREATE TABLE IF NOT EXISTS user_ratings_staging (
-        id SERIAL PRIMARY KEY,
-        offering_id INTEGER NOT NULL,
-        user_id UUID NOT NULL,
-        overall_rating DECIMAL(2,1) CHECK (overall_rating BETWEEN 1.0 AND 5.0) NOT NULL,
-        access_rating DECIMAL(2,1) CHECK (access_rating BETWEEN 1.0 AND 5.0) NOT NULL,
-        treatment_rating DECIMAL(2,1) CHECK (treatment_rating BETWEEN 1.0 AND 5.0) NOT NULL,
-        helpful_rating DECIMAL(2,1) CHECK (helpful_rating BETWEEN 1.0 AND 5.0) NOT NULL,
-        effectiveness_rating DECIMAL(2,1) CHECK (effectiveness_rating BETWEEN 1.0 AND 5.0) NOT NULL,
-        comment TEXT,
-        submitted_at TIMESTAMP DEFAULT NOW() NOT NULL,
-        ip_address INET,
-        user_agent TEXT,
-        reviewed BOOLEAN DEFAULT FALSE,
-        approved BOOLEAN DEFAULT NULL,
-        reviewed_at TIMESTAMP,
-        reviewed_by VARCHAR(100),
-        rejection_reason TEXT
-      );
-    `;
-    
-    await query(createTableSql);
+    // Table already exists from migration - no need to create
     
     // Check for duplicate submission (same user, same offering)
     const duplicateCheck = `

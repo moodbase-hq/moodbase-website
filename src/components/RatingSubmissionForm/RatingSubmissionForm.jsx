@@ -61,14 +61,31 @@ const RatingSubmissionForm = ({ offeringId, onSubmissionSuccess, onCancel }) => 
         overall: calculateOverallRating()
       }
 
-      // For now, just simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      console.log('Submitting rating:', {
-        offeringId,
-        ratings: finalRatings,
-        comment
+      // Call the ratings API
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const response = await fetch(`${apiUrl}/api/ratings/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          offeringId: parseInt(offeringId),
+          overall: finalRatings.overall,
+          access: finalRatings.access,
+          treatment: finalRatings.treatment,
+          helpful: finalRatings.helpful,
+          effectiveness: finalRatings.effectiveness,
+          comment: comment.trim() || null
+        })
       })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to submit rating')
+      }
+
+      const result = await response.json()
+      console.log('Rating submitted successfully:', result)
 
       if (onSubmissionSuccess) {
         onSubmissionSuccess({
