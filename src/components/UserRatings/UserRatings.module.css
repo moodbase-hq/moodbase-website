@@ -1,0 +1,192 @@
+.container {
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-primary);
+}
+
+.header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.title {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.10;
+  color: var(--foreground-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.overallRating {
+  display: flex;
+  align-items: center;
+}
+
+.loading {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 14px;
+  color: var(--foreground-primary);
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.criteria {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.criterion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.criterion:last-child {
+  border-bottom: none;
+}
+
+.criterionInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-xs);
+}
+
+.criterionLabel {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground-primary);
+}
+
+.criterionDescription {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--foreground-primary);
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+.criterionRating {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-md);
+}
+
+.comments {
+  margin-bottom: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-primary);
+}
+
+.commentsTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.comment {
+  background-color: var(--background-primary);
+  border: 1px solid var(--border-primary);
+  padding: var(--spacing-sm);
+  border-radius: 8px;
+  border-left: 3px solid var(--background-emphasis);
+}
+
+.commentText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--foreground-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.commentDate {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--foreground-primary);
+  opacity: 0.6;
+}
+
+.submitSection {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-primary);
+  text-align: center;
+}
+
+.submitButton {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground-on-emphasis);
+  background-color: var(--background-emphasis);
+  border: none;
+  border-radius: 8px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: var(--spacing-sm);
+}
+
+.submitButton:hover {
+  background-color: #8b2635;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(161, 62, 75, 0.3);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitNote {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--foreground-primary);
+  opacity: 0.7;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+  
+  .criterion {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .criterionRating {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .criterionInfo {
+    width: 100%;
+  }
+  
+  .title {
+    font-size: 18px;
+  }
+}
