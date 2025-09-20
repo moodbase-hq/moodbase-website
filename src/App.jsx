@@ -24,9 +24,9 @@ const App = () => {
           <Route path="/support" element={<Support />} />
           
           {/* RESSOURCEN pages */}
-          <Route path="/tech-support" element={<TechSupportPage />} />
-          <Route path="/help-organizations" element={<HelpOrganizationsPage />} />
-          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/tech-support" element={<UnderConstructionPage pageName="Tech Support" />} />
+          <Route path="/help-organizations" element={<UnderConstructionPage pageName="Hilforganisationen" />} />
+          <Route path="/faq" element={<UnderConstructionPage pageName="FAQ" />} />
           
           {/* Under construction pages */}
           <Route path="/partnerships" element={<UnderConstructionPage pageName="Kooperationen" />} />
