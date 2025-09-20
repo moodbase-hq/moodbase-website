@@ -8,7 +8,6 @@
         { "text": "Über uns", "href": "/about" },
         { "text": "Datenbank", "href": "/database" },
         { "text": "Blog", "href": "/blog" },
-        { "text": "Kooperationen", "href": "/partnerships" },
         { "text": "Unterstützen", "href": "/support" }
       ]
     },
