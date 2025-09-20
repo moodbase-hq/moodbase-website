@@ -27,7 +27,7 @@ const Footer = ({ logo = footerConfig.logo, columns = footerConfig.columns, plan
                         {item.text}
                       </a>
                     ) : (
-                      <Link to={item.href} className={styles.columnLink}>
+                      <Link to={item.href} className={styles.columnLink} replace>
                         {item.text}
                       </Link>
                     )}
