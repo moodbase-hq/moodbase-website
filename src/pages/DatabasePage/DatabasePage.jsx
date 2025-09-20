@@ -318,26 +318,26 @@ const DatabasePage = () => {
       {
         title: "RESSOURCEN",
         items: [
-          { text: "Tech Support", href: "#tech-support" },
-          { text: "Hilforganisationen", href: "#help-organizations" },
-          { text: "FAQ", href: "#faq" }
+          { text: "Tech Support", href: "/tech-support" },
+          { text: "Hilforganisationen", href: "/help-organizations" },
+          { text: "FAQ", href: "/faq" }
         ]
       },
       {
         title: "RECHTLICHES & KONTAKT",
         items: [
-          { text: "Impressum", href: "#impressum" },
-          { text: "Datenschutz", href: "#privacy" },
-          { text: "Nutzungsbedingungen", href: "#terms" },
+          { text: "Impressum", href: "/impressum" },
+          { text: "Datenschutz", href: "/privacy" },
+          { text: "Nutzungsbedingungen", href: "/terms" },
           { text: "info@moodbase.de", href: "mailto:info@moodbase.de" }
         ]
       },
       {
         title: "SOCIAL MEDIA",
         items: [
-          { text: "Instagram", href: "#instagram" },
-          { text: "TikTok", href: "#tiktok" },
-          { text: "LinkedIn", href: "#linkedin" }
+          { text: "Instagram", href: "/instagram" },
+          { text: "TikTok", href: "/tiktok" },
+          { text: "LinkedIn", href: "/linkedin" }
         ]
       }
     ]

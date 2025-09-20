@@ -7,7 +7,8 @@ const Filters = ({ filters, onFilterChange, onReset }) => {
 
   const handleCheckboxChange = (filterKey, optionValue, isChecked) => {
     const filter = filters.find(f => f.key === filterKey);
-    let newValue = [...filter.value];
+    const currentValue = Array.isArray(filter.value) ? filter.value : (filter.value ? [filter.value] : []);
+    let newValue = [...currentValue];
     
     if (optionValue === 'alle') {
       newValue = isChecked ? [] : [];
@@ -30,12 +31,13 @@ const Filters = ({ filters, onFilterChange, onReset }) => {
   };
 
   const getDisplayText = (filter) => {
-    if (filter.value.length === 0) return "Alle";
-    if (filter.value.length === 1) {
-      const option = filter.options.find(opt => opt.value === filter.value[0]);
+    const valueArray = Array.isArray(filter.value) ? filter.value : (filter.value ? [filter.value] : []);
+    if (valueArray.length === 0) return "Alle";
+    if (valueArray.length === 1) {
+      const option = filter.options.find(opt => opt.value === valueArray[0]);
       return option ? option.label : "Alle";
     }
-    return `${filter.value.length} ausgewählt`;
+    return `${valueArray.length} ausgewählt`;
   };
 
   return (
@@ -76,9 +78,10 @@ const Filters = ({ filters, onFilterChange, onReset }) => {
             {expandedFilters[filter.key] && (
               <div className={styles.checkboxGroup}>
                 {filter.options.map((option, optionIndex) => {
+                  const valueArray = Array.isArray(filter.value) ? filter.value : (filter.value ? [filter.value] : []);
                   const isChecked = option.value === 'alle' 
-                    ? filter.value.length === 0 
-                    : filter.value.includes(option.value);
+                    ? valueArray.length === 0 
+                    : valueArray.includes(option.value);
                   
                   return (
                     <label key={optionIndex} className={styles.checkboxLabel}>
