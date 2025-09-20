@@ -7,14 +7,13 @@ import Footer from '../../components/Footer/Footer'
 const HomePage = ({ 
   headerProps, 
   heroProps, 
-  howItWorksProps, 
-  footerProps 
+  howItWorksProps
 }) => (
   <div className="home-page">
     <Header {...headerProps} />
     <Hero {...heroProps} />
     <HowItWorks {...howItWorksProps} />
-    <Footer {...footerProps} />
+    <Footer />
   </div>
 )
 

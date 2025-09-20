@@ -141,47 +141,6 @@ const BlogPage = ({
     }
   ]
 
-  // Footer data
-  const footerProps = {
-    logo: "moodbase",
-    plantDecoration: "/images/decorations/plant-decoration.png",
-    columns: [
-      {
-        title: "MOODBASE",
-        items: [
-          { text: "Über uns", href: "/about" },
-          { text: "Datenbank", href: "/database" },
-          { text: "Blog", href: "/blog" },
-          { text: "Unterstützen", href: "/support" }
-        ]
-      },
-      {
-        title: "RESSOURCEN",
-        items: [
-          { text: "Tech Support", href: "/tech-support" },
-          { text: "Hilforganisationen", href: "/help-organizations" },
-          { text: "FAQ", href: "/faq" }
-        ]
-      },
-      {
-        title: "RECHTLICHES & KONTAKT",
-        items: [
-          { text: "Impressum", href: "/impressum" },
-          { text: "Datenschutz", href: "/privacy" },
-          { text: "Nutzungsbedingungen", href: "/terms" },
-          { text: "info@moodbase.de", href: "mailto:info@moodbase.de" }
-        ]
-      },
-      {
-        title: "SOCIAL MEDIA",
-        items: [
-          { text: "Instagram", href: "/instagram" },
-          { text: "TikTok", href: "/tiktok" },
-          { text: "LinkedIn", href: "/linkedin" }
-        ]
-      }
-    ]
-  }
 
   const handleSearch = (searchTerm) => {
     console.log('Blog search:', searchTerm)
@@ -225,7 +184,7 @@ const BlogPage = ({
           />
         </div>
       </div>
-      <Footer {...footerProps} />
+      <Footer />
     </div>
   )
 }
