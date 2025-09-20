@@ -123,14 +123,24 @@ app.get('/api/offerings/search', async (req, res) => {
 
     // Add search term condition if provided
     if (term && term.trim() !== '') {
-      conditions.push(`(
-        o.name ILIKE $${paramIndex} OR
-        o.description ILIKE $${paramIndex} OR
-        o.service_type ILIKE $${paramIndex} OR
-        o.address ILIKE $${paramIndex} OR
-        p.name ILIKE $${paramIndex}
-      )`);
-      params.push(`%${term}%`);
+      // Check if search term is a postal code (5 digits)
+      const isPostalCode = /^\d{5}$/.test(term.trim());
+      
+      if (isPostalCode) {
+        // For postal codes, prioritize address search
+        conditions.push(`o.address ILIKE $${paramIndex}`);
+        params.push(`%${term}%`);
+      } else {
+        // For general search terms, search all fields
+        conditions.push(`(
+          o.name ILIKE $${paramIndex} OR
+          o.description ILIKE $${paramIndex} OR
+          o.service_type ILIKE $${paramIndex} OR
+          o.address ILIKE $${paramIndex} OR
+          p.name ILIKE $${paramIndex}
+        )`);
+        params.push(`%${term}%`);
+      }
       paramIndex++;
     }
 
