@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Footer.module.css'
+import footerConfig from '../../data/shared/footerLinks.json'
 
-const Footer = ({ logo, columns, plantDecoration }) => (
+const Footer = ({ logo = footerConfig.logo, columns = footerConfig.columns, plantDecoration = footerConfig.plantDecoration }) => (
   <footer className={styles.footer}>
     <div className={styles.container}>
       <div className={styles.content}>
@@ -20,9 +22,15 @@ const Footer = ({ logo, columns, plantDecoration }) => (
               <ul className={styles.columnList}>
                 {column.items.map((item, itemIndex) => (
                   <li key={itemIndex} className={styles.columnItem}>
-                    <a href={item.href} className={styles.columnLink}>
-                      {item.text}
-                    </a>
+                    {item.href.startsWith('mailto:') ? (
+                      <a href={item.href} className={styles.columnLink}>
+                        {item.text}
+                      </a>
+                    ) : (
+                      <Link to={item.href} className={styles.columnLink}>
+                        {item.text}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

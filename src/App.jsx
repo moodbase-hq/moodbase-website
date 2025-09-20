@@ -36,6 +36,9 @@ const App = () => {
           <Route path="/instagram" element={<UnderConstructionPage pageName="Instagram" />} />
           <Route path="/tiktok" element={<UnderConstructionPage pageName="TikTok" />} />
           <Route path="/linkedin" element={<UnderConstructionPage pageName="LinkedIn" />} />
+          
+          {/* Catch-all route for any unmatched paths */}
+          <Route path="*" element={<UnderConstructionPage pageName="Diese Seite" />} />
         </Routes>
       </div>
     </Router>
