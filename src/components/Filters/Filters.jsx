@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import MobileFilters from '../MobileFilters/MobileFilters'
+import DistanceSlider from '../DistanceSlider/DistanceSlider'
 import styles from './Filters.module.css'
 
-const Filters = ({ filters, onFilterChange, onReset }) => {
+const Filters = ({ filters, onFilterChange, onReset, onDistanceChange }) => {
   const [expandedFilters, setExpandedFilters] = useState({});
 
   const handleCheckboxChange = (filterKey, optionValue, isChecked) => {
@@ -50,6 +51,12 @@ const Filters = ({ filters, onFilterChange, onReset }) => {
       {/* Desktop Filters */}
       <aside className={styles.sidebar}>
         <h2 className={styles.title}>Filter</h2>
+        
+        {/* Distance Filter */}
+        <DistanceSlider 
+          onDistanceChange={onDistanceChange}
+        />
+        
         {filters.map((filter, index) => (
           <div key={index} className={styles.filterGroup}>
             <label className={styles.filterLabel}>{filter.label}</label>

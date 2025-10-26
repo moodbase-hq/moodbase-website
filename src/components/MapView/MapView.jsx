@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_TOKEN } from '../../config/mapbox';
+import PlaceModal from '../PlaceModal/PlaceModal';
 import styles from './MapView.module.css';
 
 // Set Mapbox access token
@@ -13,11 +14,15 @@ if (MAPBOX_TOKEN) {
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
 
-const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
+const MapView = ({ results, onDetailsClick }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mapData, setMapData] = useState([]);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
+  
+  // Modal state
+  const [modalPlaceId, setModalPlaceId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Map container ref
   const mapContainer = useRef(null);
@@ -33,6 +38,17 @@ const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
       });
       markersRef.current = [];
     }
+  };
+
+  // Modal handlers
+  const handleOpenModal = (placeId) => {
+    setModalPlaceId(placeId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalPlaceId(null);
   };
 
   // Fetch map data from new places API
@@ -198,7 +214,7 @@ const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
 
         // Setup map load event
         map.current.on('load', () => {
-          addMarkers();
+          setupClustering();
         });
       } catch (err) {
         console.error('Error initializing map:', err);
@@ -212,87 +228,213 @@ const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
       try {
         map.current.setCenter(validCenter);
         
-        // Add markers if map is already loaded
+        // Update clustering if map is already loaded
         if (map.current.loaded()) {
-          addMarkers();
+          updateClusterData();
         }
       } catch (err) {
         console.error('Error updating map:', err);
       }
     }
 
-    // Add markers to map (now showing places)
-    function addMarkers() {
-      cleanupMarkers();
-      
+    // Setup Mapbox clustering
+    function setupClustering() {
       const filteredPlaces = getFilteredPlaces();
+      const geoJsonData = formatPlacesForClustering(filteredPlaces);
       
-      filteredPlaces.forEach(place => {
-        const location = getLocationData(place);
-        
-        try {
-          // Create custom marker element
-          const el = document.createElement('div');
-          el.className = styles.customMarker;
-          
-          // Add offering count badge if there are offerings
-          if (place.offering_count > 0) {
-            const badge = document.createElement('div');
-            badge.className = styles.offeringBadge;
-            badge.textContent = place.offering_count;
-            el.appendChild(badge);
-          }
-          
-          // Create marker instance
-          const marker = new mapboxgl.Marker(el)
-            .setLngLat([location.lng, location.lat])
-            .addTo(map.current);
-          
-          // Store marker for cleanup
-          markersRef.current.push(marker);
-          
-          // Add event listeners
-          el.addEventListener('mouseenter', () => {
-            const placeName = place.place_name || place.name;
-            const providerName = place.provider_name;
-            const address = place.place_address || place.address;
-            const city = place.city || '';
-            const offeringCount = place.offering_count || 0;
-            const serviceTypes = place.service_types || [];
-            
-            popup.current
-              .setLngLat([location.lng, location.lat])
-              .setHTML(`
-                <div style="padding: 12px; min-width: 200px;">
-                  <h3 style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${placeName}</h3>
-                  <p style="margin: 0 0 4px 0; font-size: 13px; color: #333;">${providerName}</p>
-                  <p style="margin: 0 0 6px 0; font-size: 12px; color: #666;">${address}${city ? ', ' + city : ''}</p>
-                  <div style="font-size: 12px; color: #444;">
-                    <strong>${offeringCount}</strong> Angebot${offeringCount !== 1 ? 'e' : ''}
-                    ${serviceTypes.length > 0 ? '<br/>' + serviceTypes.slice(0, 3).join(', ') : ''}
-                  </div>
-                  <div style="margin-top: 6px; font-size: 11px; color: #999;">Klicken für Details</div>
-                </div>
-              `)
-              .addTo(map.current);
-          });
-          
-          el.addEventListener('mouseleave', () => {
-            if (popup.current) popup.current.remove();
-          });
-          
-          el.addEventListener('click', () => {
-            if (onPlaceClick) {
-              onPlaceClick(place.place_id);
-            } else if (onDetailsClick) {
-              // Fallback to old interface
-              onDetailsClick(place.place_id);
-            }
-          });
-        } catch (err) {
-          console.error('Error adding marker:', err);
+      // Add data source with clustering
+      map.current.addSource('places', {
+        type: 'geojson',
+        data: geoJsonData,
+        cluster: true,
+        clusterMaxZoom: 12, // Max zoom to cluster points on
+        clusterRadius: 50 // Radius of each cluster when clustering points
+      });
+
+      // Add clusters layer
+      map.current.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'places',
+        filter: ['has', 'point_count'],
+        paint: {
+          'circle-color': [
+            'step',
+            ['get', 'point_count'],
+            '#A13E4B', // Color for small clusters
+            10,
+            '#8B2C3A', // Color for medium clusters
+            30,
+            '#7A252E'  // Color for large clusters
+          ],
+          'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            15, // Size for small clusters
+            10,
+            20, // Size for medium clusters
+            30,
+            25  // Size for large clusters
+          ]
         }
       });
+
+      // Add cluster count labels
+      map.current.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'places',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': '{point_count_abbreviated}',
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+        },
+        paint: {
+          'text-color': '#ffffff'
+        }
+      });
+
+      // Add individual places layer (when not clustered)
+      map.current.addLayer({
+        id: 'unclustered-point',
+        type: 'circle',
+        source: 'places',
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-color': '#A13E4B',
+          'circle-radius': 8,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff'
+        }
+      });
+
+      // Add labels for individual places
+      map.current.addLayer({
+        id: 'unclustered-point-label',
+        type: 'symbol',
+        source: 'places',
+        filter: ['!', ['has', 'point_count']],
+        layout: {
+          'text-field': ['get', 'offering_count'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 10
+        },
+        paint: {
+          'text-color': '#ffffff'
+        }
+      });
+
+      // Add click handlers
+      setupClusterClickHandlers();
+    }
+
+    // Format places data for Mapbox clustering
+    function formatPlacesForClustering(places) {
+      const features = places.map(place => {
+        const location = getLocationData(place);
+        
+        return {
+          type: 'Feature',
+          properties: {
+            place_id: place.place_id,
+            place_name: place.place_name || place.name,
+            provider_name: place.provider_name,
+            address: place.place_address || place.address,
+            city: place.city || '',
+            offering_count: place.offering_count || 0,
+            service_types: place.service_types || []
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [location.lng, location.lat]
+          }
+        };
+      }).filter(feature => 
+        feature.geometry.coordinates[0] && 
+        feature.geometry.coordinates[1]
+      );
+
+      return {
+        type: 'FeatureCollection',
+        features
+      };
+    }
+
+    // Setup click handlers for clusters and individual places
+    function setupClusterClickHandlers() {
+      // Cluster click - zoom in
+      map.current.on('click', 'clusters', (e) => {
+        const features = map.current.queryRenderedFeatures(e.point, {
+          layers: ['clusters']
+        });
+        
+        const clusterId = features[0].properties.cluster_id;
+        
+        map.current.getSource('places').getClusterExpansionZoom(
+          clusterId,
+          (err, zoom) => {
+            if (err) return;
+            
+            map.current.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
+            });
+          }
+        );
+      });
+
+      // Individual place click - open modal instead of calling onPlaceClick
+      map.current.on('click', 'unclustered-point', (e) => {
+        const place = e.features[0].properties;
+        handleOpenModal(place.place_id);
+      });
+
+      // Mouse enter/leave for popups
+      map.current.on('mouseenter', 'clusters', () => {
+        map.current.getCanvas().style.cursor = 'pointer';
+      });
+      
+      map.current.on('mouseleave', 'clusters', () => {
+        map.current.getCanvas().style.cursor = '';
+      });
+
+      map.current.on('mouseenter', 'unclustered-point', (e) => {
+        map.current.getCanvas().style.cursor = 'pointer';
+        
+        const place = e.features[0].properties;
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        
+        popup.current
+          .setLngLat(coordinates)
+          .setHTML(`
+            <div style="padding: 12px; min-width: 200px;">
+              <h3 style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${place.place_name}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 13px; color: #333;">${place.provider_name}</p>
+              <p style="margin: 0 0 6px 0; font-size: 12px; color: #666;">${place.address}${place.city ? ', ' + place.city : ''}</p>
+              <div style="font-size: 12px; color: #444;">
+                <strong>${place.offering_count}</strong> Angebot${place.offering_count !== 1 ? 'e' : ''}
+              </div>
+              <div style="margin-top: 6px; font-size: 11px; color: #999;">Klicken für Details</div>
+            </div>
+          `)
+          .addTo(map.current);
+      });
+
+      map.current.on('mouseleave', 'unclustered-point', () => {
+        map.current.getCanvas().style.cursor = '';
+        if (popup.current) popup.current.remove();
+      });
+    }
+
+    // Update cluster data when filters change
+    function updateClusterData() {
+      const filteredPlaces = getFilteredPlaces();
+      const geoJsonData = formatPlacesForClustering(filteredPlaces);
+      
+      if (map.current.getSource('places')) {
+        map.current.getSource('places').setData(geoJsonData);
+      }
     }
 
     // Cleanup function
@@ -405,6 +547,14 @@ const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
           </div>
         </div>
       )}
+
+      {/* Place Modal */}
+      <PlaceModal
+        placeId={modalPlaceId}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onOfferingClick={onDetailsClick}
+      />
     </div>
   );
 };

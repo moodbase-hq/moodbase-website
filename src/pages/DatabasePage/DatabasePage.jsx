@@ -17,13 +17,15 @@ const DatabasePage = () => {
   const [error, setError] = useState(null)
   const [selectedOffering, setSelectedOffering] = useState(null)
 
-  // View state - map-first design
+  // View state - keep existing working toggle
   const [viewMode, setViewMode] = useState('map') // 'map' or 'list'
-  const [filtersCollapsed, setFiltersCollapsed] = useState(true)
 
   // Search and filter state
   const [searchTerm, setSearchTerm] = useState('')
   const [filters, setFilters] = useState([])
+  
+  // Distance filter state (radius only - postal code comes from search)
+  const [distanceRadius, setDistanceRadius] = useState(null)
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
@@ -177,6 +179,11 @@ const DatabasePage = () => {
             if (filter.key === 'themes') searchParams.themes = filter.value
           }
         })
+        
+        // Add distance radius if set (coordinates will come from postal code in search term)
+        if (distanceRadius) {
+          searchParams.radius = distanceRadius
+        }
 
         // Perform search if we have search criteria, otherwise use all data
         const hasSearchCriteria = Object.keys(searchParams).length > 0
@@ -240,7 +247,7 @@ const DatabasePage = () => {
     // Debounce search
     const timeoutId = setTimeout(performSearch, 300)
     return () => clearTimeout(timeoutId)
-  }, [searchTerm, filters, allData])
+  }, [searchTerm, filters, allData, distanceRadius])
 
   // Event handlers
   const handleSearch = (term) => {
@@ -259,6 +266,11 @@ const DatabasePage = () => {
   const handleResetFilters = () => {
     setSearchTerm('')
     setFilters(prev => prev.map(filter => ({ ...filter, value: [] })))
+    setDistanceRadius(null)
+  }
+  
+  const handleDistanceChange = (distance) => {
+    setDistanceRadius(distance)
   }
 
   const handlePageChange = (page) => {
@@ -284,31 +296,7 @@ const DatabasePage = () => {
     setSelectedOffering(null)
   }
 
-  // New map-first handlers
-  const handleViewModeToggle = () => {
-    setViewMode(prev => prev === 'map' ? 'list' : 'map')
-  }
-
-  const handleFiltersToggle = () => {
-    setFiltersCollapsed(prev => !prev)
-  }
-
-  const handlePlaceClick = (placeId) => {
-    // For now, we'll show all offerings at that place
-    // Later we can create a dedicated PlaceDetail page
-    console.log('Place clicked:', placeId)
-    
-    // Filter results to show only offerings at this place
-    const placeOfferings = allData.filter(offering => 
-      offering.place_id === placeId
-    )
-    
-    if (placeOfferings.length > 0) {
-      setFilteredData(placeOfferings)
-      setViewMode('list') // Switch to list view to show results
-      setCurrentPage(1)
-    }
-  }
+  // Map interaction handlers - removed handlePlaceClick, now handled by modal
 
   // Show detail view if offering is selected
   if (selectedOffering) {
@@ -379,7 +367,7 @@ const DatabasePage = () => {
       <Header {...headerProps} />
       <SearchHero
         title="Psychosoziale Angebote"
-        searchPlaceholder="Angebote durchsuchen"
+        searchPlaceholder="Angebote durchsuchen..."
         onSearch={handleSearch}
       />
       
@@ -389,112 +377,66 @@ const DatabasePage = () => {
         </div>
       )}
 
-      {/* New Map-First Layout */}
-      <div className={styles.mapFirstContainer}>
-        {/* Compact Controls Bar */}
-        <div className={styles.controlsBar}>
-          <div className={styles.leftControls}>
-            <button
-              className={`${styles.viewToggle} ${viewMode === 'map' ? styles.active : ''}`}
-              onClick={handleViewModeToggle}
-            >
-              🗺️ Kartenansicht
-            </button>
-            <button
-              className={`${styles.viewToggle} ${viewMode === 'list' ? styles.active : ''}`}
-              onClick={handleViewModeToggle}
-            >
-              📋 Listenansicht
-            </button>
-          </div>
-          <div className={styles.rightControls}>
-            <button
-              className={`${styles.filtersToggle} ${!filtersCollapsed ? styles.active : ''}`}
-              onClick={handleFiltersToggle}
-            >
-              🔍 Filter {!filtersCollapsed ? 'ausblenden' : 'anzeigen'}
-            </button>
-            <div className={styles.resultCount}>
-              {totalItems} Ergebnisse
-            </div>
-          </div>
+      {/* Restored Original Layout with Sidebar */}
+      <div className={styles.content}>
+        <div className={styles.sidebar}>
+          <Filters
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onReset={handleResetFilters}
+            onDistanceChange={handleDistanceChange}
+          />
         </div>
-
-        {/* Collapsible Filters */}
-        {!filtersCollapsed && (
-          <div className={styles.collapsibleFilters}>
-            <Filters
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              onReset={handleResetFilters}
+        <div className={styles.main}>
+          {isLoading ? (
+            <div className={styles.loading}>
+              <p>Laden...</p>
+            </div>
+          ) : viewMode === 'map' ? (
+            <MapView
+              results={filteredData}
+              onDetailsClick={handleDetailsClick}
             />
-          </div>
-        )}
-
-        {/* Main Content Area */}
-        <div className={styles.mainContent}>
-          {viewMode === 'map' ? (
-            <div className={styles.mapViewContainer}>
-              <MapView
-                results={filteredData}
-                onDetailsClick={handleDetailsClick}
-                onPlaceClick={handlePlaceClick}
-              />
-            </div>
           ) : (
-            <div className={styles.listViewContainer}>
-              {isLoading ? (
-                <div className={styles.loading}>
-                  <p>Laden...</p>
-                </div>
-              ) : (
-                <SearchResults
-                  results={currentResults}
-                  resultCount={totalItems}
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  itemsPerPage={itemsPerPage}
-                  onPageChange={handlePageChange}
-                  onDetailsClick={handleDetailsClick}
-                />
-              )}
-            </div>
+            <SearchResults
+              results={currentResults}
+              resultCount={totalItems}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onDetailsClick={handleDetailsClick}
+            />
           )}
         </div>
+      </div>
 
-        {/* Quick Results Summary (always visible in map mode) */}
-        {viewMode === 'map' && filteredData.length > 0 && (
-          <div className={styles.quickResults}>
-            <h3 className={styles.quickResultsTitle}>
-              Gefundene Angebote ({totalItems})
-            </h3>
-            <div className={styles.quickResultsList}>
-              {currentResults.slice(0, 5).map((result, index) => (
-                <div
-                  key={result.id || index}
-                  className={styles.quickResultItem}
-                  onClick={() => handleDetailsClick(result.id)}
-                >
-                  <div className={styles.quickResultTitle}>{result.name}</div>
-                  <div className={styles.quickResultProvider}>
-                    {result.provider_name}
-                  </div>
-                  <div className={styles.quickResultLocation}>
-                    {result.place_city || result.city || 'Online'}
-                  </div>
-                </div>
-              ))}
-              {totalItems > 5 && (
-                <button
-                  className={styles.showAllResults}
-                  onClick={() => setViewMode('list')}
-                >
-                  Alle {totalItems} Angebote anzeigen →
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+      {/* View Toggle - Fixed at bottom */}
+      <div className={styles.viewToggleContainer}>
+        <div className={styles.viewToggleButtons}>
+          <button
+            onClick={() => setViewMode('map')}
+            className={`${styles.viewToggleButton} ${viewMode === 'map' ? styles.active : ''}`}
+          >
+            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span className={styles.toggleText}>Karte</span>
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            className={`${styles.viewToggleButton} ${viewMode === 'list' ? styles.active : ''}`}
+          >
+            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span className={styles.toggleText}>Liste</span>
+          </button>
+        </div>
       </div>
 
       <Footer {...footerProps} />

@@ -250,6 +250,57 @@
   opacity: 0.7;
 }
 
+/* View Toggle - Very small floating button */
+.viewToggleContainer {
+  position: fixed;
+  bottom: var(--spacing-sm);
+  right: var(--spacing-sm);
+  z-index: 100;
+}
+
+.viewToggleButtons {
+  display: flex;
+  background-color: var(--color-background-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.viewToggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-foreground-primary);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  width: 24px;
+  height: 24px;
+}
+
+.viewToggleButton:hover {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+}
+
+.viewToggleButton.active {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+}
+
+.toggleIcon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2;
+}
+
+.toggleText {
+  display: none;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   /* Legacy responsive styles */
