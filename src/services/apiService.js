@@ -251,6 +251,55 @@ export const apiService = {
       modalities,
       cities: uniqueCities
     };
+  },
+
+  // RATINGS API FUNCTIONS
+
+  // Get user ratings for a specific offering
+  async getUserRatings(offeringId) {
+    try {
+      const data = await apiRequest(`/api/ratings/user/${offeringId}`);
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching user ratings:', error);
+      return null;
+    }
+  },
+
+  // Get platform ratings for a specific offering
+  async getPlatformRatings(offeringId) {
+    try {
+      const data = await apiRequest(`/api/ratings/platform/${offeringId}`);
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching platform ratings:', error);
+      return null;
+    }
+  },
+
+  // Submit a new user rating
+  async submitRating(ratingData) {
+    try {
+      const data = await apiRequest('/api/ratings/submit', {
+        method: 'POST',
+        body: JSON.stringify(ratingData)
+      });
+      return data;
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      throw error;
+    }
+  },
+
+  // Get ratings summary for multiple offerings (for search results)
+  async getRatingsSummary(offeringIds) {
+    try {
+      const data = await apiRequest(`/api/ratings/summary?offeringIds=${offeringIds.join(',')}`);
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching ratings summary:', error);
+      return {};
+    }
   }
 };
 

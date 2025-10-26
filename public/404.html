@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seite nicht gefunden - Moodbase</title>
+    <script type="text/javascript">
+      // GitHub Pages HashRouter SPA redirect
+      // Store the current path and redirect to the main app with hash routing
+      var currentPath = window.location.pathname.slice(1); // Remove leading slash
+      if (currentPath && currentPath !== '404') {
+        // Redirect to hash-based route for the React app to handle
+        window.location.replace('/#/' + currentPath);
+      } else {
+        // Default 404 redirect
+        window.location.replace('/#/404');
+      }
+    </script>
+  </head>
+  <body>
+    <p>Weiterleitung...</p>
+  </body>
+</html>

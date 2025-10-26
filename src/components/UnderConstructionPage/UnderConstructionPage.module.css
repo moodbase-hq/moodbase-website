@@ -1,0 +1,117 @@
+/* Under Construction Page Styles */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-primary);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+}
+
+.content {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.title {
+  color: var(--foreground-primary);
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-compact);
+  margin-bottom: var(--spacing-md);
+}
+
+.description {
+  color: var(--foreground-primary);
+  font-size: var(--font-size-300);
+  line-height: var(--line-height-normal);
+  margin-bottom: var(--spacing-xl);
+  opacity: 0.8;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: var(--background-emphasis);
+  color: var(--foreground-on-emphasis);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: var(--font-weight-500);
+  font-size: var(--font-size-300);
+  transition: all 0.2s ease;
+}
+
+.primaryButton:hover {
+  background-color: #8B2D37;
+  transform: translateY(-1px);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--foreground-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px solid var(--border-primary);
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: var(--font-weight-500);
+  font-size: var(--font-size-300);
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: var(--foreground-primary);
+  color: var(--foreground-on-emphasis);
+  transform: translateY(-1px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .main {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .content {
+    padding: var(--spacing-lg);
+  }
+  
+  .title {
+    font-size: var(--font-size-500);
+  }
+  
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+}

@@ -16,6 +16,13 @@ import Pagination from '../components/Pagination/Pagination'
 import Contact from '../components/Contact/Contact'
 import OfferingDetail from '../components/OfferingDetail/OfferingDetail'
 
+// Rating components
+import RatingDisplay from '../components/RatingDisplay/RatingDisplay'
+import UserRatings from '../components/UserRatings/UserRatings'
+import PlatformRatings from '../components/PlatformRatings/PlatformRatings'
+import RatingsSection from '../components/RatingsSection/RatingsSection'
+import RatingSubmissionForm from '../components/RatingSubmissionForm/RatingSubmissionForm'
+
 // Page imports
 import HomePage from '../pages/HomePage/HomePage'
 import DatabasePage from '../pages/DatabasePage/DatabasePage'
@@ -41,6 +48,13 @@ export const COMPONENT_REGISTRY = {
   Pagination,
   Contact,
   OfferingDetail,
+  
+  // Rating Components
+  RatingDisplay,
+  UserRatings,
+  PlatformRatings,
+  RatingsSection,
+  RatingSubmissionForm,
   
   // Page Layouts
   HomePage,

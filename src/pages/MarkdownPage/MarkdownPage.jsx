@@ -8,8 +8,7 @@ const MarkdownPage = ({
   title, 
   subtitle, 
   content, 
-  metadata, 
-  footerProps 
+  metadata
 }) => (
   <div className="markdown-page">
     <Header {...headerProps} />
@@ -19,7 +18,7 @@ const MarkdownPage = ({
       content={content}
       metadata={metadata}
     />
-    <Footer {...footerProps} />
+    <Footer />
   </div>
 )
 

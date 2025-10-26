@@ -48,12 +48,16 @@ const MobileFilters = ({ filters, onFilterChange, onReset }) => {
     setIsOpen(false);
   };
 
-  const activeFiltersCount = filters.reduce((count, filter) => count + filter.value.length, 0);
+  const activeFiltersCount = filters.reduce((count, filter) => {
+    const valueArray = Array.isArray(filter.value) ? filter.value : (filter.value ? [filter.value] : []);
+    return count + valueArray.length;
+  }, 0);
 
   const getSelectedFilters = () => {
     const selected = [];
     filters.forEach(filter => {
-      filter.value.forEach(value => {
+      const valueArray = Array.isArray(filter.value) ? filter.value : (filter.value ? [filter.value] : []);
+      valueArray.forEach(value => {
         const option = filter.options.find(opt => opt.value === value);
         if (option) {
           selected.push({

@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background-color: var(--color-background-primary);
+  background-color: var(--background-primary);
   padding: var(--spacing-xl) 0;
 }
 
@@ -18,7 +18,7 @@
   font-family: "Inclusive Sans", sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: var(--color-background-emphasis);
+  color: var(--background-emphasis);
   background: none;
   border: none;
   cursor: pointer;
@@ -35,7 +35,7 @@
   font-size: 32px;
   font-weight: 700;
   line-height: 1.10;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -44,12 +44,12 @@
   font-size: 20px;
   font-weight: 400;
   line-height: 1.40;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
   opacity: 0.8;
 }
 
 .content {
-  background-color: var(--color-white);
+  background-color: #FFFFFF;
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-xxl);
   box-shadow: var(--shadow-sm);
@@ -68,7 +68,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 1.10;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
   margin-bottom: var(--spacing-md);
 }
 
@@ -88,7 +88,7 @@
   font-family: "Inclusive Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
   opacity: 0.7;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -99,7 +99,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 1.40;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
 }
 
 .description {
@@ -107,7 +107,7 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 1.40;
-  color: var(--color-foreground-primary);
+  color: var(--foreground-primary);
 }
 
 .tagList {
@@ -118,8 +118,8 @@
 
 .tag {
   display: inline-block;
-  background-color: var(--color-gray-100);
-  color: var(--color-foreground-primary);
+  background-color: #f0f0f0;
+  color: var(--foreground-primary);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-sm);
   font-family: "Inclusive Sans", sans-serif;
@@ -144,7 +144,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 1.40;
-  color: var(--color-background-emphasis);
+  color: var(--background-emphasis);
   text-decoration: none;
   transition: var(--transition-normal);
 }
