@@ -13,9 +13,10 @@ if (MAPBOX_TOKEN) {
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
 
-const MapView = ({ results, onDetailsClick }) => {
+const MapView = ({ results, onDetailsClick, onPlaceClick }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [mapData, setMapData] = useState([]);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
 
   // Map container ref
@@ -34,14 +35,39 @@ const MapView = ({ results, onDetailsClick }) => {
     }
   };
 
-  // Extract location data from results
-  const getLocationData = (result) => {
-    // Try to get coordinates from various possible fields
-    const lat = result.latitude || result.lat || result.coordinates?.lat;
-    const lng = result.longitude || result.lng || result.coordinates?.lng;
+  // Fetch map data from new places API
+  useEffect(() => {
+    const fetchMapData = async () => {
+      setIsLoading(true);
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${apiUrl}/api/map`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch map data');
+        }
+        
+        const places = await response.json();
+        console.log('Map data loaded:', places.length, 'places');
+        setMapData(places);
+      } catch (error) {
+        console.error('Error fetching map data:', error);
+        setError('Failed to load map data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMapData();
+  }, []);
+
+  // Extract location data from places (new structure)
+  const getLocationData = (place) => {
+    const lat = place.latitude;
+    const lng = place.longitude;
     
-    // If coordinates exist, use them
-    if (lat && lng) {
+    // Places should always have coordinates
+    if (lat && lng && lat !== 0 && lng !== 0) {
       return {
         lat: parseFloat(lat),
         lng: parseFloat(lng),
@@ -49,8 +75,6 @@ const MapView = ({ results, onDetailsClick }) => {
       };
     }
 
-    // For now, return null if no coordinates
-    // In the future, we could add geocoding here
     return {
       lat: null,
       lng: null,
@@ -58,34 +82,46 @@ const MapView = ({ results, onDetailsClick }) => {
     };
   };
 
-  // Get mappable results
-  const getMappableResults = () => {
-    if (!results || results.length === 0) return [];
+  // Get mappable places
+  const getMappablePlaces = () => {
+    if (!mapData || mapData.length === 0) return [];
     
-    return results.filter(result => {
-      const location = getLocationData(result);
+    return mapData.filter(place => {
+      const location = getLocationData(place);
       return location.hasCoordinates && 
              !isNaN(location.lat) && 
              !isNaN(location.lng);
     });
   };
 
-  // Get non-mappable results
-  const getNonMappableResults = () => {
-    if (!results || results.length === 0) return [];
+  // Get places that match current search results (if any)
+  const getFilteredPlaces = () => {
+    const mappablePlaces = getMappablePlaces();
     
-    return results.filter(result => {
-      const location = getLocationData(result);
-      return !location.hasCoordinates;
+    // If no search results, show all places
+    if (!results || results.length === 0) {
+      return mappablePlaces;
+    }
+    
+    // Filter places based on search results (offerings)
+    const resultPlaceIds = new Set();
+    results.forEach(result => {
+      if (result.place_id) {
+        resultPlaceIds.add(result.place_id);
+      }
     });
+    
+    return mappablePlaces.filter(place => 
+      resultPlaceIds.size === 0 || resultPlaceIds.has(place.place_id)
+    );
   };
 
-  // Calculate map center based on results
+  // Calculate map center based on filtered places
   useEffect(() => {
-    const mappableResults = getMappableResults();
+    const filteredPlaces = getFilteredPlaces();
     
-    if (mappableResults.length > 0) {
-      const locations = mappableResults.map(result => getLocationData(result));
+    if (filteredPlaces.length > 0) {
+      const locations = filteredPlaces.map(place => getLocationData(place));
       const latitudes = locations.map(loc => loc.lat);
       const longitudes = locations.map(loc => loc.lng);
       
@@ -96,9 +132,7 @@ const MapView = ({ results, onDetailsClick }) => {
         setMapCenter([avgLng, avgLat]);
       }
     }
-    
-    setIsLoading(false);
-  }, [results]);
+  }, [mapData, results]);
 
   // Initialize and update map
   useEffect(() => {
@@ -187,19 +221,27 @@ const MapView = ({ results, onDetailsClick }) => {
       }
     }
 
-    // Add markers to map
+    // Add markers to map (now showing places)
     function addMarkers() {
       cleanupMarkers();
       
-      const mappableResults = getMappableResults();
+      const filteredPlaces = getFilteredPlaces();
       
-      mappableResults.forEach(result => {
-        const location = getLocationData(result);
+      filteredPlaces.forEach(place => {
+        const location = getLocationData(place);
         
         try {
           // Create custom marker element
           const el = document.createElement('div');
           el.className = styles.customMarker;
+          
+          // Add offering count badge if there are offerings
+          if (place.offering_count > 0) {
+            const badge = document.createElement('div');
+            badge.className = styles.offeringBadge;
+            badge.textContent = place.offering_count;
+            el.appendChild(badge);
+          }
           
           // Create marker instance
           const marker = new mapboxgl.Marker(el)
@@ -211,17 +253,25 @@ const MapView = ({ results, onDetailsClick }) => {
           
           // Add event listeners
           el.addEventListener('mouseenter', () => {
-            const title = result.name || result.title;
-            const organization = result.provider_name || result.provider || result.organization;
-            const locationText = result.address || result.location || result.entry_location;
+            const placeName = place.place_name || place.name;
+            const providerName = place.provider_name;
+            const address = place.place_address || place.address;
+            const city = place.city || '';
+            const offeringCount = place.offering_count || 0;
+            const serviceTypes = place.service_types || [];
             
             popup.current
               .setLngLat([location.lng, location.lat])
               .setHTML(`
-                <div style="padding: 8px;">
-                  <h3 style="font-weight: bold; margin-bottom: 4px;">${title}</h3>
-                  <p style="margin: 0 0 4px 0;">${organization}</p>
-                  <p style="margin: 0; color: #666;">${locationText}</p>
+                <div style="padding: 12px; min-width: 200px;">
+                  <h3 style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${placeName}</h3>
+                  <p style="margin: 0 0 4px 0; font-size: 13px; color: #333;">${providerName}</p>
+                  <p style="margin: 0 0 6px 0; font-size: 12px; color: #666;">${address}${city ? ', ' + city : ''}</p>
+                  <div style="font-size: 12px; color: #444;">
+                    <strong>${offeringCount}</strong> Angebot${offeringCount !== 1 ? 'e' : ''}
+                    ${serviceTypes.length > 0 ? '<br/>' + serviceTypes.slice(0, 3).join(', ') : ''}
+                  </div>
+                  <div style="margin-top: 6px; font-size: 11px; color: #999;">Klicken für Details</div>
                 </div>
               `)
               .addTo(map.current);
@@ -232,8 +282,11 @@ const MapView = ({ results, onDetailsClick }) => {
           });
           
           el.addEventListener('click', () => {
-            if (onDetailsClick) {
-              onDetailsClick(result.id);
+            if (onPlaceClick) {
+              onPlaceClick(place.place_id);
+            } else if (onDetailsClick) {
+              // Fallback to old interface
+              onDetailsClick(place.place_id);
             }
           });
         } catch (err) {
@@ -246,7 +299,7 @@ const MapView = ({ results, onDetailsClick }) => {
     return () => {
       cleanupMarkers();
     };
-  }, [results, mapCenter, isLoading]);
+  }, [mapData, results, mapCenter, isLoading]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -259,8 +312,28 @@ const MapView = ({ results, onDetailsClick }) => {
     };
   }, []);
 
-  const mappableResults = getMappableResults();
-  const nonMappableResults = getNonMappableResults();
+  const filteredPlaces = getFilteredPlaces();
+  
+  // Get offerings that don't have place coordinates
+  const getNonMappableOfferings = () => {
+    if (!results || results.length === 0) return [];
+    
+    return results.filter(result => {
+      // If result has place coordinates, it's mappable
+      if (result.latitude && result.longitude) return false;
+      
+      // If result has place_id but we can't find that place in mapData, it's non-mappable
+      if (result.place_id) {
+        const place = mapData.find(p => p.place_id === result.place_id);
+        return !place || !place.latitude || !place.longitude;
+      }
+      
+      // No place info at all
+      return true;
+    });
+  };
+
+  const nonMappableOfferings = getNonMappableOfferings();
 
   if (error) {
     return (
@@ -270,29 +343,48 @@ const MapView = ({ results, onDetailsClick }) => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className={styles.mapView}>
+        <div className={styles.mapContainer}>
+          <div className={styles.loading}>
+            <p>Karte wird geladen...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.mapView}>
       <div className={styles.mapContainer}>
         <div ref={mapContainer} className={styles.map} />
         
-        {mappableResults.length === 0 && (
+        {filteredPlaces.length === 0 && !isLoading && (
           <div className={styles.noResults}>
-            <p>Keine Angebote mit Standortdaten gefunden.</p>
+            <p>Keine Standorte mit Koordinaten gefunden.</p>
+          </div>
+        )}
+        
+        {/* Map info overlay */}
+        {filteredPlaces.length > 0 && (
+          <div className={styles.mapInfo}>
+            <p>{filteredPlaces.length} Standort{filteredPlaces.length !== 1 ? 'e' : ''} angezeigt</p>
           </div>
         )}
       </div>
 
-      {/* Non-mappable results */}
-      {nonMappableResults.length > 0 && (
+      {/* Non-mappable offerings */}
+      {nonMappableOfferings.length > 0 && (
         <div className={styles.nonMappableResults}>
           <h3 className={styles.nonMappableTitle}>
-            Angebote ohne Standortdaten ({nonMappableResults.length})
+            Angebote ohne Standortdaten ({nonMappableOfferings.length})
           </h3>
           <div className={styles.nonMappableList}>
-            {nonMappableResults.map((result, index) => {
+            {nonMappableOfferings.map((result, index) => {
               const title = result.name || result.title;
               const organization = result.provider_name || result.provider || result.organization;
-              const location = result.address || result.location || result.entry_location || "Online";
+              const location = result.address || result.location || "Online";
               const serviceType = result.service_type || result.type;
               
               return (

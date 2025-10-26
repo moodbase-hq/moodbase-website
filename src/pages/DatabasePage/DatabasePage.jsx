@@ -3,6 +3,7 @@ import Header from '../../components/Header/Header'
 import SearchHero from '../../components/SearchHero/SearchHero'
 import Filters from '../../components/Filters/Filters'
 import SearchResults from '../../components/SearchResults/SearchResults'
+import MapView from '../../components/MapView/MapView'
 import Footer from '../../components/Footer/Footer'
 import OfferingDetail from '../../components/OfferingDetail/OfferingDetail'
 import apiService from '../../services/apiService'
@@ -15,6 +16,10 @@ const DatabasePage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedOffering, setSelectedOffering] = useState(null)
+
+  // View state - map-first design
+  const [viewMode, setViewMode] = useState('map') // 'map' or 'list'
+  const [filtersCollapsed, setFiltersCollapsed] = useState(true)
 
   // Search and filter state
   const [searchTerm, setSearchTerm] = useState('')
@@ -279,6 +284,32 @@ const DatabasePage = () => {
     setSelectedOffering(null)
   }
 
+  // New map-first handlers
+  const handleViewModeToggle = () => {
+    setViewMode(prev => prev === 'map' ? 'list' : 'map')
+  }
+
+  const handleFiltersToggle = () => {
+    setFiltersCollapsed(prev => !prev)
+  }
+
+  const handlePlaceClick = (placeId) => {
+    // For now, we'll show all offerings at that place
+    // Later we can create a dedicated PlaceDetail page
+    console.log('Place clicked:', placeId)
+    
+    // Filter results to show only offerings at this place
+    const placeOfferings = allData.filter(offering => 
+      offering.place_id === placeId
+    )
+    
+    if (placeOfferings.length > 0) {
+      setFilteredData(placeOfferings)
+      setViewMode('list') // Switch to list view to show results
+      setCurrentPage(1)
+    }
+  }
+
   // Show detail view if offering is selected
   if (selectedOffering) {
     return (
@@ -351,37 +382,121 @@ const DatabasePage = () => {
         searchPlaceholder="Angebote durchsuchen"
         onSearch={handleSearch}
       />
+      
       {error && (
         <div className={styles.errorMessage}>
           <p>{error}</p>
         </div>
       )}
-      <div className={styles.content}>
-        <div className={styles.sidebar}>
-          <Filters
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onReset={handleResetFilters}
-          />
+
+      {/* New Map-First Layout */}
+      <div className={styles.mapFirstContainer}>
+        {/* Compact Controls Bar */}
+        <div className={styles.controlsBar}>
+          <div className={styles.leftControls}>
+            <button
+              className={`${styles.viewToggle} ${viewMode === 'map' ? styles.active : ''}`}
+              onClick={handleViewModeToggle}
+            >
+              🗺️ Kartenansicht
+            </button>
+            <button
+              className={`${styles.viewToggle} ${viewMode === 'list' ? styles.active : ''}`}
+              onClick={handleViewModeToggle}
+            >
+              📋 Listenansicht
+            </button>
+          </div>
+          <div className={styles.rightControls}>
+            <button
+              className={`${styles.filtersToggle} ${!filtersCollapsed ? styles.active : ''}`}
+              onClick={handleFiltersToggle}
+            >
+              🔍 Filter {!filtersCollapsed ? 'ausblenden' : 'anzeigen'}
+            </button>
+            <div className={styles.resultCount}>
+              {totalItems} Ergebnisse
+            </div>
+          </div>
         </div>
-        <div className={styles.main}>
-          {isLoading ? (
-            <div className={styles.loading}>
-              <p>Laden...</p>
+
+        {/* Collapsible Filters */}
+        {!filtersCollapsed && (
+          <div className={styles.collapsibleFilters}>
+            <Filters
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              onReset={handleResetFilters}
+            />
+          </div>
+        )}
+
+        {/* Main Content Area */}
+        <div className={styles.mainContent}>
+          {viewMode === 'map' ? (
+            <div className={styles.mapViewContainer}>
+              <MapView
+                results={filteredData}
+                onDetailsClick={handleDetailsClick}
+                onPlaceClick={handlePlaceClick}
+              />
             </div>
           ) : (
-            <SearchResults
-              results={currentResults}
-              resultCount={totalItems}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              onDetailsClick={handleDetailsClick}
-            />
+            <div className={styles.listViewContainer}>
+              {isLoading ? (
+                <div className={styles.loading}>
+                  <p>Laden...</p>
+                </div>
+              ) : (
+                <SearchResults
+                  results={currentResults}
+                  resultCount={totalItems}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                  onDetailsClick={handleDetailsClick}
+                />
+              )}
+            </div>
           )}
         </div>
+
+        {/* Quick Results Summary (always visible in map mode) */}
+        {viewMode === 'map' && filteredData.length > 0 && (
+          <div className={styles.quickResults}>
+            <h3 className={styles.quickResultsTitle}>
+              Gefundene Angebote ({totalItems})
+            </h3>
+            <div className={styles.quickResultsList}>
+              {currentResults.slice(0, 5).map((result, index) => (
+                <div
+                  key={result.id || index}
+                  className={styles.quickResultItem}
+                  onClick={() => handleDetailsClick(result.id)}
+                >
+                  <div className={styles.quickResultTitle}>{result.name}</div>
+                  <div className={styles.quickResultProvider}>
+                    {result.provider_name}
+                  </div>
+                  <div className={styles.quickResultLocation}>
+                    {result.place_city || result.city || 'Online'}
+                  </div>
+                </div>
+              ))}
+              {totalItems > 5 && (
+                <button
+                  className={styles.showAllResults}
+                  onClick={() => setViewMode('list')}
+                >
+                  Alle {totalItems} Angebote anzeigen →
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
       <Footer {...footerProps} />
     </div>
   )
