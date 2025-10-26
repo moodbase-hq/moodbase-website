@@ -54,7 +54,6 @@
   white-space: nowrap;
 }
 
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .searchInput {

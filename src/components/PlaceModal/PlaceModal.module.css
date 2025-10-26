@@ -1,0 +1,315 @@
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* Darker overlay for better contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+  backdrop-filter: blur(2px); /* Add slight blur effect */
+}
+
+/* Modal Content Container */
+.modalContent {
+  background-color: var(--color-background-primary); /* Sand color #F5ECE5 */
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--color-border-primary); /* Add border for definition */
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 2px solid var(--color-border-primary);
+  background-color: var(--color-background-emphasis); /* Burgundy header for contrast */
+}
+
+.modalTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-500);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-foreground-on-emphasis); /* White text on burgundy background */
+  margin: 0;
+  flex: 1;
+  margin-right: var(--spacing-md);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: var(--font-size-400);
+  color: var(--color-foreground-on-emphasis); /* White color for visibility on burgundy */
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white on hover */
+  color: var(--color-foreground-on-emphasis);
+}
+
+/* Modal Body */
+.modalBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+}
+
+/* Loading and Error States */
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  font-family: "Inclusive Sans", sans-serif;
+  color: var(--color-foreground-primary);
+}
+
+.error {
+  color: var(--color-background-emphasis);
+}
+
+/* Place Information */
+.placeInfo {
+  margin-bottom: var(--spacing-lg);
+}
+
+.placeDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.providerName {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-background-emphasis);
+  margin: 0;
+}
+
+.placeAddress {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-300);
+  color: var(--color-foreground-primary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.placeDescription {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-300);
+  color: var(--color-border-primary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* Offerings Section */
+.offeringsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.offeringsTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground-primary);
+  margin: 0;
+}
+
+.noOfferings {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-border-primary);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.offeringsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Offering Cards */
+.offeringCard {
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  background-color: var(--color-white); /* White cards for contrast on sand background */
+}
+
+.offeringCard:hover {
+  border-color: var(--color-background-emphasis);
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-white);
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.offeringHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xs);
+  gap: var(--spacing-sm);
+}
+
+.offeringName {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-background-emphasis);
+  margin: 0;
+  flex: 1;
+  line-height: var(--line-height-compact);
+}
+
+.serviceType {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  font-size: var(--font-size-100);
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-family: "Inclusive Sans", sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.offeringDescription {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+  line-height: var(--line-height-normal);
+}
+
+.offeringMeta {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.locationType,
+.cost {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-border-primary);
+  background-color: var(--color-background-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border-primary);
+}
+
+.offeringActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detailsLink {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-background-emphasis);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: var(--transition-normal);
+}
+
+.detailsLink:hover {
+  color: var(--color-border-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: var(--spacing-sm);
+  }
+  
+  .modalContent {
+    max-height: 90vh;
+  }
+  
+  .modalHeader {
+    padding: var(--spacing-md);
+  }
+  
+  .modalTitle {
+    font-size: var(--font-size-400);
+  }
+  
+  .modalBody {
+    padding: var(--spacing-md);
+  }
+  
+  .offeringHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .serviceType {
+    align-self: flex-start;
+  }
+  
+  .offeringMeta {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: var(--spacing-xs);
+  }
+  
+  .modalHeader {
+    padding: var(--spacing-sm);
+  }
+  
+  .modalBody {
+    padding: var(--spacing-sm);
+  }
+  
+  .modalTitle {
+    font-size: var(--font-size-300);
+  }
+  
+}

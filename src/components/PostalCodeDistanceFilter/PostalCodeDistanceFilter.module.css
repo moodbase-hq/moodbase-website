@@ -1,0 +1,253 @@
+.distanceFilter {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.filterTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-foreground-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+/* Input Group */
+.inputGroup {
+  margin-bottom: var(--spacing-md);
+}
+
+.inputLabel {
+  display: block;
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.postalCodeInput {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  padding-right: var(--spacing-xl); /* Space for clear button */
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-300);
+  color: var(--color-foreground-primary);
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
+  letter-spacing: 1px; /* Better readability for numbers */
+}
+
+.postalCodeInput:focus {
+  outline: none;
+  border-color: var(--color-background-emphasis);
+  box-shadow: 0 0 0 1px var(--color-background-emphasis);
+}
+
+.postalCodeInput.invalid {
+  border-color: #e74c3c;
+  background-color: #fdf2f2;
+}
+
+.postalCodeInput::placeholder {
+  color: var(--color-border-primary);
+  opacity: 0.7;
+}
+
+.clearButton {
+  position: absolute;
+  right: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-border-primary);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
+  font-size: var(--font-size-200);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clearButton:hover {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+}
+
+.errorText {
+  display: block;
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: #e74c3c;
+  margin-top: var(--spacing-xs);
+}
+
+.helpText {
+  display: block;
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-border-primary);
+  margin-top: var(--spacing-xs);
+}
+
+/* Slider Group */
+.sliderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-primary);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sliderLabel {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.distanceSlider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--color-background-primary);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.distanceSlider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-background-emphasis);
+  cursor: pointer;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.distanceSlider::-webkit-slider-thumb:hover {
+  background-color: var(--color-border-primary);
+  transform: scale(1.1);
+}
+
+.distanceSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-background-emphasis);
+  cursor: pointer;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.distanceSlider::-moz-range-thumb:hover {
+  background-color: var(--color-border-primary);
+  transform: scale(1.1);
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-xs);
+}
+
+.sliderMin,
+.sliderMax {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-border-primary);
+}
+
+/* Filter Info */
+.filterInfo {
+  padding: var(--spacing-sm);
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-background-emphasis);
+}
+
+.infoText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-foreground-primary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .distanceFilter {
+    padding: var(--spacing-md);
+  }
+  
+  .filterTitle {
+    font-size: var(--font-size-300);
+  }
+  
+  .postalCodeInput {
+    font-size: var(--font-size-200);
+    padding: var(--spacing-md);
+  }
+  
+  .distanceSlider::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .distanceSlider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .distanceFilter {
+    padding: var(--spacing-sm);
+  }
+  
+  .inputGroup {
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .sliderGroup {
+    gap: var(--spacing-xs);
+  }
+}

@@ -29,11 +29,34 @@
   border: 3px solid var(--color-white);
   box-shadow: var(--shadow-sm);
   transition: var(--transition-normal);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .customMarker:hover {
   background-color: var(--color-border-primary);
   transform: scale(1.1);
+}
+
+.offeringBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  font-family: "Inclusive Sans", sans-serif;
 }
 
 .noResults {
@@ -48,6 +71,34 @@
   text-align: center;
   color: var(--color-foreground-primary);
   font-family: "Inclusive Sans", sans-serif;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-white);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  color: var(--color-foreground-primary);
+  font-family: "Inclusive Sans", sans-serif;
+}
+
+.mapInfo {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background-color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  font-family: "Inclusive Sans", sans-serif;
+  border: 1px solid var(--color-border-primary);
 }
 
 .error {

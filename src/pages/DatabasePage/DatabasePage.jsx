@@ -3,6 +3,7 @@ import Header from '../../components/Header/Header'
 import SearchHero from '../../components/SearchHero/SearchHero'
 import Filters from '../../components/Filters/Filters'
 import SearchResults from '../../components/SearchResults/SearchResults'
+import MapView from '../../components/MapView/MapView'
 import Footer from '../../components/Footer/Footer'
 import OfferingDetail from '../../components/OfferingDetail/OfferingDetail'
 import apiService from '../../services/apiService'
@@ -16,9 +17,15 @@ const DatabasePage = () => {
   const [error, setError] = useState(null)
   const [selectedOffering, setSelectedOffering] = useState(null)
 
+  // View state - keep existing working toggle
+  const [viewMode, setViewMode] = useState('map') // 'map' or 'list'
+
   // Search and filter state
   const [searchTerm, setSearchTerm] = useState('')
   const [filters, setFilters] = useState([])
+  
+  // Distance filter state (radius only - postal code comes from search)
+  const [distanceRadius, setDistanceRadius] = useState(null)
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
@@ -172,6 +179,11 @@ const DatabasePage = () => {
             if (filter.key === 'themes') searchParams.themes = filter.value
           }
         })
+        
+        // Add distance radius if set (coordinates will come from postal code in search term)
+        if (distanceRadius) {
+          searchParams.radius = distanceRadius
+        }
 
         // Perform search if we have search criteria, otherwise use all data
         const hasSearchCriteria = Object.keys(searchParams).length > 0
@@ -235,7 +247,7 @@ const DatabasePage = () => {
     // Debounce search
     const timeoutId = setTimeout(performSearch, 300)
     return () => clearTimeout(timeoutId)
-  }, [searchTerm, filters, allData])
+  }, [searchTerm, filters, allData, distanceRadius])
 
   // Event handlers
   const handleSearch = (term) => {
@@ -254,6 +266,11 @@ const DatabasePage = () => {
   const handleResetFilters = () => {
     setSearchTerm('')
     setFilters(prev => prev.map(filter => ({ ...filter, value: [] })))
+    setDistanceRadius(null)
+  }
+  
+  const handleDistanceChange = (distance) => {
+    setDistanceRadius(distance)
   }
 
   const handlePageChange = (page) => {
@@ -278,6 +295,8 @@ const DatabasePage = () => {
   const handleBackToSearch = () => {
     setSelectedOffering(null)
   }
+
+  // Map interaction handlers - removed handlePlaceClick, now handled by modal
 
   // Show detail view if offering is selected
   if (selectedOffering) {
@@ -307,20 +326,24 @@ const DatabasePage = () => {
       <Header {...headerProps} />
       <SearchHero
         title="Psychosoziale Angebote"
-        searchPlaceholder="Angebote durchsuchen"
+        searchPlaceholder="Angebote durchsuchen..."
         onSearch={handleSearch}
       />
+      
       {error && (
         <div className={styles.errorMessage}>
           <p>{error}</p>
         </div>
       )}
+
+      {/* Restored Original Layout with Sidebar */}
       <div className={styles.content}>
         <div className={styles.sidebar}>
           <Filters
             filters={filters}
             onFilterChange={handleFilterChange}
             onReset={handleResetFilters}
+            onDistanceChange={handleDistanceChange}
           />
         </div>
         <div className={styles.main}>
@@ -328,6 +351,11 @@ const DatabasePage = () => {
             <div className={styles.loading}>
               <p>Laden...</p>
             </div>
+          ) : viewMode === 'map' ? (
+            <MapView
+              results={filteredData}
+              onDetailsClick={handleDetailsClick}
+            />
           ) : (
             <SearchResults
               results={currentResults}
@@ -341,7 +369,36 @@ const DatabasePage = () => {
           )}
         </div>
       </div>
-      <Footer />
+
+      {/* View Toggle - Fixed at bottom */}
+      <div className={styles.viewToggleContainer}>
+        <div className={styles.viewToggleButtons}>
+          <button
+            onClick={() => setViewMode('map')}
+            className={`${styles.viewToggleButton} ${viewMode === 'map' ? styles.active : ''}`}
+          >
+            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span className={styles.toggleText}>Karte</span>
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            className={`${styles.viewToggleButton} ${viewMode === 'list' ? styles.active : ''}`}
+          >
+            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span className={styles.toggleText}>Liste</span>
+          </button>
+        </div>
+      </div>
+
+      <Footer {...footerProps} />
     </div>
   )
 }

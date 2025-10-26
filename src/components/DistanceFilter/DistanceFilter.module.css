@@ -1,0 +1,268 @@
+.distanceFilter {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.filterTitle {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-foreground-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+/* Location Prompt */
+.locationPrompt {
+  text-align: center;
+  padding: var(--spacing-md) 0;
+}
+
+.promptText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: var(--line-height-normal);
+}
+
+.locationButton {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  min-height: 44px; /* Touch target */
+}
+
+.locationButton:hover:not(:disabled) {
+  background-color: var(--color-border-primary);
+  transform: translateY(-1px);
+}
+
+.locationButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Location Error */
+.locationError {
+  text-align: center;
+  padding: var(--spacing-sm);
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.errorText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: #c33;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.retryButton {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.retryButton:hover:not(:disabled) {
+  background-color: var(--color-border-primary);
+}
+
+/* Distance Controls */
+.distanceControls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.locationStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border-primary);
+}
+
+.locationIcon {
+  font-size: var(--font-size-300);
+}
+
+.locationText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  flex: 1;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: var(--color-border-primary);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
+  font-size: var(--font-size-200);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clearButton:hover {
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+}
+
+/* Slider Container */
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sliderLabel {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  text-align: center;
+}
+
+.distanceSlider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--color-background-primary);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.distanceSlider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-background-emphasis);
+  cursor: pointer;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.distanceSlider::-webkit-slider-thumb:hover {
+  background-color: var(--color-border-primary);
+  transform: scale(1.1);
+}
+
+.distanceSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-background-emphasis);
+  cursor: pointer;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.distanceSlider::-moz-range-thumb:hover {
+  background-color: var(--color-border-primary);
+  transform: scale(1.1);
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-xs);
+}
+
+.sliderMin,
+.sliderMax {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-border-primary);
+}
+
+/* Distance Info */
+.distanceInfo {
+  padding: var(--spacing-sm);
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-background-emphasis);
+}
+
+.infoText {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: var(--font-size-100);
+  color: var(--color-foreground-primary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .distanceFilter {
+    padding: var(--spacing-md);
+  }
+  
+  .filterTitle {
+    font-size: var(--font-size-300);
+  }
+  
+  .locationButton {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-300);
+  }
+  
+  .promptText {
+    font-size: var(--font-size-200);
+  }
+  
+  .distanceSlider::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .distanceSlider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .distanceFilter {
+    padding: var(--spacing-sm);
+  }
+  
+  .locationStatus {
+    padding: var(--spacing-xs);
+  }
+  
+  .sliderLabel {
+    font-size: var(--font-size-100);
+  }
+}
