@@ -110,26 +110,9 @@ const MapView = ({ results, onDetailsClick }) => {
     });
   };
 
-  // Get places that match current search results (if any)
+  // Get all places with valid coordinates (show all locations on map)
   const getFilteredPlaces = () => {
-    const mappablePlaces = getMappablePlaces();
-    
-    // If no search results, show all places
-    if (!results || results.length === 0) {
-      return mappablePlaces;
-    }
-    
-    // Filter places based on search results (offerings)
-    const resultPlaceIds = new Set();
-    results.forEach(result => {
-      if (result.place_id) {
-        resultPlaceIds.add(result.place_id);
-      }
-    });
-    
-    return mappablePlaces.filter(place => 
-      resultPlaceIds.size === 0 || resultPlaceIds.has(place.place_id)
-    );
+    return getMappablePlaces();
   };
 
   // Calculate map center based on filtered places

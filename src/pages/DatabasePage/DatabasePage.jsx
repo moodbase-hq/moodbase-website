@@ -389,6 +389,35 @@ const DatabasePage = () => {
           />
         </div>
         <div className={styles.main}>
+          {/* Results Header with Toggle - Always Visible */}
+          <div className={styles.resultsHeader}>
+            <span className={styles.resultCount}>{totalItems} Angebote gefunden</span>
+            <div className={styles.viewToggleInline}>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`${styles.toggleButton} ${viewMode === 'list' ? styles.active : ''}`}
+              >
+                <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                </svg>
+                <span className={styles.toggleText}>Register</span>
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`${styles.toggleButton} ${viewMode === 'map' ? styles.active : ''}`}
+              >
+                <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span className={styles.toggleText}>Map</span>
+              </button>
+            </div>
+          </div>
+
           {isLoading ? (
             <div className={styles.loading}>
               <p>Laden...</p>
@@ -409,34 +438,6 @@ const DatabasePage = () => {
               onDetailsClick={handleDetailsClick}
             />
           )}
-        </div>
-      </div>
-
-      {/* View Toggle - Fixed at bottom */}
-      <div className={styles.viewToggleContainer}>
-        <div className={styles.viewToggleButtons}>
-          <button
-            onClick={() => setViewMode('map')}
-            className={`${styles.viewToggleButton} ${viewMode === 'map' ? styles.active : ''}`}
-          >
-            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            <span className={styles.toggleText}>Karte</span>
-          </button>
-          <button
-            onClick={() => setViewMode('list')}
-            className={`${styles.viewToggleButton} ${viewMode === 'list' ? styles.active : ''}`}
-          >
-            <svg className={styles.toggleIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span className={styles.toggleText}>Liste</span>
-          </button>
         </div>
       </div>
 
