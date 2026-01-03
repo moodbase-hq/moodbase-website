@@ -35,25 +35,32 @@ const OfferingDetail = ({ offering, onBack }) => {
                   <span className={styles.value}>{offering.service_type}</span>
                 </div>
               )}
-              
+
               {offering.primary_location_type && (
                 <div className={styles.field}>
                   <span className={styles.label}>Modalität:</span>
                   <span className={styles.value}>{offering.primary_location_type}</span>
                 </div>
               )}
-              
+
               {offering.cost && (
                 <div className={styles.field}>
                   <span className={styles.label}>Kosten:</span>
                   <span className={styles.value}>{offering.cost}</span>
                 </div>
               )}
-              
+
               {offering.address && (
                 <div className={styles.field}>
                   <span className={styles.label}>Adresse:</span>
                   <span className={styles.value}>{offering.address}</span>
+                </div>
+              )}
+
+              {(offering.opening_hours || offering.availability_times) && (
+                <div className={styles.field}>
+                  <span className={styles.label}>Öffnungszeiten:</span>
+                  <span className={styles.value}>{offering.opening_hours || offering.availability_times}</span>
                 </div>
               )}
             </div>
@@ -77,6 +84,26 @@ const OfferingDetail = ({ offering, onBack }) => {
             </div>
           )}
 
+          {(offering.accessibility || offering.public_transport) && (
+            <div className={styles.section}>
+              <h2 className={styles.sectionTitle}>Barrierefreiheit & Anfahrt</h2>
+              <div className={styles.accessibilityInfo}>
+                {offering.accessibility && (
+                  <div className={styles.accessibilityItem}>
+                    <span className={styles.label}>Barrierefreiheit:</span>
+                    <span className={styles.value}>{offering.accessibility}</span>
+                  </div>
+                )}
+                {offering.public_transport && (
+                  <div className={styles.accessibilityItem}>
+                    <span className={styles.label}>ÖPNV:</span>
+                    <span className={styles.value}>{offering.public_transport}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {(offering.phone || offering.email || offering.website) && (
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>Kontakt</h2>
@@ -89,7 +116,7 @@ const OfferingDetail = ({ offering, onBack }) => {
                     </a>
                   </div>
                 )}
-                
+
                 {offering.email && (
                   <div className={styles.contactItem}>
                     <span className={styles.label}>E-Mail:</span>
@@ -98,14 +125,14 @@ const OfferingDetail = ({ offering, onBack }) => {
                     </a>
                   </div>
                 )}
-                
+
                 {offering.website && (
                   <div className={styles.contactItem}>
                     <span className={styles.label}>Website:</span>
-                    <a 
-                      href={offering.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={offering.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={styles.contactLink}
                     >
                       {offering.website}

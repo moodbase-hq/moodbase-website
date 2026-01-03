@@ -127,6 +127,18 @@
   font-weight: 500;
 }
 
+.accessibilityInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.accessibilityItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
 .contactInfo {
   display: flex;
   flex-direction: column;
