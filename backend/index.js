@@ -73,6 +73,25 @@ app.get('/api/providers/search', async (req, res) => {
   }
 });
 
+// Helper function to normalize German umlauts
+function normalizeUmlauts(text) {
+  return text
+    .replace(/ä/g, 'ae').replace(/Ä/g, 'Ae')
+    .replace(/ö/g, 'oe').replace(/Ö/g, 'Oe')
+    .replace(/ü/g, 'ue').replace(/Ü/g, 'Ue')
+    .replace(/ß/g, 'ss');
+}
+
+// Get search variants for a term (original + normalized if different)
+function getSearchVariants(term) {
+  const variants = [term];
+  const normalized = normalizeUmlauts(term);
+  if (normalized !== term) {
+    variants.push(normalized);
+  }
+  return variants;
+}
+
 // Search offerings - BEFORE /api/offerings/:id
 app.get('/api/offerings/search', async (req, res) => {
   try {
@@ -81,16 +100,18 @@ app.get('/api/offerings/search', async (req, res) => {
     let conditions = [];
     let paramIndex = 1;
 
-    // Build base query
+    // Build base query with entry_locations join for city search
     let sql = `
-      SELECT 
+      SELECT DISTINCT
         o.id, o.name, o.description, o.service_type, o.address,
         o.location_types, o.primary_location_type, o.availability_times, o.cost,
         p.id as provider_id, p.name as provider_name
-      FROM 
+      FROM
         offerings o
-      JOIN 
+      JOIN
         providers p ON o.provider_id = p.id
+      LEFT JOIN
+        entry_locations el ON o.id = el.entry_id
     `;
 
     // Add optional language join if language parameter exists and language table exists
@@ -132,21 +153,33 @@ app.get('/api/offerings/search', async (req, res) => {
         const isPostalCode = /^\d{5}$/.test(searchTerm);
 
         if (isPostalCode) {
-          // For postal codes, prioritize address search
-          conditions.push(`o.address ILIKE $${paramIndex}`);
+          // For postal codes, search address and location fields
+          conditions.push(`(o.address ILIKE $${paramIndex} OR el.location ILIKE $${paramIndex})`);
           params.push(`%${searchTerm}%`);
+          paramIndex++;
         } else {
-          // For general search terms, search all fields
-          conditions.push(`(
-            o.name ILIKE $${paramIndex} OR
-            o.description ILIKE $${paramIndex} OR
-            o.service_type ILIKE $${paramIndex} OR
-            o.address ILIKE $${paramIndex} OR
-            p.name ILIKE $${paramIndex}
-          )`);
-          params.push(`%${searchTerm}%`);
+          // Get search variants (original + umlaut-normalized version)
+          const variants = getSearchVariants(searchTerm);
+
+          // Build OR conditions for all variants
+          const variantConditions = variants.map(variant => {
+            const idx = paramIndex;
+            params.push(`%${variant}%`);
+            paramIndex++;
+            return `(
+              o.name ILIKE $${idx} OR
+              o.description ILIKE $${idx} OR
+              o.service_type ILIKE $${idx} OR
+              o.address ILIKE $${idx} OR
+              o.location_types ILIKE $${idx} OR
+              p.name ILIKE $${idx} OR
+              el.location ILIKE $${idx}
+            )`;
+          });
+
+          // Any variant matching is sufficient for this term
+          conditions.push(`(${variantConditions.join(' OR ')})`);
         }
-        paramIndex++;
       });
     }
 

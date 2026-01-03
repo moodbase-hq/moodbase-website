@@ -204,6 +204,10 @@ const DatabasePage = () => {
         let filtered = [...allData]
         
         if (searchTerm.trim()) {
+          // Helper to normalize German umlauts
+          const normalizeUmlauts = (text) => text
+            .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+
           // Split search terms to support multi-term search (AND logic)
           const searchTerms = searchTerm.toLowerCase().split(/\s+/).filter(t => t.length > 0)
           filtered = filtered.filter(item => {
@@ -211,11 +215,21 @@ const DatabasePage = () => {
               item.name,
               item.provider_name,
               item.address,
-              item.service_type
+              item.service_type,
+              item.location_types
             ].filter(Boolean).join(' ').toLowerCase()
 
-            // All terms must match somewhere in the searchable fields
-            return searchTerms.every(term => searchableText.includes(term))
+            // Also create normalized version for umlaut matching
+            const normalizedText = normalizeUmlauts(searchableText)
+
+            // All terms must match somewhere (check both original and normalized)
+            return searchTerms.every(term => {
+              const normalizedTerm = normalizeUmlauts(term)
+              return searchableText.includes(term) ||
+                     searchableText.includes(normalizedTerm) ||
+                     normalizedText.includes(term) ||
+                     normalizedText.includes(normalizedTerm)
+            })
           })
         }
         
