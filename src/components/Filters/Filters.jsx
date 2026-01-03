@@ -54,10 +54,12 @@ const Filters = ({ filters, onFilterChange, onReset, onDistanceChange }) => {
       <aside className={styles.sidebar}>
         <h2 className={styles.title}>Filter</h2>
         
-        {/* Distance Filter */}
-        <DistanceSlider 
-          onDistanceChange={onDistanceChange}
-        />
+        {/* Distance Filter - only show when onDistanceChange is provided */}
+        {onDistanceChange && (
+          <DistanceSlider
+            onDistanceChange={onDistanceChange}
+          />
+        )}
         
         {filters.map((filter, index) => (
           <div key={index} className={styles.filterGroup}>
