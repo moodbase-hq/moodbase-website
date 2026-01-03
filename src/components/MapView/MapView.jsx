@@ -393,7 +393,7 @@ const MapView = ({ results, onDetailsClick }) => {
           .setLngLat(coordinates)
           .setHTML(`
             <div style="padding: 12px; min-width: 200px;">
-              <h3 style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${place.place_name}</h3>
+              <h3 style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${place.place_name || place.provider_name}</h3>
               <p style="margin: 0 0 4px 0; font-size: 13px; color: #333;">${place.provider_name}</p>
               <p style="margin: 0 0 6px 0; font-size: 12px; color: #666;">${place.address}${place.city ? ', ' + place.city : ''}</p>
               <div style="font-size: 12px; color: #444;">
