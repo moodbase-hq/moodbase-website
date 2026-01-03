@@ -5,6 +5,15 @@ import styles from './OfferingDetail.module.css'
 const OfferingDetail = ({ offering, onBack }) => {
   if (!offering) return null;
 
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    return new Date(dateString).toLocaleDateString('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -108,12 +117,26 @@ const OfferingDetail = ({ offering, onBack }) => {
           )}
 
           {/* Ratings Section */}
-          <RatingsSection 
+          <RatingsSection
             offeringId={offering.id}
             userRatings={offering.userRatings}
             platformRatings={offering.platformRatings}
             showSubmissionForm={true}
           />
+
+          {/* Data Timestamps */}
+          {(offering.created_at || offering.updated_at) && (
+            <div className={styles.metaSection}>
+              <div className={styles.metaInfo}>
+                {offering.created_at && (
+                  <span>Erstellt: {formatDate(offering.created_at)}</span>
+                )}
+                {offering.updated_at && (
+                  <span>Aktualisiert: {formatDate(offering.updated_at)}</span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
