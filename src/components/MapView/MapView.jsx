@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_TOKEN } from '../../config/mapbox';
 import PlaceModal from '../PlaceModal/PlaceModal';
 import ResultCard from '../SearchResults/ResultCard';
+import Pagination from '../Pagination/Pagination';
 import styles from './MapView.module.css';
 
 // Set Mapbox access token
@@ -24,6 +25,10 @@ const MapView = ({ results, onDetailsClick }) => {
   // Modal state
   const [modalPlaceId, setModalPlaceId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Pagination state for non-mappable offerings
+  const [nonMappablePage, setNonMappablePage] = useState(1);
+  const nonMappableItemsPerPage = 12;
 
   // Map container ref
   const mapContainer = useRef(null);
@@ -438,6 +443,11 @@ const MapView = ({ results, onDetailsClick }) => {
     };
   }, []);
 
+  // Reset non-mappable pagination when results change
+  useEffect(() => {
+    setNonMappablePage(1);
+  }, [results]);
+
   const filteredPlaces = getFilteredPlaces();
   
   // Get offerings that don't have place coordinates
@@ -460,6 +470,14 @@ const MapView = ({ results, onDetailsClick }) => {
   };
 
   const nonMappableOfferings = getNonMappableOfferings();
+
+  // Calculate pagination for non-mappable offerings
+  const nonMappableTotalPages = Math.ceil(nonMappableOfferings.length / nonMappableItemsPerPage);
+  const nonMappableStartIndex = (nonMappablePage - 1) * nonMappableItemsPerPage;
+  const paginatedNonMappable = nonMappableOfferings.slice(
+    nonMappableStartIndex,
+    nonMappableStartIndex + nonMappableItemsPerPage
+  );
 
   if (error) {
     return (
@@ -507,7 +525,7 @@ const MapView = ({ results, onDetailsClick }) => {
             Angebote ohne Standortdaten ({nonMappableOfferings.length})
           </h3>
           <div className={styles.nonMappableList}>
-            {nonMappableOfferings.map((result, index) => (
+            {paginatedNonMappable.map((result, index) => (
               <ResultCard
                 key={result.id || index}
                 result={result}
@@ -515,6 +533,15 @@ const MapView = ({ results, onDetailsClick }) => {
               />
             ))}
           </div>
+          {nonMappableTotalPages > 1 && (
+            <Pagination
+              currentPage={nonMappablePage}
+              totalPages={nonMappableTotalPages}
+              totalItems={nonMappableOfferings.length}
+              itemsPerPage={nonMappableItemsPerPage}
+              onPageChange={setNonMappablePage}
+            />
+          )}
         </div>
       )}
 
