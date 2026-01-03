@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_TOKEN } from '../../config/mapbox';
 import PlaceModal from '../PlaceModal/PlaceModal';
+import ResultCard from '../SearchResults/ResultCard';
 import styles from './MapView.module.css';
 
 // Set Mapbox access token
@@ -506,27 +507,13 @@ const MapView = ({ results, onDetailsClick }) => {
             Angebote ohne Standortdaten ({nonMappableOfferings.length})
           </h3>
           <div className={styles.nonMappableList}>
-            {nonMappableOfferings.map((result, index) => {
-              const title = result.name || result.title;
-              const organization = result.provider_name || result.provider || result.organization;
-              const location = result.address || result.location || "Online";
-              const serviceType = result.service_type || result.type;
-              
-              return (
-                <div key={result.id || index} className={styles.nonMappableItem}>
-                  <button
-                    onClick={() => onDetailsClick && onDetailsClick(result.id)}
-                    className={styles.nonMappableButton}
-                  >
-                    <h4 className={styles.nonMappableItemTitle}>{title}</h4>
-                    <p className={styles.nonMappableItemOrg}>{organization}</p>
-                    <p className={styles.nonMappableItemDetails}>
-                      {serviceType} • {location}
-                    </p>
-                  </button>
-                </div>
-              );
-            })}
+            {nonMappableOfferings.map((result, index) => (
+              <ResultCard
+                key={result.id || index}
+                result={result}
+                onDetailsClick={onDetailsClick}
+              />
+            ))}
           </div>
         </div>
       )}

@@ -204,13 +204,19 @@ const DatabasePage = () => {
         let filtered = [...allData]
         
         if (searchTerm.trim()) {
-          const term = searchTerm.toLowerCase()
-          filtered = filtered.filter(item => 
-            item.name?.toLowerCase().includes(term) ||
-            item.provider_name?.toLowerCase().includes(term) ||
-            item.address?.toLowerCase().includes(term) ||
-            item.service_type?.toLowerCase().includes(term)
-          )
+          // Split search terms to support multi-term search (AND logic)
+          const searchTerms = searchTerm.toLowerCase().split(/\s+/).filter(t => t.length > 0)
+          filtered = filtered.filter(item => {
+            const searchableText = [
+              item.name,
+              item.provider_name,
+              item.address,
+              item.service_type
+            ].filter(Boolean).join(' ').toLowerCase()
+
+            // All terms must match somewhere in the searchable fields
+            return searchTerms.every(term => searchableText.includes(term))
+          })
         }
         
         // Apply filters

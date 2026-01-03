@@ -129,9 +129,9 @@
 }
 
 .nonMappableList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 .nonMappableItem {

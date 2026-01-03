@@ -123,25 +123,31 @@ app.get('/api/offerings/search', async (req, res) => {
 
     // Add search term condition if provided
     if (term && term.trim() !== '') {
-      // Check if search term is a postal code (5 digits)
-      const isPostalCode = /^\d{5}$/.test(term.trim());
-      
-      if (isPostalCode) {
-        // For postal codes, prioritize address search
-        conditions.push(`o.address ILIKE $${paramIndex}`);
-        params.push(`%${term}%`);
-      } else {
-        // For general search terms, search all fields
-        conditions.push(`(
-          o.name ILIKE $${paramIndex} OR
-          o.description ILIKE $${paramIndex} OR
-          o.service_type ILIKE $${paramIndex} OR
-          o.address ILIKE $${paramIndex} OR
-          p.name ILIKE $${paramIndex}
-        )`);
-        params.push(`%${term}%`);
-      }
-      paramIndex++;
+      // Split search terms by whitespace to support multi-term search
+      const searchTerms = term.trim().split(/\s+/).filter(t => t.length > 0);
+
+      // Each term must match somewhere in the searchable fields (AND logic)
+      searchTerms.forEach(searchTerm => {
+        // Check if this specific term is a postal code (5 digits)
+        const isPostalCode = /^\d{5}$/.test(searchTerm);
+
+        if (isPostalCode) {
+          // For postal codes, prioritize address search
+          conditions.push(`o.address ILIKE $${paramIndex}`);
+          params.push(`%${searchTerm}%`);
+        } else {
+          // For general search terms, search all fields
+          conditions.push(`(
+            o.name ILIKE $${paramIndex} OR
+            o.description ILIKE $${paramIndex} OR
+            o.service_type ILIKE $${paramIndex} OR
+            o.address ILIKE $${paramIndex} OR
+            p.name ILIKE $${paramIndex}
+          )`);
+          params.push(`%${searchTerm}%`);
+        }
+        paramIndex++;
+      });
     }
 
     // Add service type filter if provided
