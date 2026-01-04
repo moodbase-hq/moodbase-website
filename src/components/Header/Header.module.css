@@ -12,8 +12,14 @@
   align-items: center;
 }
 
+.logoGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
 .logo {
-  font-okafamily: "Inclusive Sans", sans-serif;
+  font-family: "Inclusive Sans", sans-serif;
   font-size: 24px;
   line-height: 1.10;
   color: var(--color-foreground-primary);
@@ -84,4 +90,24 @@
   .logo {
     font-size: 20px;
   }
+}
+
+/* Dark Mode Toggle */
+.themeToggle {
+  background-color: var(--color-background-emphasis);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.themeToggle:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
 }

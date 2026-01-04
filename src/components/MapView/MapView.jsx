@@ -16,8 +16,20 @@ if (MAPBOX_TOKEN) {
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
 
+// Mapbox styles for light/dark mode
+const MAP_STYLES = {
+  light: 'mapbox://styles/mapbox/streets-v11',
+  dark: 'mapbox://styles/mapbox/dark-v11'
+};
+
 const MapView = ({ results, onDetailsClick }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+    return false;
+  });
   const [error, setError] = useState(null);
   const [mapData, setMapData] = useState([]);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
@@ -56,6 +68,108 @@ const MapView = ({ results, onDetailsClick }) => {
     setIsModalOpen(false);
     setModalPlaceId(null);
   };
+
+  // Listen for theme changes
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          const newTheme = document.documentElement.getAttribute('data-theme');
+          setIsDarkMode(newTheme === 'dark');
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Update map style when theme changes
+  useEffect(() => {
+    if (!map.current) return;
+
+    const newStyle = isDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
+
+    // Handler to re-add clustering after style loads
+    const onStyleLoad = () => {
+      const filteredPlaces = getFilteredPlaces();
+      if (filteredPlaces.length === 0) return;
+
+      const geoJsonData = {
+        type: 'FeatureCollection',
+        features: filteredPlaces.map(place => ({
+          type: 'Feature',
+          properties: {
+            place_id: place.place_id,
+            place_name: place.place_name || place.name,
+            provider_name: place.provider_name,
+            address: place.place_address || place.address,
+            city: place.city || '',
+            offering_count: place.offering_count || 0,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(place.longitude), parseFloat(place.latitude)]
+          }
+        })).filter(f => f.geometry.coordinates[0] && f.geometry.coordinates[1])
+      };
+
+      // Re-add source and layers
+      if (!map.current.getSource('places')) {
+        map.current.addSource('places', {
+          type: 'geojson',
+          data: geoJsonData,
+          cluster: true,
+          clusterMaxZoom: 12,
+          clusterRadius: 50
+        });
+
+        map.current.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: 'places',
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-color': ['step', ['get', 'point_count'], '#A13E4B', 10, '#8B2C3A', 30, '#7A252E'],
+            'circle-radius': ['step', ['get', 'point_count'], 15, 10, 20, 30, 25]
+          }
+        });
+
+        map.current.addLayer({
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'places',
+          filter: ['has', 'point_count'],
+          layout: { 'text-field': '{point_count_abbreviated}', 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'], 'text-size': 12 },
+          paint: { 'text-color': '#ffffff' }
+        });
+
+        map.current.addLayer({
+          id: 'unclustered-point',
+          type: 'circle',
+          source: 'places',
+          filter: ['!', ['has', 'point_count']],
+          paint: { 'circle-color': '#A13E4B', 'circle-radius': 8, 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' }
+        });
+
+        map.current.addLayer({
+          id: 'unclustered-point-label',
+          type: 'symbol',
+          source: 'places',
+          filter: ['!', ['has', 'point_count']],
+          layout: { 'text-field': ['get', 'offering_count'], 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'], 'text-size': 10 },
+          paint: { 'text-color': '#ffffff' }
+        });
+      }
+    };
+
+    map.current.once('style.load', onStyleLoad);
+    map.current.setStyle(newStyle);
+  }, [isDarkMode, mapData]);
 
   // Fetch map data from new places API
   useEffect(() => {
@@ -184,10 +298,10 @@ const MapView = ({ results, onDetailsClick }) => {
 
     if (!map.current) {
       try {
-        // Initialize new map
+        // Initialize new map with theme-appropriate style
         map.current = new mapboxgl.Map({
           container: mapContainer.current,
-          style: 'mapbox://styles/mapbox/streets-v11',
+          style: isDarkMode ? MAP_STYLES.dark : MAP_STYLES.light,
           center: validCenter,
           zoom: DEFAULT_ZOOM
         });
