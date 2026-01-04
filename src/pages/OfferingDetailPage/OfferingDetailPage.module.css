@@ -1,0 +1,34 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading,
+.error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  font-family: "Inclusive Sans", sans-serif;
+  color: var(--color-foreground-primary);
+}
+
+.backButton {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-background-emphasis);
+  color: var(--color-foreground-on-emphasis);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.backButton:hover {
+  opacity: 0.9;
+}

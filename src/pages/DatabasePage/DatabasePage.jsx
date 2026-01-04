@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import SearchHero from '../../components/SearchHero/SearchHero'
 import Filters from '../../components/Filters/Filters'
 import SearchResults from '../../components/SearchResults/SearchResults'
 import MapView from '../../components/MapView/MapView'
 import Footer from '../../components/Footer/Footer'
-import OfferingDetail from '../../components/OfferingDetail/OfferingDetail'
 import apiService from '../../services/apiService'
 import styles from './DatabasePage.module.css'
 
 const DatabasePage = () => {
+  // Router hooks for navigation and URL params
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
   // State for data and UI
   const [allData, setAllData] = useState([])
   const [filteredData, setFilteredData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedOffering, setSelectedOffering] = useState(null)
 
-  // View state - keep existing working toggle
-  const [viewMode, setViewMode] = useState('map') // 'map' or 'list'
+  // View state - list is default as it's more discoverable
+  const [viewMode, setViewMode] = useState('list') // 'list' or 'map'
 
-  // Search and filter state
-  const [searchTerm, setSearchTerm] = useState('')
+  // Search and filter state - initialized from URL params
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
   const [filters, setFilters] = useState([])
+  const [filtersInitialized, setFiltersInitialized] = useState(false)
   
   // Distance filter state (radius only - postal code comes from search)
   const [distanceRadius, setDistanceRadius] = useState(null)
@@ -116,9 +120,33 @@ const DatabasePage = () => {
           }
         ]
 
+        // Restore filter values from URL params
+        const urlServiceType = searchParams.get('serviceType')
+        const urlCity = searchParams.get('city')
+        const urlModality = searchParams.get('modality')
+        const urlThemes = searchParams.get('themes')
+
+        if (urlServiceType) {
+          const serviceTypeFilter = filterConfig.find(f => f.key === 'serviceType')
+          if (serviceTypeFilter) serviceTypeFilter.value = urlServiceType.split(',')
+        }
+        if (urlCity) {
+          const cityFilter = filterConfig.find(f => f.key === 'city')
+          if (cityFilter) cityFilter.value = urlCity.split(',')
+        }
+        if (urlModality) {
+          const modalityFilter = filterConfig.find(f => f.key === 'modality')
+          if (modalityFilter) modalityFilter.value = urlModality.split(',')
+        }
+        if (urlThemes) {
+          const themesFilter = filterConfig.find(f => f.key === 'themes')
+          if (themesFilter) themesFilter.value = urlThemes.split(',')
+        }
+
         setAllData(offerings)
         setFilteredData(offerings)
         setFilters(filterConfig)
+        setFiltersInitialized(true)
         
       } catch (err) {
         console.error('Error loading data:', err)
@@ -269,6 +297,26 @@ const DatabasePage = () => {
     return () => clearTimeout(timeoutId)
   }, [searchTerm, filters, allData, distanceRadius])
 
+  // Sync state to URL params (only after filters are initialized to avoid overwriting URL on mount)
+  useEffect(() => {
+    if (!filtersInitialized) return
+
+    const params = new URLSearchParams()
+
+    if (searchTerm.trim()) {
+      params.set('search', searchTerm.trim())
+    }
+
+    filters.forEach(filter => {
+      if (filter.value && filter.value.length > 0) {
+        params.set(filter.key, filter.value.join(','))
+      }
+    })
+
+    // Use replace to avoid creating history entries for every filter change
+    setSearchParams(params, { replace: true })
+  }, [searchTerm, filters, filtersInitialized, setSearchParams])
+
   // Event handlers
   const handleSearch = (term) => {
     setSearchTerm(term)
@@ -297,35 +345,9 @@ const DatabasePage = () => {
     setCurrentPage(page)
   }
 
-  const handleDetailsClick = async (offeringId) => {
-    try {
-      setIsLoading(true)
-      const offering = await apiService.fetchOfferingById(offeringId)
-      setSelectedOffering(offering)
-    } catch (err) {
-      console.error('Error loading offering details:', err)
-      // Fallback to local data
-      const offering = allData.find(item => item.id === offeringId)
-      setSelectedOffering(offering)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleBackToSearch = () => {
-    setSelectedOffering(null)
-  }
-
-  // Map interaction handlers - removed handlePlaceClick, now handled by modal
-
-  // Show detail view if offering is selected
-  if (selectedOffering) {
-    return (
-      <OfferingDetail 
-        offering={selectedOffering} 
-        onBack={handleBackToSearch}
-      />
-    )
+  const handleDetailsClick = (offeringId) => {
+    // Navigate to the offering detail page - browser back button will return here with filters preserved
+    navigate(`/database/offering/${offeringId}`)
   }
 
   // Header navigation data
@@ -446,6 +468,8 @@ const DatabasePage = () => {
             <MapView
               results={filteredData}
               onDetailsClick={handleDetailsClick}
+              selectedCities={filters.find(f => f.key === 'city')?.value || []}
+              searchTerm={searchTerm}
             />
           ) : (
             <SearchResults

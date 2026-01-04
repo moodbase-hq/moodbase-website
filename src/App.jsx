@@ -5,6 +5,7 @@ import Database from './pages/Database'
 import About from './pages/About'
 import Support from './pages/Support'
 import Blog from './pages/Blog'
+import OfferingDetailPage from './pages/OfferingDetailPage/OfferingDetailPage'
 import UnderConstructionPage from './components/UnderConstructionPage/UnderConstructionPage'
 import TechSupportPage from './pages/TechSupportPage/TechSupportPage'
 import HelpOrganizationsPage from './pages/HelpOrganizationsPage/HelpOrganizationsPage'
@@ -19,6 +20,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/database" element={<Database />} />
+          <Route path="/database/offering/:id" element={<OfferingDetailPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/support" element={<Support />} />

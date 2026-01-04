@@ -14,6 +14,50 @@ const OfferingDetail = ({ offering, onBack }) => {
     });
   };
 
+  // Format opening hours / availability times from JSON object or string
+  const formatTimeData = (timeData) => {
+    if (!timeData) return null;
+
+    // Parse if it's a JSON string
+    let parsed = timeData;
+    if (typeof timeData === 'string') {
+      try {
+        parsed = JSON.parse(timeData);
+      } catch {
+        // If it's not valid JSON, return as-is
+        return timeData;
+      }
+    }
+
+    // If it's not an object, return as-is
+    if (typeof parsed !== 'object' || parsed === null) {
+      return String(timeData);
+    }
+
+    // Define day order for consistent display
+    const dayOrder = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+
+    // Filter out hint fields and empty values
+    const entries = Object.entries(parsed)
+      .filter(([key, value]) => key !== 'hinweis' && value && value !== 'geschlossen')
+      .sort((a, b) => {
+        const indexA = dayOrder.indexOf(a[0]);
+        const indexB = dayOrder.indexOf(b[0]);
+        if (indexA === -1 && indexB === -1) return 0;
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
+
+    if (entries.length === 0) {
+      // Check for hint
+      if (parsed.hinweis) return parsed.hinweis;
+      return null;
+    }
+
+    return entries;
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -56,15 +100,56 @@ const OfferingDetail = ({ offering, onBack }) => {
                   <span className={styles.value}>{offering.address}</span>
                 </div>
               )}
-
-              {(offering.opening_hours || offering.availability_times) && (
-                <div className={styles.field}>
-                  <span className={styles.label}>Öffnungszeiten:</span>
-                  <span className={styles.value}>{offering.opening_hours || offering.availability_times}</span>
-                </div>
-              )}
             </div>
           </div>
+
+          {/* Opening Hours for physical locations */}
+          {offering.opening_hours && (() => {
+            const formattedHours = formatTimeData(offering.opening_hours);
+            if (!formattedHours) return null;
+
+            return (
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Öffnungszeiten</h2>
+                {typeof formattedHours === 'string' ? (
+                  <p className={styles.description}>{formattedHours}</p>
+                ) : (
+                  <div className={styles.timeTable}>
+                    {formattedHours.map(([day, time]) => (
+                      <div key={day} className={styles.timeRow}>
+                        <span className={styles.timeDay}>{day}</span>
+                        <span className={styles.timeValue}>{time}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {/* Availability Times for phone/online services */}
+          {offering.availability_times && (() => {
+            const formattedTimes = formatTimeData(offering.availability_times);
+            if (!formattedTimes) return null;
+
+            return (
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Telefonische Erreichbarkeit</h2>
+                {typeof formattedTimes === 'string' ? (
+                  <p className={styles.description}>{formattedTimes}</p>
+                ) : (
+                  <div className={styles.timeTable}>
+                    {formattedTimes.map(([day, time]) => (
+                      <div key={day} className={styles.timeRow}>
+                        <span className={styles.timeDay}>{day}</span>
+                        <span className={styles.timeValue}>{time}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {offering.description && (
             <div className={styles.section}>

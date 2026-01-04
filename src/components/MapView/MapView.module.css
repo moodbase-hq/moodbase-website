@@ -5,6 +5,15 @@
   width: 100%;
 }
 
+.scrollHint {
+  font-size: var(--font-size-200);
+  color: var(--color-foreground-primary);
+  opacity: 0.7;
+  text-align: center;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-family: "Inclusive Sans", sans-serif;
+}
+
 .mapContainer {
   position: relative;
   width: 100%;

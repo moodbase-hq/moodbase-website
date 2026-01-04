@@ -201,3 +201,37 @@
   color: var(--foreground-primary);
   opacity: 0.6;
 }
+
+/* Time Table for Opening Hours / Availability */
+.timeTable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.timeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.timeRow:last-child {
+  border-bottom: none;
+}
+
+.timeDay {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground-primary);
+  min-width: 120px;
+}
+
+.timeValue {
+  font-family: "Inclusive Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--foreground-primary);
+}

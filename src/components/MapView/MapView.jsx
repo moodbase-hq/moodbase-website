@@ -16,13 +16,69 @@ if (MAPBOX_TOKEN) {
 const DEFAULT_CENTER = [10.4515, 51.1657];
 const DEFAULT_ZOOM = 5.5;
 
+// City coordinates for zoom-on-filter feature
+const CITY_COORDINATES = {
+  'Berlin': { center: [13.405, 52.52], zoom: 10 },
+  'München': { center: [11.582, 48.1351], zoom: 11 },
+  'Hamburg': { center: [9.9937, 53.5511], zoom: 11 },
+  'Köln': { center: [6.9603, 50.9375], zoom: 11 },
+  'Frankfurt': { center: [8.6821, 50.1109], zoom: 11 },
+  'Frankfurt am Main': { center: [8.6821, 50.1109], zoom: 11 },
+  'Stuttgart': { center: [9.1829, 48.7758], zoom: 11 },
+  'Düsseldorf': { center: [6.7735, 51.2277], zoom: 11 },
+  'Leipzig': { center: [12.3731, 51.3397], zoom: 11 },
+  'Dortmund': { center: [7.4653, 51.5136], zoom: 11 },
+  'Essen': { center: [7.0116, 51.4556], zoom: 11 },
+  'Bremen': { center: [8.8017, 53.0793], zoom: 11 },
+  'Dresden': { center: [13.7373, 51.0504], zoom: 11 },
+  'Hannover': { center: [9.7320, 52.3759], zoom: 11 },
+  'Nürnberg': { center: [11.0819, 49.4521], zoom: 11 },
+  'Duisburg': { center: [6.7624, 51.4344], zoom: 11 },
+  'Bochum': { center: [7.2162, 51.4818], zoom: 11 },
+  'Wuppertal': { center: [7.1833, 51.2562], zoom: 11 },
+  'Bielefeld': { center: [8.5324, 52.0302], zoom: 11 },
+  'Bonn': { center: [7.0982, 50.7374], zoom: 11 },
+  'Münster': { center: [7.6261, 51.9607], zoom: 11 },
+  'Karlsruhe': { center: [8.4037, 49.0069], zoom: 11 },
+  'Mannheim': { center: [8.4660, 49.4875], zoom: 11 },
+  'Augsburg': { center: [10.8978, 48.3705], zoom: 11 },
+  'Wiesbaden': { center: [8.2397, 50.0826], zoom: 11 },
+  'Gelsenkirchen': { center: [7.0857, 51.5177], zoom: 11 },
+  'Mönchengladbach': { center: [6.4428, 51.1805], zoom: 11 },
+  'Braunschweig': { center: [10.5268, 52.2689], zoom: 11 },
+  'Kiel': { center: [10.1227, 54.3233], zoom: 11 },
+  'Chemnitz': { center: [12.9252, 50.8278], zoom: 11 },
+  'Aachen': { center: [6.0838, 50.7753], zoom: 11 },
+  'Halle': { center: [11.9695, 51.4828], zoom: 11 },
+  'Magdeburg': { center: [11.6276, 52.1205], zoom: 11 },
+  'Freiburg': { center: [7.8494, 47.9990], zoom: 11 },
+  'Krefeld': { center: [6.5623, 51.3388], zoom: 11 },
+  'Lübeck': { center: [10.6865, 53.8655], zoom: 11 },
+  'Mainz': { center: [8.2473, 49.9929], zoom: 11 },
+  'Erfurt': { center: [11.0299, 50.9787], zoom: 11 },
+  'Rostock': { center: [12.0991, 54.0924], zoom: 11 },
+  'Kassel': { center: [9.4797, 51.3127], zoom: 11 },
+  'Potsdam': { center: [13.0645, 52.3906], zoom: 11 },
+  'Saarbrücken': { center: [6.9969, 49.2402], zoom: 11 },
+  'Oldenburg': { center: [8.2146, 53.1435], zoom: 11 },
+  'Regensburg': { center: [12.1016, 49.0134], zoom: 11 },
+  'Osnabrück': { center: [8.0472, 52.2799], zoom: 11 },
+  'Heidelberg': { center: [8.6724, 49.3988], zoom: 12 },
+  'Darmstadt': { center: [8.6512, 49.8728], zoom: 11 },
+  'Würzburg': { center: [9.9537, 49.7913], zoom: 11 },
+  'Göttingen': { center: [9.9354, 51.5413], zoom: 11 },
+  'Ulm': { center: [9.9876, 48.4011], zoom: 11 },
+  'Wolfsburg': { center: [10.7865, 52.4227], zoom: 11 },
+  'Ingolstadt': { center: [11.4250, 48.7665], zoom: 11 },
+};
+
 // Mapbox styles for light/dark mode
 const MAP_STYLES = {
   light: 'mapbox://styles/mapbox/streets-v11',
   dark: 'mapbox://styles/mapbox/dark-v11'
 };
 
-const MapView = ({ results, onDetailsClick }) => {
+const MapView = ({ results, onDetailsClick, selectedCities = [], searchTerm = '' }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -87,6 +143,76 @@ const MapView = ({ results, onDetailsClick }) => {
 
     return () => observer.disconnect();
   }, []);
+
+  // Detect city from search term
+  const detectCityFromSearch = (term) => {
+    if (!term) return null;
+    const searchLower = term.toLowerCase().trim();
+
+    // Check if any city name is contained in the search term
+    for (const cityName of Object.keys(CITY_COORDINATES)) {
+      if (searchLower.includes(cityName.toLowerCase())) {
+        return cityName;
+      }
+    }
+    return null;
+  };
+
+  // Zoom to selected city when filter or search term changes
+  useEffect(() => {
+    if (!map.current || isLoading) return;
+
+    // First check if search term contains a city name
+    const cityFromSearch = detectCityFromSearch(searchTerm);
+
+    // Combine cities from filter and search
+    const allCities = [...(selectedCities || [])];
+    if (cityFromSearch && !allCities.includes(cityFromSearch)) {
+      allCities.push(cityFromSearch);
+    }
+
+    // If no cities found, reset to default Germany view
+    if (allCities.length === 0) {
+      map.current.flyTo({
+        center: DEFAULT_CENTER,
+        zoom: DEFAULT_ZOOM,
+        duration: 1000
+      });
+      return;
+    }
+
+    // If single city, zoom to it
+    if (allCities.length === 1) {
+      const cityData = CITY_COORDINATES[allCities[0]];
+      if (cityData) {
+        map.current.flyTo({
+          center: cityData.center,
+          zoom: cityData.zoom,
+          duration: 1000
+        });
+      }
+    } else {
+      // Multiple cities: fit bounds to include all
+      const bounds = new mapboxgl.LngLatBounds();
+      let hasValidCity = false;
+
+      allCities.forEach(city => {
+        const cityData = CITY_COORDINATES[city];
+        if (cityData) {
+          bounds.extend(cityData.center);
+          hasValidCity = true;
+        }
+      });
+
+      if (hasValidCity && !bounds.isEmpty()) {
+        map.current.fitBounds(bounds, {
+          padding: 50,
+          duration: 1000,
+          maxZoom: 12
+        });
+      }
+    }
+  }, [selectedCities, searchTerm, isLoading]);
 
   // Update map style when theme changes
   useEffect(() => {
@@ -235,23 +361,32 @@ const MapView = ({ results, onDetailsClick }) => {
     return getMappablePlaces();
   };
 
-  // Calculate map center based on filtered places
+  // Calculate map center based on filtered places (only when no city is selected)
   useEffect(() => {
+    // Skip automatic centering if we have an active city from search or filter
+    const cityFromSearch = detectCityFromSearch(searchTerm);
+    const hasActiveCity = cityFromSearch || (selectedCities && selectedCities.length > 0);
+
+    if (hasActiveCity) {
+      // Let the city zoom effect handle positioning
+      return;
+    }
+
     const filteredPlaces = getFilteredPlaces();
-    
+
     if (filteredPlaces.length > 0) {
       const locations = filteredPlaces.map(place => getLocationData(place));
       const latitudes = locations.map(loc => loc.lat);
       const longitudes = locations.map(loc => loc.lng);
-      
+
       const avgLat = latitudes.reduce((a, b) => a + b, 0) / latitudes.length;
       const avgLng = longitudes.reduce((a, b) => a + b, 0) / longitudes.length;
-      
+
       if (!isNaN(avgLat) && !isNaN(avgLng)) {
         setMapCenter([avgLng, avgLat]);
       }
     }
-  }, [mapData, results]);
+  }, [mapData, results, searchTerm, selectedCities]);
 
   // Initialize and update map
   useEffect(() => {
@@ -326,11 +461,17 @@ const MapView = ({ results, onDetailsClick }) => {
     } else {
       // Clean up existing markers
       cleanupMarkers();
-      
-      // Update map center
+
+      // Update map center only if no city is actively selected
+      const cityFromSearch = detectCityFromSearch(searchTerm);
+      const hasActiveCity = cityFromSearch || (selectedCities && selectedCities.length > 0);
+
       try {
-        map.current.setCenter(validCenter);
-        
+        // Only auto-center if no city filter/search is active
+        if (!hasActiveCity) {
+          map.current.setCenter(validCenter);
+        }
+
         // Update clustering if map is already loaded
         if (map.current.loaded()) {
           updateClusterData();
@@ -544,7 +685,7 @@ const MapView = ({ results, onDetailsClick }) => {
     return () => {
       cleanupMarkers();
     };
-  }, [mapData, results, mapCenter, isLoading]);
+  }, [mapData, results, mapCenter, isLoading, searchTerm, selectedCities]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -615,6 +756,7 @@ const MapView = ({ results, onDetailsClick }) => {
 
   return (
     <div className={styles.mapView}>
+      <p className={styles.scrollHint}>Scrollen Sie nach unten, um alle Angebote als Liste zu sehen</p>
       <div className={styles.mapContainer}>
         <div ref={mapContainer} className={styles.map} />
         
