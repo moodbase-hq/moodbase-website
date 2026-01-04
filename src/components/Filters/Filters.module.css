@@ -87,6 +87,8 @@
   box-shadow: var(--shadow-sm);
   position: relative;
   z-index: 10;
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 .checkboxLabel {

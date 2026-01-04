@@ -84,7 +84,7 @@ const DatabasePage = () => {
           },
           {
             key: "modality",
-            label: "Modalität",
+            label: "Format",
             value: [],
             options: [
               { label: "Alle", value: "alle" },
@@ -168,8 +168,8 @@ const DatabasePage = () => {
           },
           {
             key: "modality",
-            label: "Modalität",
-            value: [], 
+            label: "Format",
+            value: [],
             options: [{ label: "Alle", value: "alle" }]
           },
           {

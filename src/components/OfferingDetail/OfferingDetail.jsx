@@ -82,7 +82,7 @@ const OfferingDetail = ({ offering, onBack }) => {
 
               {offering.primary_location_type && (
                 <div className={styles.field}>
-                  <span className={styles.label}>Modalität:</span>
+                  <span className={styles.label}>Format:</span>
                   <span className={styles.value}>{offering.primary_location_type}</span>
                 </div>
               )}
