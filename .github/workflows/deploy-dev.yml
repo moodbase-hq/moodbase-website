@@ -1,0 +1,38 @@
+name: Deploy to dev.moodbase.de
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (dev mode)
+        env:
+          VITE_API_URL: ${{ secrets.DEV_API_URL }}
+          VITE_API_KEY: ${{ secrets.DEV_API_KEY }}
+          VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+        run: npx vite build
+
+      - name: Deploy via SSH
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.APP_SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.APP_SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.APP_SERVER_USER }}
+          SOURCE: dist/
+          TARGET: /var/www/dev.moodbase.de/
+          ARGS: "-av --delete"
