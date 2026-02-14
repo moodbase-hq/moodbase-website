@@ -4,6 +4,8 @@ pkgs.buildNpmPackage rec {
   pname = "moodbase-website";
   version = "0.1.0";
 
+
+
   src = pkgs.lib.cleanSource ./..;
 
   npmDepsHash = pkgs.lib.fakeHash;
