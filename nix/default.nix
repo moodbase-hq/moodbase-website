@@ -13,6 +13,7 @@ pkgs.buildNpmPackage rec {
 
   nodejs = pkgs.nodejs_18;
 
+
   # The build command produces static files in dist/
   npmBuildScript = "build";
 
