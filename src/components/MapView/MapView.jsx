@@ -303,7 +303,10 @@ const MapView = ({ results, onDetailsClick, selectedCities = [], searchTerm = ''
       setIsLoading(true);
       try {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-        const response = await fetch(`${apiUrl}/api/map`);
+        const apiKey = import.meta.env.VITE_API_KEY || '';
+        const response = await fetch(`${apiUrl}/api/map`, {
+          headers: apiKey ? { 'X-API-Key': apiKey } : {}
+        });
         
         if (!response.ok) {
           throw new Error('Failed to fetch map data');

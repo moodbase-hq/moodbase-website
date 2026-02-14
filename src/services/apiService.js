@@ -1,5 +1,6 @@
 // API client setup using fetch
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_KEY = import.meta.env.VITE_API_KEY || '';
 
 // Sample data for fallback when API is not available
 const SAMPLE_DATA = [
@@ -52,6 +53,7 @@ const apiRequest = async (endpoint, options = {}) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      ...(API_KEY ? { 'X-API-Key': API_KEY } : {}),
       ...options.headers
     },
     ...options
