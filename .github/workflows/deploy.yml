@@ -1,0 +1,79 @@
+name: Deploy moodbase website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-production:
+    name: Deploy to moodbase.de
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (production)
+        env:
+          VITE_API_URL: ${{ secrets.PROD_API_URL }}
+          VITE_API_KEY: ${{ secrets.PROD_API_KEY }}
+          VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+        run: npx vite build
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.APP_SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.APP_SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to moodbase.de
+        run: |
+          rsync -av --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            ${{ secrets.APP_SERVER_USER }}@${{ secrets.APP_SERVER_HOST }}:/var/www/moodbase.de/
+
+  deploy-dev:
+    name: Deploy to dev.moodbase.de
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (dev mode)
+        env:
+          VITE_API_URL: ${{ secrets.DEV_API_URL }}
+          VITE_API_KEY: ${{ secrets.DEV_API_KEY }}
+          VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+        run: npx vite build
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.APP_SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.APP_SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to dev.moodbase.de
+        run: |
+          rsync -av --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            ${{ secrets.APP_SERVER_USER }}@${{ secrets.APP_SERVER_HOST }}:/var/www/dev.moodbase.de/
