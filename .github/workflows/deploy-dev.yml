@@ -3,7 +3,7 @@ name: Deploy to dev.moodbase.de
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -27,12 +27,16 @@ jobs:
           VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
         run: npx vite build
 
-      - name: Deploy via SSH
-        uses: easingthemes/ssh-deploy@v5
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.APP_SERVER_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.APP_SERVER_HOST }}
-          REMOTE_USER: ${{ secrets.APP_SERVER_USER }}
-          SOURCE: dist/
-          TARGET: /var/www/dev.moodbase.de/
-          ARGS: "-av --delete"
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.APP_SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.APP_SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        run: |
+          rsync -av --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            ${{ secrets.APP_SERVER_USER }}@${{ secrets.APP_SERVER_HOST }}:/var/www/dev.moodbase.de/
