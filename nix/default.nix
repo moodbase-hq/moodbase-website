@@ -6,6 +6,7 @@ pkgs.buildNpmPackage rec {
 
 
 
+
   src = pkgs.lib.cleanSource ./..;
 
   npmDepsHash = pkgs.lib.fakeHash;
